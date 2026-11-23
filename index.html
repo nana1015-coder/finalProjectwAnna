@@ -15,13 +15,13 @@
     .nav-group { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
     nav button { background: transparent; border: 1px solid rgba(255,255,255,0.8); color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: 0.2s; }
     nav button:hover, nav button.active { background: white; color: var(--primary); font-weight: bold; }
-    .badge-pill { background: rgba(0,0,0,0.22); padding: 5px 11px; border-radius: 20px; font-size: 13px; cursor: pointer; border: none; color: white; }
+    .badge-pill { background: rgba(0,0,0,0.22); padding: 6px 12px; border-radius: 20px; font-size: 13px; cursor: pointer; border: none; color: white; font-weight: bold; }
     .badge-pill:hover { background: rgba(0,0,0,0.35); }
     .lang-btn { background: var(--accent); color: #222; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: bold; }
     .lang-btn:hover { background: #ffd54f; }
 
     /* 主視覺 */
-    .hero { background: linear-gradient(135deg, #2e7d32, #66bb6a); color: white; text-align: center; padding: 36px 20px; }
+    .hero { background: linear-gradient(135deg, #2e7d32, #66bb6a); color: white; text-align: center; padding: 34px 20px; }
     .hero h2 { font-size: 28px; margin: 0 0 8px; }
     .hero p { font-size: 15px; max-width: 680px; margin: 0 auto; opacity: 0.95; }
 
@@ -37,6 +37,7 @@
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 20px; }
     .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.07); transition: 0.2s; display: flex; flex-direction: column; justify-content: space-between; }
     .card:hover { transform: translateY(-4px); }
+    .card.sold-card { opacity: 0.72; }
     .card-img { height: 175px; background: var(--light); display: flex; align-items: center; justify-content: center; font-size: 56px; overflow: hidden; }
     .card-img img { width: 100%; height: 100%; object-fit: cover; }
     .card-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
@@ -77,10 +78,20 @@
     .btn-like { background: #fff0f3; color: #c62828; border: 1px solid #ef9a9a; padding: 7px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.2s; }
     .btn-like:hover { background: #ffcdd2; }
     .btn-like.liked { background: #e53935; color: white; border-color: #e53935; }
+    .btn-like:disabled { opacity: 0.75; cursor: not-allowed; }
 
-    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 20px; }
+    /* 我的衣櫃區塊 */
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 22px; }
     .stat-card { background: var(--light); padding: 15px; border-radius: 10px; text-align: center; }
     .stat-num { font-size: 25px; font-weight: bold; color: var(--dark); }
+
+    .mini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-bottom: 22px; }
+    .mini-card { border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
+    .mini-img { height: 120px; background: var(--light); display: flex; align-items: center; justify-content: center; font-size: 42px; overflow: hidden; }
+    .mini-img img { width: 100%; height: 100%; object-fit: cover; }
+    .mini-body { padding: 12px; flex: 1; display: flex; flex-direction: column; }
+    .mini-body h4 { margin: 4px 0; font-size: 15px; }
+    .mini-body p { margin: 0 0 8px; font-size: 13px; color: #666; flex: 1; }
 
     .offer-item { border: 1px solid #e0e0e0; border-radius: 10px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; background: #fafafa; }
     .offer-actions { display: flex; gap: 8px; }
@@ -91,29 +102,29 @@
     ul.record-list li { margin-bottom: 6px; font-size: 14px; }
 
     /* 彈出小視窗 */
-    .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.48); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+    .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.52); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
     .modal-backdrop.open { display: flex; }
-    .modal-card { background: white; max-width: 480px; width: 100%; border-radius: 14px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.22); animation: popIn 0.18s ease-out; }
+    .modal-card { background: white; max-width: 480px; width: 100%; border-radius: 14px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.22); animation: popIn 0.18s ease-out; max-height: 90vh; overflow-y: auto; }
     @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     .modal-card h3 { margin: 0 0 10px; color: var(--dark); }
     .step-content { background: var(--bg); border: 1px solid #e0e0e0; border-radius: 10px; padding: 14px 16px; white-space: pre-line; font-size: 14px; line-height: 1.7; margin: 12px 0 16px; }
+    .confirm-box { background: var(--bg); border: 1px solid #dce7dc; border-radius: 10px; padding: 14px; margin: 12px 0 16px; font-size: 14px; }
   </style>
 </head>
 <body>
 
-  <!-- 導覽列 -->
+  <!-- 導覽列（已移除雲端連線設定按鈕） -->
   <header>
     <h1 id="brand-title">🌱 ReWear 永續衣櫥</h1>
     <div class="nav-group">
       <nav>
-        <button id="nav-market" class="active" onclick="showSection('market', this)">二手衣市集</button>
-        <button id="nav-list" onclick="showSection('list-item', this)">上架衣物</button>
-        <button id="nav-quiz" onclick="showSection('quiz', this)">衣櫃碳排檢測</button>
-        <button id="nav-diy" onclick="showSection('diy', this)">舊衣 DIY 改造</button>
-        <button id="nav-closet" onclick="showSection('closet', this)">我的衣櫃</button>
+        <button id="nav-market" onclick="showSection('market')">二手衣市集</button>
+        <button id="nav-list" onclick="showSection('list-item')">上架衣物</button>
+        <button id="nav-quiz" onclick="showSection('quiz')">衣櫃碳排檢測</button>
+        <button id="nav-diy" onclick="showSection('diy')">舊衣 DIY 改造</button>
+        <button id="nav-closet" onclick="showSection('closet')">我的衣櫃</button>
       </nav>
-      <button class="badge-pill" onclick="openUserModal()">👤 <span id="user-name-display">小綠</span> (<strong id="user-points">300</strong> pt)</button>
-      <button class="badge-pill" id="cloud-status-btn" onclick="openCloudModal()">☁️ 雲端已連線</button>
+      <button class="badge-pill" id="user-badge-btn" onclick="openUserModal()">👤 請先登入</button>
       <button class="lang-btn" id="lang-toggle" onclick="toggleLang()">English / 中文</button>
     </div>
   </header>
@@ -125,7 +136,7 @@
   </div>
 
   <!-- 1. 二手衣市集 -->
-  <div id="market" class="section active">
+  <div id="market" class="section">
     <h2 id="market-title">👕 二手衣交換市集</h2>
     <div class="filter-bar">
       <span id="filter-label">分類篩選：</span>
@@ -169,7 +180,7 @@
         </div>
         <div class="form-group">
           <label id="lbl-photo" for="in-photo">上傳衣物照片（選填，支援手機拍照或選圖）</label>
-          <input id="in-photo" type="file" accept="image/*" onchange="previewUploadImage(event)">
+          <input id="in-photo" type="file" accept="image/*" onchange="previewUploadImage(event, 'photo-preview', 'add')">
           <img id="photo-preview" class="img-preview" alt="Preview">
         </div>
         <div class="form-group">
@@ -185,6 +196,9 @@
   <div id="quiz" class="section">
     <h2 id="quiz-title">🌍 衣櫃碳險——衣櫃碳排檢測</h2>
     <div class="box">
+      <div class="rule-note" id="quiz-reward-note">
+        🎁 <strong>初次檢測獎勵：</strong>新帳號初始為 0 點，<strong>首次完成衣櫃碳排檢測即可獲得 +150 pt 永續啟動點數</strong>（每個帳號限領一次，測驗可重複進行）！
+      </div>
       <div class="question">
         <p><strong id="q1-text">1. 你平均每個月會買幾件新衣服？</strong></p>
         <label><input type="radio" name="q1" value="1" checked> <span id="q1-o1">0～1 件（非常克制）</span></label><br>
@@ -237,20 +251,20 @@
 
   <!-- 5. 我的衣櫃 -->
   <div id="closet" class="section">
-    <h2 id="closet-title">👜 我的永續衣櫃、議價與紀錄</h2>
+    <h2 id="closet-title">👜 我的永續衣櫃、刊登管理與互動紀錄</h2>
     <div class="box">
       <div class="stats-row">
         <div class="stat-card">
           <div id="st-pts-lbl">目前點數</div>
-          <div class="stat-num" id="st-pts">300</div>
+          <div class="stat-num" id="st-pts">0</div>
         </div>
         <div class="stat-card">
           <div id="st-swapped-lbl">已交換取得</div>
           <div class="stat-num" id="st-swapped">0</div>
         </div>
         <div class="stat-card">
-          <div id="st-listed-lbl">刊登 / 已成交</div>
-          <div class="stat-num" id="st-listed">0</div>
+          <div id="st-listed-lbl">刊登 / 已售出</div>
+          <div class="stat-num" id="st-listed">0 / 0</div>
         </div>
         <div class="stat-card">
           <div id="st-saved-lbl">預估減碳量 (kg)</div>
@@ -258,15 +272,71 @@
         </div>
       </div>
 
+      <!-- (1) 我刊登的物品（可編輯價格、圖片、說明） -->
+      <h3 id="my-listed-title">📦 我刊登的物品（未售出可編輯價格、圖片與說明）</h3>
+      <div id="my-listed-grid" class="mini-grid"></div>
+
+      <!-- (2) 我已交換的物品 -->
+      <h3 id="my-swapped-title">🛍️ 我已交換取得的物品</h3>
+      <div id="my-swapped-grid" class="mini-grid"></div>
+
+      <!-- 收到的議價請求 -->
       <h3 id="offers-title">💬 收到的議價請求（買家出價 → 賣家決定是否成交）</h3>
       <div id="offers-list"></div>
 
-      <h3 id="rec-title" style="margin-top:20px;">📜 成交、按讚獎勵與上架紀錄</h3>
+      <!-- 個人互動紀錄 -->
+      <h3 id="rec-title" style="margin-top:20px;">📜 我的個人互動紀錄</h3>
       <ul class="record-list" id="record-list"></ul>
     </div>
   </div>
 
-  <!-- 彈出小視窗 1：DIY 教學步驟 -->
+  <!-- 彈出小視窗 1：購買二次確認 -->
+  <div id="buy-modal" class="modal-backdrop" onclick="if(event.target===this) closeModals()">
+    <div class="modal-card">
+      <h3 id="bm-title">🛒 確認交換此衣物？</h3>
+      <div class="confirm-box" id="bm-body"></div>
+      <div style="display:flex; gap:8px; justify-content:flex-end;">
+        <button class="filter-btn" onclick="closeModals()" id="bm-cancel">取消</button>
+        <button class="btn-accept" onclick="confirmDirectSwap()" id="bm-confirm">確認扣除點數並交換</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 彈出小視窗 2：編輯我刊登的物品 -->
+  <div id="edit-modal" class="modal-backdrop" onclick="if(event.target===this) closeModals()">
+    <div class="modal-card">
+      <h3 id="em-title">✏️ 編輯刊登衣物</h3>
+      <form onsubmit="saveEditedItem(event)">
+        <div class="form-group">
+          <label id="em-name-lbl" for="em-name">衣物名稱</label>
+          <input id="em-name" type="text" required>
+        </div>
+        <div class="form-group">
+          <label id="em-cond-lbl" for="em-cond">新舊程度與尺寸</label>
+          <input id="em-cond" type="text" required>
+        </div>
+        <div class="form-group">
+          <label id="em-pts-lbl" for="em-pts">交換點數</label>
+          <input id="em-pts" type="number" min="10" max="1000" step="5" required>
+        </div>
+        <div class="form-group">
+          <label id="em-photo-lbl" for="em-photo">更換衣物照片（不選則保留原圖）</label>
+          <input id="em-photo" type="file" accept="image/*" onchange="previewUploadImage(event, 'em-preview', 'edit')">
+          <img id="em-preview" class="img-preview" alt="Edit Preview">
+        </div>
+        <div class="form-group">
+          <label id="em-desc-lbl" for="em-desc">衣物描述</label>
+          <textarea id="em-desc" rows="2"></textarea>
+        </div>
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <button type="button" class="filter-btn" onclick="closeModals()" id="em-cancel">取消</button>
+          <button type="submit" class="btn-accept" id="em-save">儲存修改</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 彈出小視窗 3：DIY 教學步驟 -->
   <div id="diy-modal" class="modal-backdrop" onclick="if(event.target===this) closeModals()">
     <div class="modal-card">
       <h3 id="dm-title"></h3>
@@ -283,12 +353,12 @@
     </div>
   </div>
 
-  <!-- 彈出小視窗 2：唯一帳號 ID + 顯示暱稱登入 -->
-  <div id="user-modal" class="modal-backdrop" onclick="if(event.target===this) closeModals()">
+  <!-- 彈出小視窗 4：帳號登入 / 切換（初始不自動登入，進入要求登入） -->
+  <div id="user-modal" class="modal-backdrop">
     <div class="modal-card">
-      <h3 id="um-title">👤 會員登入 / 切換帳號</h3>
+      <h3 id="um-title">👤 登入 ReWear 永續衣櫥</h3>
       <p id="um-desc" style="font-size:14px; color:#555;">
-        請輸入<strong>唯一帳號 ID（或學號／信箱）</strong>與<strong>顯示暱稱</strong>。系統以帳號 ID 區分身分，即使暱稱相同也不會重複登入或混用點數！
+        請輸入你的<strong>唯一帳號 ID（學號／信箱）</strong>與<strong>顯示暱稱</strong>。新帳號初始為 0 點，完成「衣櫃碳排檢測」即可領取 <strong>+150 pt</strong> 啟動點數！
       </p>
       <div class="form-group">
         <label id="um-id-lbl" for="um-id-input">唯一帳號 ID / 學號（不可與他人重複）</label>
@@ -299,46 +369,30 @@
         <input id="um-name-input" type="text" placeholder="例如：小綠">
       </div>
       <div style="display:flex; gap:8px; justify-content:flex-end;">
-        <button class="filter-btn" onclick="closeModals()" id="um-cancel">取消</button>
+        <button class="filter-btn" onclick="closeUserModalIfLoggedIn()" id="um-cancel" style="display:none;">取消</button>
         <button class="btn-accept" onclick="saveUserAccount()" id="um-save">確認登入</button>
       </div>
     </div>
   </div>
 
-  <!-- 彈出小視窗 3：雲端跨裝置同步設定 -->
-  <div id="cloud-modal" class="modal-backdrop" onclick="if(event.target===this) closeModals()">
-    <div class="modal-card">
-      <h3 id="cm-title">☁️ 跨裝置雲端同步設定（Firebase）</h3>
-      <p id="cm-desc" style="font-size:14px; color:#555;">
-        目前已預設綁定你的 Firebase Realtime Database 網址，跨裝置打開會自動同步商品、議價與按讚點數；如需更換或切回本機模式可在此調整。
-      </p>
-      <div class="form-group">
-        <input id="cm-input" type="url" placeholder="https://your-project-default-rtdb.firebaseio.com">
-      </div>
-      <div style="display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap;">
-        <button class="filter-btn" onclick="clearCloudUrl()" id="cm-local">切回本機模式</button>
-        <button class="filter-btn" onclick="closeModals()" id="cm-cancel">關閉</button>
-        <button class="btn-accept" onclick="saveCloudUrl()" id="cm-save">連線雲端</button>
-      </div>
-    </div>
-  </div>
-
   <script>
-    const DEFAULT_CLOUD_URL = 'https://final-project-8e175-default-rtdb.firebaseio.com';
-    const STORAGE_KEY = 'rewear_prod_v1';
-    const CLOUD_URL_KEY = 'rewear_firebase_url';
-    const ACCOUNT_KEY = 'rewear_current_account';
+    const CLOUD_BASE_URL = 'https://final-project-8e175-default-rtdb.firebaseio.com';
+    const STORAGE_KEY = 'rewear_prod_v2';
+    const ACCOUNT_KEY = 'rewear_current_account_v2';
+    const TAB_KEY = 'rewear_active_tab';
 
     let uploadedImageData = '';
-    let cloudBaseUrl = (localStorage.getItem(CLOUD_URL_KEY) || DEFAULT_CLOUD_URL).replace(/\/+$/, '');
+    let editedImageData = '';
+    let pendingBuyItemId = null;
+    let editingItemId = null;
     let currentAccount = loadCurrentAccount();
 
     function loadCurrentAccount() {
       try {
-        const saved = JSON.parse(localStorage.getItem(ACCOUNT_KEY));
+        const saved = JSON.parse(sessionStorage.getItem(ACCOUNT_KEY) || localStorage.getItem(ACCOUNT_KEY));
         if (saved && saved.id && saved.name) return saved;
       } catch (e) {}
-      return { id: 'green_01', name: '小綠' };
+      return null;
     }
 
     const defaultItems = [
@@ -377,18 +431,34 @@
       }
     ];
 
+    const ecoTips = {
+      zh: [
+        '只要將其中 3 件新衣改為在 ReWear 交換二手衣，就能立刻減少約 30 公斤碳排！',
+        '每多穿一件舊衣 9 個月，就能減少約 20%～30% 的碳足跡與水資源浪費！',
+        '買衣服前先想「這件會穿超過 30 次嗎？」，能幫你避開 80% 的衝動快時尚消費！',
+        '把穿不到的舊 T-shirt 改造成環保袋或居家抹布，能延長紡織品生命週期並減少垃圾焚燒碳排！',
+        '洗衣時多用冷水洗滌並自然晾乾，每週可為地球省下數公斤的烘衣機電力碳排！'
+      ],
+      en: [
+        'Swapping just 3 new items for second-hand pieces on ReWear saves roughly 30 kg of CO₂e!',
+        'Extending the active life of a garment by just 9 months reduces its carbon and water footprint by 20%–30%!',
+        'Ask yourself "Will I wear this at least 30 times?" before buying to cut 80% of impulse fast-fashion waste!',
+        'Upcycling an unworn tee into a tote bag keeps textiles out of landfills and saves manufacturing emissions!',
+        'Washing clothes in cold water and air-drying saves kilograms of dryer electricity emissions every week!'
+      ]
+    };
+
     const dict = {
       zh: {
         brand: '🌱 ReWear 永續衣櫥',
         navMarket: '二手衣市集', navList: '上架衣物', navQuiz: '衣櫃碳排檢測', navDiy: '舊衣 DIY 改造', navCloset: '我的衣櫃',
-        langBtn: 'English / 中文',
-        cloudLocal: '💾 本機模式', cloudOnline: '☁️ 雲端已連線',
+        loginPromptBtn: '👤 請先登入', langBtn: 'English / 中文',
         heroTitle: '少買一點、多換一點，衣櫥更永續',
         heroDesc: '實踐 SDG 12 責任消費與 SDG 13 氣候行動',
         marketTitle: '👕 二手衣交換市集', filterLabel: '分類篩選：',
         fAll: '全部衣物', fTop: '上衣 / 外套', fBottom: '褲裝 / 裙裝', fAcc: '配件 / 包包',
         ownerPrefix: '上架者：', ptsCost: '開價點數', swapBtn: '直接交換', bargainBtn: '議價',
-        swappedBtn: '✅ 已成交交換', minePending: '⏳ 我的刊登（待成交）',
+        swappedBtn: '✅ 已售出', minePending: '⏳ 我的刊登（待成交）',
         listTitle: '📤 上架閒置衣物（上傳照片＋自行設定點數，成交才拿點數）',
         ruleNote: '💡 <strong>交換與點數規則：</strong>你可以自行設定想要的交換點數並上傳真實衣物照片；上架時<strong>不會直接發放點數</strong>，必須等到有其他同學同意交換或接受議價、完成成交後，你才會拿到對應點數！',
         lblName: '衣物名稱', phName: '例如：卡其風衣 / 條紋襯衫',
@@ -399,6 +469,7 @@
         lblDesc: '衣物描述', phDesc: '簡單說明材質、穿搭特色或保存狀況...',
         btnSubmitItem: '刊登衣物（等待有人交換）',
         quizTitle: '🌍 衣櫃碳險——衣櫃碳排檢測',
+        quizRewardNote: '🎁 <strong>初次檢測獎勵：</strong>新帳號初始為 0 點，<strong>首次完成衣櫃碳排檢測即可獲得 +150 pt 永續啟動點數</strong>（每個帳號限領一次，測驗可重複進行）！',
         q1Text: '1. 你平均每個月會買幾件新衣服？',
         q1O1: '0～1 件（非常克制）', q1O2: '2～4 件（偶爾逛網拍）', q1O3: '5 件以上（快時尚重度愛好者）',
         q2Text: '2. 你衣櫃裡有多少比例的衣服「超過一年沒穿過」？',
@@ -406,7 +477,8 @@
         calcBtn: '計算我的衣櫃足跡',
         resTitle: '📊 檢測結果出爐！',
         resBody: (w, baths, c) => `你的衣櫃每年大約消耗了 <strong>${w} 公升</strong> 的水資源（相當於 <strong>${baths}</strong> 趟浴缸泡澡），並產生約 <strong>${c} 公斤</strong> 的碳排放！`,
-        resTip: '💡 <strong>永續建議：</strong>只要將其中 3 件新衣改為在 ReWear 交換二手衣，就能立刻減少約 30 公斤碳排！',
+        resFirstReward: '🎉 <strong>恭喜首次完成檢測！已自動發放 +150 pt 永續啟動點數到你的帳戶！</strong>',
+        resAlreadyRewarded: '✅ 你已領取過首次檢測獎勵（+150 pt），歡迎隨時重新檢視衣櫃足跡！',
         diyTitle: '✂️ 舊衣改造靈感庫與創意分享（1 讚 = 1 點，讚越多排越前面！）',
         diyRuleNote: '❤️ <strong>按讚獎賞規則：</strong>大家覺得不錯的改造創意可按讚支持，每獲得 <strong>1 個讚，分享該創意的作者即可獲得 1 點獎勵</strong>，並依讚數由高到低排序！',
         diyShareTitle: '💡 分享你的舊衣改造創意',
@@ -420,40 +492,60 @@
         likeBtn: '👍 讚', likedBtn: '❤️ 已讚', viewStepBtn: '查看教學步驟',
         dmClose: '關閉視窗',
         diyAddedAlert: (name) => `已發布改造創意「${name}」！當其他同學幫你按讚時，你將自動獲得 1 讚 = 1 點獎勵！`,
-        closetTitle: '👜 我的永續衣櫃、議價與紀錄',
-        stPtsLbl: '目前點數', stSwappedLbl: '已交換取得', stListedLbl: '刊登 / 已成交', stSavedLbl: '預估減碳量 (kg)',
+        closetTitle: '👜 我的永續衣櫃、刊登管理與互動紀錄',
+        stPtsLbl: '目前點數', stSwappedLbl: '已交換取得', stListedLbl: '刊登 / 已售出', stSavedLbl: '預估減碳量 (kg)',
+        myListedTitle: '📦 我刊登的物品（未售出可編輯價格、圖片與說明）',
+        noMyListed: '你目前還沒有刊登任何衣物，快去「上架衣物」發布吧！',
+        editBtn: '✏️ 編輯商品', soldDoneTag: '已成交售出',
+        mySwappedTitle: '🛍️ 我已交換取得的物品',
+        noMySwapped: '你目前還沒有交換取得任何衣物。',
         offersTitle: '💬 收到的議價請求（買家出價 → 賣家決定是否成交）',
         noOffers: '目前尚未收到針對你上架衣物的議價請求。',
         acceptBtn: '接受議價並成交', rejectBtn: '拒絕',
-        recTitle: '📜 成交、按讚獎勵與上架紀錄', noRec: '尚無紀錄。',
-        umTitle: '👤 會員登入 / 切換帳號',
-        umDesc: '請輸入<strong>唯一帳號 ID（或學號／信箱）</strong>與<strong>顯示暱稱</strong>。系統以帳號 ID 區分身分，即使暱稱相同也不會重複登入或混用點數！',
+        recTitle: '📜 我的個人互動紀錄', noRec: '尚無與你相關的互動紀錄。',
+        bmTitle: '🛒 確認交換此衣物？',
+        bmBody: (name, seller, cost, curr, after) => `
+          <div><strong>商品名稱：</strong>${name}</div>
+          <div><strong>上架賣家：</strong>${seller}</div>
+          <div><strong>所需點數：</strong><span style="color:#e65100; font-weight:bold;">${cost} pt</span></div>
+          <hr style="border:none; border-top:1px solid #ddd; margin:8px 0;">
+          <div><strong>你目前點數：</strong>${curr} pt</div>
+          <div><strong>交換後剩餘點數：</strong><strong>${after} pt</strong></div>
+        `,
+        bmCancel: '取消', bmConfirm: '確認扣除點數並交換',
+        emTitle: '✏️ 編輯刊登衣物', emNameLbl: '衣物名稱', emCondLbl: '新舊程度與尺寸',
+        emPtsLbl: '交換點數', emPhotoLbl: '更換衣物照片（不選則保留原圖）', emDescLbl: '衣物描述',
+        emCancel: '取消', emSave: '儲存修改',
+        umTitle: '👤 登入 ReWear 永續衣櫥',
+        umDesc: '請輸入你的<strong>唯一帳號 ID（學號／信箱）</strong>與<strong>顯示暱稱</strong>。新帳號初始為 0 點，完成「衣櫃碳排檢測」即可領取 <strong>+150 pt</strong> 啟動點數！',
         umIdLbl: '唯一帳號 ID / 學號（不可與他人重複）', umNameLbl: '顯示暱稱',
         umCancel: '取消', umSave: '確認登入',
+        needLoginAlert: '請先輸入帳號 ID 與暱稱完成登入！',
         idConflictAlert: (id, existName) => `帳號 ID「${id}」已被暱稱「${existName}」註冊使用，請改用其他帳號 ID，或輸入正確暱稱登入！`,
         bargainPrompt: (name, currPts) => `「${name}」目前開價 ${currPts} pt，請輸入你想議價的點數：`,
         bargainInvalid: '請輸入大於 0 的有效點數！',
         bargainSent: (name, offerPts) => `已對「${name}」提出 ${offerPts} pt 的議價請求，等待賣家確認！`,
         swapOk: (name, cost, rem) => `成交交換！「${name}」扣除 ${cost} pt，剩餘點數：${rem} pt。`,
-        swapNoPts: '點數不足！你可以先使用「議價」提出較低點數，或上架衣物／分享 DIY 創意賺取點數。',
+        swapNoPts: '點數不足！你可以先完成「衣櫃碳排檢測」領取 150 點，或先使用「議價」出價。',
         listOk: (name, pts) => `已刊登「${name}」（設定 ${pts} pt）。有人交換或接受議價成交後才會獲得點數！`,
         acceptedOk: (name, pts, rem) => `議價成交！「${name}」以 ${pts} pt 成交，你已獲得 +${pts} pt（目前點數：${rem} pt）！`,
-        logList: (user, name, pts) => `[${user} 刊登] 上架「${name}」（開價 ${pts} pt，成交後入帳）`,
-        logSwap: (user, name, pts) => `[${user} 交換] 以 ${pts} pt 換得「${name}」（-${pts} pt）`,
-        logEarn: (user, name, pts) => `[${user} 成交入帳] 「${name}」成交，獲得 +${pts} pt`,
-        logLike: (liker, author, name) => `[DIY 創作獎勵] ${liker} 讚了「${name}」，創作者 ${author} 獲得 +1 pt`
+        logList: (name, pts) => `[我刊登了] 「${name}」（開價 ${pts} pt）`,
+        logBuy: (seller, name, pts) => `[我購買了] 向 ${seller} 交換「${name}」（-${pts} pt）`,
+        logSold: (buyer, name, pts) => `[已售出] ${buyer} 購買了我的「${name}」（+${pts} pt）`,
+        logILiked: (author, name) => `[我按讚了] ${author} 的改造創意「${name}」（對方 +1 pt）`,
+        logGotLiked: (liker, name) => `[收到按讚] ${liker} 讚了我的改造創意「${name}」（+1 pt）`,
+        logQuiz: () => `[完成測驗] 首次完成衣櫃碳排檢測，獲得 +150 pt`
       },
       en: {
         brand: '🌱 ReWear Sustainable Closet',
         navMarket: 'Swap Market', navList: 'List Item', navQuiz: 'Carbon Quiz', navDiy: 'DIY Upcycle', navCloset: 'My Closet',
-        langBtn: '中文 / English',
-        cloudLocal: '💾 Local Mode', cloudOnline: '☁️ Cloud Synced',
+        loginPromptBtn: '👤 Sign In', langBtn: '中文 / English',
         heroTitle: 'Buy Less, Swap More, Keep Your Closet Core',
         heroDesc: 'Driving SDG 12 Responsible Consumption & SDG 13 Climate Action',
         marketTitle: '👕 Second-Hand Swap Market', filterLabel: 'Filter by category:',
         fAll: 'All Items', fTop: 'Tops & Outerwear', fBottom: 'Pants & Skirts', fAcc: 'Bags & Accessories',
         ownerPrefix: 'Seller: ', ptsCost: 'Asking Points', swapBtn: 'Swap Now', bargainBtn: 'Bargain',
-        swappedBtn: '✅ Swapped', minePending: '⏳ My Listing (Pending)',
+        swappedBtn: '✅ Sold', minePending: '⏳ My Listing (Pending)',
         listTitle: '📤 List Unused Clothes (Photo Upload + Set Points)',
         ruleNote: '💡 <strong>Swap & Point Rule:</strong> Upload real photos and set your asking points. No points are granted at listing—you earn points only when someone swaps or accepts a bargained offer!',
         lblName: 'Item Name', phName: 'e.g., Khaki Trench Coat / Striped Shirt',
@@ -464,6 +556,7 @@
         lblDesc: 'Description', phDesc: 'Share fabric, styling notes, or condition...',
         btnSubmitItem: 'List Item (Wait for Swap)',
         quizTitle: '🌍 Closet Carbon Quest: Your Wardrobe Carbon Test',
+        quizRewardNote: '🎁 <strong>First-Time Quiz Bonus:</strong> New accounts start at 0 pt. <strong>Complete your first Carbon Test to earn +150 pt</strong> (once per account; quiz can be retaken anytime)!',
         q1Text: '1. How many new clothing items do you buy per month on average?',
         q1O1: '0–1 item (Very mindful)', q1O2: '2–4 items (Occasional online shopping)', q1O3: '5+ items (Heavy fast-fashion shopper)',
         q2Text: '2. Roughly what share of your closet has gone unworn for over a year?',
@@ -471,7 +564,8 @@
         calcBtn: 'Calculate My Closet Footprint',
         resTitle: '📊 Your Closet Footprint Result',
         resBody: (w, baths, c) => `Your closet uses roughly <strong>${w} L</strong> of water per year (about <strong>${baths}</strong> bathtubs) and generates around <strong>${c} kg</strong> of CO₂e!`,
-        resTip: '💡 <strong>Eco Tip:</strong> Swapping just 3 new items for second-hand pieces on ReWear saves about 30 kg of CO₂e!',
+        resFirstReward: '🎉 <strong>First test completed! +150 pt starter bonus has been credited to your account!</strong>',
+        resAlreadyRewarded: '✅ You have already claimed the one-time +150 pt starter bonus. Feel free to retake anytime!',
         diyTitle: '✂️ DIY Upcycle Lab & Idea Sharing (1 Like = 1 pt, Top Likes First!)',
         diyRuleNote: '❤️ <strong>Like Reward Rule:</strong> Every <strong>1 like awards 1 point to the idea creator</strong>. Cards show points earned and sort automatically from highest to lowest likes!',
         diyShareTitle: '💡 Share Your DIY Upcycle Idea',
@@ -485,28 +579,49 @@
         likeBtn: '👍 Like', likedBtn: '❤️ Liked', viewStepBtn: 'View Steps',
         dmClose: 'Close',
         diyAddedAlert: (name) => `Published DIY idea "${name}"! You will earn +1 pt for every like from peers.`,
-        closetTitle: '👜 My Sustainable Closet, Offers & History',
-        stPtsLbl: 'Points Balance', stSwappedLbl: 'Items Swapped In', stListedLbl: 'Listed / Completed', stSavedLbl: 'Est. CO₂ Saved (kg)',
+        closetTitle: '👜 My Sustainable Closet, Listings & Activity',
+        stPtsLbl: 'Points Balance', stSwappedLbl: 'Items Swapped In', stListedLbl: 'Listed / Sold', stSavedLbl: 'Est. CO₂ Saved (kg)',
+        myListedTitle: '📦 My Listed Items (Edit Price, Photo & Details Before Sold)',
+        noMyListed: 'You have not listed any items yet.',
+        editBtn: '✏️ Edit Item', soldDoneTag: 'Sold',
+        mySwappedTitle: '🛍️ Items I Swapped In',
+        noMySwapped: 'You have not swapped in any items yet.',
         offersTitle: '💬 Incoming Bargain Offers (Buyer Offer → Seller Decides)',
         noOffers: 'No incoming bargain offers on your listed items yet.',
         acceptBtn: 'Accept & Complete', rejectBtn: 'Decline',
-        recTitle: '📜 Completed, Like Reward & Listing History', noRec: 'No activity yet.',
-        umTitle: '👤 Member Login / Switch Account',
-        umDesc: 'Enter a <strong>Unique Account ID (Student ID / Email)</strong> and your <strong>Display Name</strong>. Accounts are identified by Unique ID so duplicate nicknames never collide!',
+        recTitle: '📜 My Personal Activity Log', noRec: 'No personal activity yet.',
+        bmTitle: '🛒 Confirm Swap Purchase?',
+        bmBody: (name, seller, cost, curr, after) => `
+          <div><strong>Item:</strong> ${name}</div>
+          <div><strong>Seller:</strong> ${seller}</div>
+          <div><strong>Cost:</strong> <span style="color:#e65100; font-weight:bold;">${cost} pt</span></div>
+          <hr style="border:none; border-top:1px solid #ddd; margin:8px 0;">
+          <div><strong>Current Balance:</strong> ${curr} pt</div>
+          <div><strong>Balance After Swap:</strong> <strong>${after} pt</strong></div>
+        `,
+        bmCancel: 'Cancel', bmConfirm: 'Confirm & Swap',
+        emTitle: '✏️ Edit Listed Item', emNameLbl: 'Item Name', emCondLbl: 'Condition & Size',
+        emPtsLbl: 'Asking Points', emPhotoLbl: 'Replace Photo (Leave blank to keep current)', emDescLbl: 'Description',
+        emCancel: 'Cancel', emSave: 'Save Changes',
+        umTitle: '👤 Sign In to ReWear',
+        umDesc: 'Enter your <strong>Unique Account ID (Student ID / Email)</strong> and <strong>Display Name</strong>. New accounts start at 0 pt—complete the Carbon Test to earn <strong>+150 pt</strong>!',
         umIdLbl: 'Unique Account ID / Student ID', umNameLbl: 'Display Nickname',
-        umCancel: 'Cancel', umSave: 'Confirm Login',
+        umCancel: 'Cancel', umSave: 'Sign In',
+        needLoginAlert: 'Please sign in with your Unique Account ID and Nickname first!',
         idConflictAlert: (id, existName) => `Account ID "${id}" is already registered to "${existName}". Please choose another ID or enter the matching nickname!`,
         bargainPrompt: (name, currPts) => `"${name}" is listed at ${currPts} pts. Enter your bargained points:`,
         bargainInvalid: 'Please enter a valid number greater than 0!',
         bargainSent: (name, offerPts) => `Bargain offer of ${offerPts} pts sent for "${name}", waiting for seller review!`,
         swapOk: (name, cost, rem) => `Swap complete! Used ${cost} pts for "${name}". Remaining: ${rem} pts.`,
-        swapNoPts: 'Not enough points! Try bargaining for fewer points or list/share to earn points.',
+        swapNoPts: 'Not enough points! Complete the Carbon Test for +150 pt or make a lower bargain offer.',
         listOk: (name, pts) => `Listed "${name}" at ${pts} pts. Points are credited once swapped!`,
         acceptedOk: (name, pts, rem) => `Deal closed! "${name}" swapped at ${pts} pts; you earned +${pts} pts (Balance: ${rem} pts).`,
-        logList: (user, name, pts) => `[${user} Listed] "${name}" (${pts} pts — earned upon swap)`,
-        logSwap: (user, name, pts) => `[${user} Swapped] "${name}" (-${pts} pts)`,
-        logEarn: (user, name, pts) => `[${user} Earned] "${name}" swapped (+${pts} pts)`,
-        logLike: (liker, author, name) => `[DIY Creator Reward] ${liker} liked "${name}", creator ${author} earned +1 pt`
+        logList: (name, pts) => `[I Listed] "${name}" (${pts} pts)`,
+        logBuy: (seller, name, pts) => `[I Swapped In] "${name}" from ${seller} (-${pts} pts)`,
+        logSold: (buyer, name, pts) => `[Item Sold] ${buyer} swapped my "${name}" (+${pts} pts)`,
+        logILiked: (author, name) => `[I Liked] ${author}'s DIY idea "${name}" (+1 pt to creator)`,
+        logGotLiked: (liker, name) => `[Received Like] ${liker} liked my DIY idea "${name}" (+1 pt)`,
+        logQuiz: () => `[Quiz Bonus] Completed first Closet Carbon Test (+150 pt)`
       }
     };
 
@@ -517,13 +632,12 @@
       return {
         lang: 'zh',
         users: {
-          'green_01': { name: '小綠', points: 300 },
-          'user_azhe': { name: '阿哲', points: 300 },
-          'user_mia': { name: 'Mia', points: 300 },
-          'user_yun': { name: '芸芸', points: 300 },
-          'user_kevin': { name: 'Kevin', points: 300 },
-          'user_han': { name: '阿涵', points: 300 },
-          'user_yu': { name: '小宇', points: 300 }
+          'user_azhe': { name: '阿哲', points: 0, quizRewarded: false },
+          'user_mia': { name: 'Mia', points: 0, quizRewarded: false },
+          'user_yun': { name: '芸芸', points: 0, quizRewarded: false },
+          'user_kevin': { name: 'Kevin', points: 0, quizRewarded: false },
+          'user_han': { name: '阿涵', points: 0, quizRewarded: false },
+          'user_yu': { name: '小宇', points: 0, quizRewarded: false }
         },
         items: JSON.parse(JSON.stringify(defaultItems)),
         diyPosts: JSON.parse(JSON.stringify(defaultDiy)),
@@ -537,21 +651,25 @@
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
         if (saved && Array.isArray(saved.items) && Array.isArray(saved.diyPosts)) {
           if (!saved.users) saved.users = getInitialState().users;
+          if (!Array.isArray(saved.offers)) saved.offers = [];
+          if (!Array.isArray(saved.logs)) saved.logs = [];
           return saved;
         }
       } catch (e) {}
       return getInitialState();
     }
 
+    // 9. 新帳號初始為 0 點
     function ensureUserRecord(id, name) {
       if (!state.users[id]) {
-        state.users[id] = { name: name || id, points: 300 };
+        state.users[id] = { name: name || id, points: 0, quizRewarded: false };
       }
       return state.users[id];
     }
 
-    function getUserPoints(id = currentAccount.id) {
-      return ensureUserRecord(id, id === currentAccount.id ? currentAccount.name : id).points;
+    function getUserPoints(id) {
+      if (!id) return 0;
+      return ensureUserRecord(id, (currentAccount && id === currentAccount.id) ? currentAccount.name : id).points;
     }
 
     function addUserPoints(id, delta, fallbackName = id) {
@@ -559,25 +677,30 @@
       rec.points += delta;
     }
 
+    function requireLogin() {
+      if (!currentAccount) {
+        openUserModal();
+        return false;
+      }
+      return true;
+    }
+
     async function persistState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      if (cloudBaseUrl) {
-        try {
-          await fetch(`${cloudBaseUrl}/rewear_data.json`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(state)
-          });
-        } catch (err) {
-          console.warn('Cloud sync failed:', err);
-        }
+      try {
+        await fetch(`${CLOUD_BASE_URL}/rewear_data.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(state)
+        });
+      } catch (err) {
+        console.warn('Cloud sync failed:', err);
       }
     }
 
     async function syncFromCloud() {
-      if (!cloudBaseUrl) return;
       try {
-        const res = await fetch(`${cloudBaseUrl}/rewear_data.json`);
+        const res = await fetch(`${CLOUD_BASE_URL}/rewear_data.json`);
         const data = await res.json();
         if (data && Array.isArray(data.items)) {
           state = {
@@ -585,10 +708,10 @@
             users: data.users || getInitialState().users,
             items: data.items || [],
             diyPosts: data.diyPosts || [],
-            offers: data.offers || [],
-            logs: data.logs || []
+            offers: Array.isArray(data.offers) ? data.offers : [],
+            logs: Array.isArray(data.logs) ? data.logs : []
           };
-          ensureUserRecord(currentAccount.id, currentAccount.name);
+          if (currentAccount) ensureUserRecord(currentAccount.id, currentAccount.name);
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
           renderAll();
         } else {
@@ -599,11 +722,12 @@
       }
     }
 
-    function previewUploadImage(e) {
+    function previewUploadImage(e, previewId, targetMode) {
       const file = e.target.files[0];
-      const preview = document.getElementById('photo-preview');
+      const preview = document.getElementById(previewId);
       if (!file) {
-        uploadedImageData = '';
+        if (targetMode === 'add') uploadedImageData = '';
+        if (targetMode === 'edit') editedImageData = '';
         preview.style.display = 'none';
         return;
       }
@@ -618,8 +742,10 @@
           canvas.height = img.height * scale;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          uploadedImageData = canvas.toDataURL('image/jpeg', 0.72);
-          preview.src = uploadedImageData;
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.72);
+          if (targetMode === 'add') uploadedImageData = dataUrl;
+          if (targetMode === 'edit') editedImageData = dataUrl;
+          preview.src = dataUrl;
           preview.style.display = 'block';
         };
         img.src = ev.target.result;
@@ -628,16 +754,24 @@
     }
 
     function openUserModal() {
-      document.getElementById('um-id-input').value = currentAccount.id;
-      document.getElementById('um-name-input').value = currentAccount.name;
+      document.getElementById('um-id-input').value = currentAccount ? currentAccount.id : '';
+      document.getElementById('um-name-input').value = currentAccount ? currentAccount.name : '';
+      document.getElementById('um-cancel').style.display = currentAccount ? 'inline-block' : 'none';
       document.getElementById('user-modal').classList.add('open');
     }
 
-    function saveUserAccount() {
+    function closeUserModalIfLoggedIn() {
+      if (currentAccount) closeModals();
+    }
+
+    async function saveUserAccount() {
       const t = dict[state.lang];
       const id = document.getElementById('um-id-input').value.trim();
       const name = document.getElementById('um-name-input').value.trim();
-      if (!id || !name) return;
+      if (!id || !name) {
+        alert(t.needLoginAlert);
+        return;
+      }
 
       if (state.users[id] && state.users[id].name !== name) {
         alert(t.idConflictAlert(id, state.users[id].name));
@@ -645,31 +779,10 @@
       }
 
       currentAccount = { id, name };
+      sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify(currentAccount));
       localStorage.setItem(ACCOUNT_KEY, JSON.stringify(currentAccount));
       ensureUserRecord(id, name);
-      persistState();
-      closeModals();
-      renderAll();
-    }
-
-    function openCloudModal() {
-      document.getElementById('cm-input').value = cloudBaseUrl;
-      document.getElementById('cloud-modal').classList.add('open');
-    }
-
-    async function saveCloudUrl() {
-      const url = document.getElementById('cm-input').value.trim().replace(/\/+$/, '');
-      if (!url) return;
-      cloudBaseUrl = url;
-      localStorage.setItem(CLOUD_URL_KEY, cloudBaseUrl);
-      closeModals();
-      await syncFromCloud();
-      renderAll();
-    }
-
-    function clearCloudUrl() {
-      cloudBaseUrl = '';
-      localStorage.setItem(CLOUD_URL_KEY, '');
+      await persistState();
       closeModals();
       renderAll();
     }
@@ -683,14 +796,32 @@
       document.documentElement.lang = state.lang === 'zh' ? 'zh-TW' : 'en';
       persistState();
       renderAll();
-      if (document.getElementById('quiz-result').style.display === 'block') calcCarbon();
+      if (document.getElementById('quiz-result').style.display === 'block') calcCarbon(true);
     }
 
-    function showSection(id, btn) {
+    // 4. 記住目前分頁（F5 重新整理留在原頁面）
+    function showSection(id) {
+      const validIds = ['market', 'list-item', 'quiz', 'diy', 'closet'];
+      const targetId = validIds.includes(id) ? id : 'market';
+
       document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
+      document.getElementById(targetId).classList.add('active');
+
       document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
+      const navMap = {
+        'market': 'nav-market',
+        'list-item': 'nav-list',
+        'quiz': 'nav-quiz',
+        'diy': 'nav-diy',
+        'closet': 'nav-closet'
+      };
+      const activeNav = document.getElementById(navMap[targetId]);
+      if (activeNav) activeNav.classList.add('active');
+
+      localStorage.setItem(TAB_KEY, targetId);
+      if (location.hash !== `#${targetId}`) {
+        history.replaceState(null, '', `#${targetId}`);
+      }
     }
 
     function filterItems(cat, btn) {
@@ -700,14 +831,21 @@
       renderMarket();
     }
 
+    // 6. 售出的商品往後排到最後面
     function renderMarket() {
       const t = dict[state.lang];
       const grid = document.getElementById('item-grid');
-      const filtered = state.items.filter(it => currentFilter === 'all' || it.cat === currentFilter);
+      const filtered = state.items
+        .filter(it => currentFilter === 'all' || it.cat === currentFilter)
+        .sort((a, b) => {
+          const aSold = a.status === 'swapped' ? 1 : 0;
+          const bSold = b.status === 'swapped' ? 1 : 0;
+          return aSold - bSold;
+        });
 
       grid.innerHTML = filtered.map(it => {
         const info = it[state.lang] || it.zh;
-        const isMine = it.ownerId === currentAccount.id;
+        const isMine = currentAccount && it.ownerId === currentAccount.id;
         let statusBadge = '';
         let actionArea = '';
 
@@ -720,7 +858,7 @@
         } else {
           actionArea = `
             <div class="card-btns">
-              <button class="btn-swap" onclick="directSwap(${it.id})">${t.swapBtn}</button>
+              <button class="btn-swap" onclick="openBuyConfirm(${it.id})">${t.swapBtn}</button>
               <button class="btn-bargain" onclick="openBargain(${it.id})">${t.bargainBtn}</button>
             </div>
           `;
@@ -729,7 +867,7 @@
         const mediaHtml = it.img ? `<img src="${it.img}" alt="${info.name}">` : it.emoji;
 
         return `
-          <div class="card">
+          <div class="card ${it.status === 'swapped' ? 'sold-card' : ''}">
             <div class="card-img">${mediaHtml}</div>
             <div class="card-body">
               <div>
@@ -748,15 +886,42 @@
       }).join('');
     }
 
-    function directSwap(id) {
+    // 2. 購買二次確認小視窗
+    function openBuyConfirm(id) {
+      if (!requireLogin()) return;
       const t = dict[state.lang];
       const item = state.items.find(i => i.id === id);
       if (!item || item.status !== 'available' || item.ownerId === currentAccount.id) return;
-      const myPts = getUserPoints();
+
+      const myPts = getUserPoints(currentAccount.id);
       if (myPts < item.pts) {
         alert(t.swapNoPts);
         return;
       }
+
+      pendingBuyItemId = id;
+      const dispName = (item[state.lang] || item.zh).name;
+      document.getElementById('bm-title').innerText = t.bmTitle;
+      document.getElementById('bm-body').innerHTML = t.bmBody(dispName, item.ownerName || '同學', item.pts, myPts, myPts - item.pts);
+      document.getElementById('bm-cancel').innerText = t.bmCancel;
+      document.getElementById('bm-confirm').innerText = t.bmConfirm;
+      document.getElementById('buy-modal').classList.add('open');
+    }
+
+    async function confirmDirectSwap() {
+      if (!requireLogin() || !pendingBuyItemId) return;
+      const t = dict[state.lang];
+      const item = state.items.find(i => i.id === pendingBuyItemId);
+      pendingBuyItemId = null;
+      closeModals();
+
+      if (!item || item.status !== 'available' || item.ownerId === currentAccount.id) return;
+      const myPts = getUserPoints(currentAccount.id);
+      if (myPts < item.pts) {
+        alert(t.swapNoPts);
+        return;
+      }
+
       addUserPoints(currentAccount.id, -item.pts, currentAccount.name);
       if (item.ownerId) {
         addUserPoints(item.ownerId, item.pts, item.ownerName);
@@ -766,16 +931,24 @@
       item.swappedByName = currentAccount.name;
 
       const dispName = (item[state.lang] || item.zh).name;
-      state.logs.unshift({ type: 'swap', user: currentAccount.name, name: item.zh.name, enName: item.en.name, pts: item.pts });
-      if (item.ownerName) {
-        state.logs.unshift({ type: 'earn', user: item.ownerName, name: item.zh.name, enName: item.en.name, pts: item.pts });
-      }
-      persistState();
+      state.logs.unshift({
+        type: 'swap',
+        buyerId: currentAccount.id,
+        buyerName: currentAccount.name,
+        sellerId: item.ownerId,
+        sellerName: item.ownerName || '同學',
+        name: item.zh.name,
+        enName: item.en.name,
+        pts: item.pts
+      });
+
+      await persistState();
       renderAll();
-      alert(t.swapOk(dispName, item.pts, getUserPoints()));
+      alert(t.swapOk(dispName, item.pts, getUserPoints(currentAccount.id)));
     }
 
-    function openBargain(id) {
+    async function openBargain(id) {
+      if (!requireLogin()) return;
       const t = dict[state.lang];
       const item = state.items.find(i => i.id === id);
       if (!item || item.status !== 'available' || item.ownerId === currentAccount.id) return;
@@ -800,13 +973,14 @@
         askingPts: item.pts,
         offerPts
       });
-      persistState();
+      await persistState();
       renderAll();
       alert(t.bargainSent(dispName, offerPts));
     }
 
-    function handleAddItem(e) {
+    async function handleAddItem(e) {
       e.preventDefault();
+      if (!requireLogin()) return;
       const t = dict[state.lang];
       const name = document.getElementById('in-name').value.trim();
       const cat = document.getElementById('in-cat').value;
@@ -834,8 +1008,15 @@
       };
 
       state.items.unshift(newItem);
-      state.logs.unshift({ type: 'list', user: currentAccount.name, name, enName: name, pts });
-      persistState();
+      state.logs.unshift({
+        type: 'list',
+        ownerId: currentAccount.id,
+        ownerName: currentAccount.name,
+        name,
+        enName: name,
+        pts
+      });
+      await persistState();
 
       e.target.reset();
       uploadedImageData = '';
@@ -843,11 +1024,65 @@
       document.getElementById('in-pts').value = 120;
       renderAll();
       alert(t.listOk(name, pts));
-      showSection('market', document.getElementById('nav-market'));
+      showSection('market');
     }
 
-    function handleAddDiy(e) {
+    // 3. 編輯我刊登的物品
+    function openEditModal(id) {
+      if (!requireLogin()) return;
+      const item = state.items.find(i => i.id === id && i.ownerId === currentAccount.id && i.status === 'available');
+      if (!item) return;
+
+      editingItemId = id;
+      editedImageData = item.img || '';
+      const info = item[state.lang] || item.zh;
+
+      document.getElementById('em-name').value = info.name;
+      document.getElementById('em-cond').value = info.cond;
+      document.getElementById('em-pts').value = item.pts;
+      document.getElementById('em-desc').value = info.desc;
+      document.getElementById('em-photo').value = '';
+
+      const preview = document.getElementById('em-preview');
+      if (editedImageData) {
+        preview.src = editedImageData;
+        preview.style.display = 'block';
+      } else {
+        preview.style.display = 'none';
+      }
+
+      document.getElementById('edit-modal').classList.add('open');
+    }
+
+    async function saveEditedItem(e) {
       e.preventDefault();
+      if (!requireLogin() || !editingItemId) return;
+      const item = state.items.find(i => i.id === editingItemId && i.ownerId === currentAccount.id);
+      if (!item) return;
+
+      const name = document.getElementById('em-name').value.trim();
+      const cond = document.getElementById('em-cond').value.trim();
+      const pts = parseInt(document.getElementById('em-pts').value, 10) || item.pts;
+      const desc = document.getElementById('em-desc').value.trim();
+
+      item.pts = pts;
+      item.img = editedImageData;
+      item.zh.name = name;
+      item.zh.cond = cond;
+      item.zh.desc = desc;
+      item.en.name = name;
+      item.en.cond = cond;
+      item.en.desc = desc;
+
+      editingItemId = null;
+      closeModals();
+      await persistState();
+      renderAll();
+    }
+
+    async function handleAddDiy(e) {
+      e.preventDefault();
+      if (!requireLogin()) return;
       const t = dict[state.lang];
       const name = document.getElementById('diy-in-name').value.trim();
       const tag = document.getElementById('diy-in-tag').value.trim();
@@ -864,17 +1099,18 @@
       };
 
       state.diyPosts.push(newPost);
-      persistState();
+      await persistState();
       e.target.reset();
       renderDiy();
       alert(t.diyAddedAlert(name));
     }
 
-    function likeDiy(id) {
+    async function likeDiy(id) {
+      if (!requireLogin()) return;
       const post = state.diyPosts.find(p => p.id === id);
       if (!post) return;
       if (!Array.isArray(post.likedBy)) post.likedBy = [];
-      if (post.likedBy.includes(currentAccount.id)) return;
+      if (post.likedBy.includes(currentAccount.id) || post.authorId === currentAccount.id) return;
 
       post.likes += 1;
       post.likedBy.push(currentAccount.id);
@@ -885,13 +1121,15 @@
 
       state.logs.unshift({
         type: 'like',
-        liker: currentAccount.name,
-        author: authorName,
+        likerId: currentAccount.id,
+        likerName: currentAccount.name,
+        authorId: authorId,
+        authorName: authorName,
         name: post.zh.name,
         enName: post.en.name,
         pts: 1
       });
-      persistState();
+      await persistState();
       renderAll();
     }
 
@@ -918,8 +1156,8 @@
 
       container.innerHTML = sorted.map((p, index) => {
         const info = p[state.lang] || p.zh;
-        const isLiked = Array.isArray(p.likedBy) && p.likedBy.includes(currentAccount.id);
-        const isSelfPost = p.authorId === currentAccount.id;
+        const isLiked = currentAccount && Array.isArray(p.likedBy) && p.likedBy.includes(currentAccount.id);
+        const isSelfPost = currentAccount && p.authorId === currentAccount.id;
         const earnedPts = p.likes * 1;
         const rankBadge = index === 0 ? '🏆 TOP 1 · ' : '';
 
@@ -947,7 +1185,8 @@
       }).join('');
     }
 
-    function acceptOffer(offerId) {
+    async function acceptOffer(offerId) {
+      if (!requireLogin()) return;
       const t = dict[state.lang];
       const idx = state.offers.findIndex(o => o.offerId === offerId);
       if (idx === -1) return;
@@ -964,21 +1203,32 @@
 
       state.offers.splice(idx, 1);
       const dispName = state.lang === 'en' ? offer.enName : offer.zhName;
-      state.logs.unshift({ type: 'earn', user: currentAccount.name, name: offer.zhName, enName: offer.enName, pts: offer.offerPts });
-      persistState();
+      state.logs.unshift({
+        type: 'swap',
+        buyerId: offer.buyerId,
+        buyerName: offer.buyerName || '同學',
+        sellerId: currentAccount.id,
+        sellerName: currentAccount.name,
+        name: offer.zhName,
+        enName: offer.enName,
+        pts: offer.offerPts
+      });
+      await persistState();
       renderAll();
-      alert(t.acceptedOk(dispName, offer.offerPts, getUserPoints()));
+      alert(t.acceptedOk(dispName, offer.offerPts, getUserPoints(currentAccount.id)));
     }
 
-    function rejectOffer(offerId) {
-      const idx = state.offers.findIndex(o => o.offerId === offerId);
-      if (idx === -1) return;
-      state.offers.splice(idx, 1);
-      persistState();
+    // 5. 拒絕議價後同步寫回雲端與本機，F5 不會再跑回來
+    async function rejectOffer(offerId) {
+      if (!requireLogin()) return;
+      state.offers = state.offers.filter(o => o.offerId !== offerId);
+      await persistState();
       renderOffers();
     }
 
-    function calcCarbon() {
+    // 9. 首次測驗拿 150 點（限一次，可重複測） + 10. 隨機永續建議
+    async function calcCarbon(isLangRefresh = false) {
+      if (!isLangRefresh && !requireLogin()) return;
       const t = dict[state.lang];
       const q1 = parseInt(document.querySelector('input[name="q1"]:checked').value, 10);
       const q2 = parseInt(document.querySelector('input[name="q2"]:checked').value, 10);
@@ -987,20 +1237,48 @@
       const bathsNum = Math.round(waterNum / 150);
       const carbonNum = (yearlyClothes * 10 * q2).toFixed(1);
 
+      const tipsList = ecoTips[state.lang];
+      const randomTip = tipsList[Math.floor(Math.random() * tipsList.length)];
+
+      let rewardNote = '';
+      if (currentAccount) {
+        const userRec = ensureUserRecord(currentAccount.id, currentAccount.name);
+        if (!isLangRefresh && !userRec.quizRewarded) {
+          userRec.quizRewarded = true;
+          userRec.points += 150;
+          state.logs.unshift({
+            type: 'quiz',
+            userId: currentAccount.id,
+            userName: currentAccount.name,
+            pts: 150
+          });
+          await persistState();
+          renderAll();
+          rewardNote = `<p style="color:#1b5e20; margin-top:8px;">${t.resFirstReward}</p>`;
+        } else {
+          rewardNote = `<p style="color:#2e7d32; font-size:13px; margin-top:8px;">${t.resAlreadyRewarded}</p>`;
+        }
+      }
+
       const resBox = document.getElementById('quiz-result');
       resBox.style.display = 'block';
       resBox.innerHTML = `
         <h3>${t.resTitle}</h3>
         <p>${t.resBody(waterNum.toLocaleString(), bathsNum.toLocaleString(), carbonNum)}</p>
-        <p>${t.resTip}</p>
+        <p>💡 <strong>${randomTip}</strong></p>
+        ${rewardNote}
       `;
     }
 
     function renderOffers() {
       const t = dict[state.lang];
       const container = document.getElementById('offers-list');
-      const myOffers = state.offers.filter(o => o.sellerId === currentAccount.id);
+      if (!currentAccount) {
+        container.innerHTML = `<p style="color:#666; font-size:14px;">${t.noOffers}</p>`;
+        return;
+      }
 
+      const myOffers = state.offers.filter(o => o.sellerId === currentAccount.id);
       if (!myOffers.length) {
         container.innerHTML = `<p style="color:#666; font-size:14px;">${t.noOffers}</p>`;
         return;
@@ -1023,30 +1301,105 @@
       }).join('');
     }
 
+    // 1. 個人化互動紀錄 + 3. 我刊登的物品（可編輯）與我已交換的物品
     function renderCloset() {
       const t = dict[state.lang];
-      const mySwapped = state.items.filter(i => i.swappedById === currentAccount.id).length;
-      const myListed = state.items.filter(i => i.ownerId === currentAccount.id).length;
-      const mySold = state.items.filter(i => i.ownerId === currentAccount.id && i.status === 'swapped').length;
+      const myListedGrid = document.getElementById('my-listed-grid');
+      const mySwappedGrid = document.getElementById('my-swapped-grid');
+      const listEl = document.getElementById('record-list');
 
-      document.getElementById('st-pts').innerText = getUserPoints();
-      document.getElementById('st-swapped').innerText = mySwapped;
-      document.getElementById('st-listed').innerText = `${myListed} / ${mySold}`;
-      document.getElementById('st-saved').innerText = ((mySwapped + mySold) * 10).toFixed(1);
+      if (!currentAccount) {
+        document.getElementById('st-pts').innerText = '0';
+        document.getElementById('st-swapped').innerText = '0';
+        document.getElementById('st-listed').innerText = '0 / 0';
+        document.getElementById('st-saved').innerText = '0.0';
+        myListedGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMyListed}</p>`;
+        mySwappedGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMySwapped}</p>`;
+        renderOffers();
+        listEl.innerHTML = `<li>${t.noRec}</li>`;
+        return;
+      }
+
+      const uid = currentAccount.id;
+      const myListedItems = state.items.filter(i => i.ownerId === uid);
+      const mySwappedItems = state.items.filter(i => i.swappedById === uid);
+      const mySoldCount = myListedItems.filter(i => i.status === 'swapped').length;
+
+      document.getElementById('st-pts').innerText = getUserPoints(uid);
+      document.getElementById('st-swapped').innerText = mySwappedItems.length;
+      document.getElementById('st-listed').innerText = `${myListedItems.length} / ${mySoldCount}`;
+      document.getElementById('st-saved').innerText = ((mySwappedItems.length + mySoldCount) * 10).toFixed(1);
+
+      // (1) 我刊登的物品
+      if (!myListedItems.length) {
+        myListedGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMyListed}</p>`;
+      } else {
+        myListedGrid.innerHTML = myListedItems.map(it => {
+          const info = it[state.lang] || it.zh;
+          const media = it.img ? `<img src="${it.img}" alt="${info.name}">` : it.emoji;
+          const action = it.status === 'available'
+            ? `<button class="filter-btn" onclick="openEditModal(${it.id})">${t.editBtn}</button>`
+            : `<span class="status-tag">${t.soldDoneTag}</span>`;
+          return `
+            <div class="mini-card">
+              <div class="mini-img">${media}</div>
+              <div class="mini-body">
+                <div><span class="tag">${info.cond}</span> <span class="points" style="font-size:14px;">${it.pts} pt</span></div>
+                <h4>${info.name}</h4>
+                <p>${info.desc}</p>
+                <div>${action}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // (2) 我已交換取得的物品
+      if (!mySwappedItems.length) {
+        mySwappedGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMySwapped}</p>`;
+      } else {
+        mySwappedGrid.innerHTML = mySwappedItems.map(it => {
+          const info = it[state.lang] || it.zh;
+          const media = it.img ? `<img src="${it.img}" alt="${info.name}">` : it.emoji;
+          return `
+            <div class="mini-card">
+              <div class="mini-img">${media}</div>
+              <div class="mini-body">
+                <div><span class="owner-tag">${t.ownerPrefix}${it.ownerName || '同學'}</span> <span class="points" style="font-size:14px;">${it.pts} pt</span></div>
+                <h4>${info.name}</h4>
+                <p>${info.desc}</p>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
 
       renderOffers();
 
-      const listEl = document.getElementById('record-list');
-      if (!state.logs.length) {
+      // 1. 只顯示與「我」相關的互動紀錄
+      const personalLogs = state.logs.filter(l => {
+        if (l.type === 'list') return l.ownerId === uid;
+        if (l.type === 'swap') return l.buyerId === uid || l.sellerId === uid;
+        if (l.type === 'like') return l.likerId === uid || l.authorId === uid;
+        if (l.type === 'quiz') return l.userId === uid;
+        return false;
+      });
+
+      if (!personalLogs.length) {
         listEl.innerHTML = `<li>${t.noRec}</li>`;
       } else {
-        listEl.innerHTML = state.logs.map(l => {
+        listEl.innerHTML = personalLogs.map(l => {
           const dispName = state.lang === 'en' ? (l.enName || l.name) : l.name;
-          const u = l.user || currentAccount.name;
-          if (l.type === 'list') return `<li>${t.logList(u, dispName, l.pts)}</li>`;
-          if (l.type === 'swap') return `<li>${t.logSwap(u, dispName, l.pts)}</li>`;
-          if (l.type === 'like') return `<li>${t.logLike(l.liker || u, l.author || '', dispName)}</li>`;
-          return `<li>${t.logEarn(u, dispName, l.pts)}</li>`;
+          if (l.type === 'list') return `<li>${t.logList(dispName, l.pts)}</li>`;
+          if (l.type === 'swap') {
+            if (l.buyerId === uid) return `<li>${t.logBuy(l.sellerName || '同學', dispName, l.pts)}</li>`;
+            return `<li>${t.logSold(l.buyerName || '同學', dispName, l.pts)}</li>`;
+          }
+          if (l.type === 'like') {
+            if (l.likerId === uid) return `<li>${t.logILiked(l.authorName || '創作者', dispName)}</li>`;
+            return `<li>${t.logGotLiked(l.likerName || '同學', dispName)}</li>`;
+          }
+          return `<li>${t.logQuiz()}</li>`;
         }).join('');
       }
     }
@@ -1059,10 +1412,14 @@
       document.getElementById('nav-quiz').innerText = t.navQuiz;
       document.getElementById('nav-diy').innerText = t.navDiy;
       document.getElementById('nav-closet').innerText = t.navCloset;
-      document.getElementById('user-name-display').innerText = currentAccount.name;
-      document.getElementById('user-points').innerText = getUserPoints();
-      document.getElementById('cloud-status-btn').innerText = cloudBaseUrl ? t.cloudOnline : t.cloudLocal;
       document.getElementById('lang-toggle').innerText = t.langBtn;
+
+      const userBtn = document.getElementById('user-badge-btn');
+      if (currentAccount) {
+        userBtn.innerText = `👤 ${currentAccount.name} (${getUserPoints(currentAccount.id)} pt)`;
+      } else {
+        userBtn.innerText = t.loginPromptBtn;
+      }
 
       document.getElementById('hero-title').innerText = t.heroTitle;
       document.getElementById('hero-desc').innerText = t.heroDesc;
@@ -1091,6 +1448,7 @@
       document.getElementById('btn-submit-item').innerText = t.btnSubmitItem;
 
       document.getElementById('quiz-title').innerText = t.quizTitle;
+      document.getElementById('quiz-reward-note').innerHTML = t.quizRewardNote;
       document.getElementById('q1-text').innerText = t.q1Text;
       document.getElementById('q1-o1').innerText = t.q1O1;
       document.getElementById('q1-o2').innerText = t.q1O2;
@@ -1119,8 +1477,19 @@
       document.getElementById('st-swapped-lbl').innerText = t.stSwappedLbl;
       document.getElementById('st-listed-lbl').innerText = t.stListedLbl;
       document.getElementById('st-saved-lbl').innerText = t.stSavedLbl;
+      document.getElementById('my-listed-title').innerText = t.myListedTitle;
+      document.getElementById('my-swapped-title').innerText = t.mySwappedTitle;
       document.getElementById('offers-title').innerText = t.offersTitle;
       document.getElementById('rec-title').innerText = t.recTitle;
+
+      document.getElementById('em-title').innerText = t.emTitle;
+      document.getElementById('em-name-lbl').innerText = t.emNameLbl;
+      document.getElementById('em-cond-lbl').innerText = t.emCondLbl;
+      document.getElementById('em-pts-lbl').innerText = t.emPtsLbl;
+      document.getElementById('em-photo-lbl').innerText = t.emPhotoLbl;
+      document.getElementById('em-desc-lbl').innerText = t.emDescLbl;
+      document.getElementById('em-cancel').innerText = t.emCancel;
+      document.getElementById('em-save').innerText = t.emSave;
 
       document.getElementById('um-title').innerText = t.umTitle;
       document.getElementById('um-desc').innerHTML = t.umDesc;
@@ -1134,8 +1503,14 @@
       renderCloset();
     }
 
+    // 初始化：恢復上次分頁，並檢查是否已登入
+    const initialTab = location.hash.replace('#', '') || localStorage.getItem(TAB_KEY) || 'market';
+    showSection(initialTab);
     renderAll();
-    if (cloudBaseUrl) syncFromCloud();
+    if (!currentAccount) {
+      openUserModal();
+    }
+    syncFromCloud();
   </script>
 </body>
 </html>
