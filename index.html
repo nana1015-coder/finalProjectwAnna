@@ -30,10 +30,12 @@
     .section { display: none; max-width: 1060px; margin: 26px auto; padding: 0 20px 50px; }
     .section.active { display: block; }
 
-    /* 篩選與卡片 */
+    /* 篩選與搜尋列 */
     .filter-bar { margin-bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
     .filter-btn { background: white; border: 1px solid var(--primary); color: var(--primary); padding: 6px 14px; border-radius: 16px; cursor: pointer; font-size: 13px; }
     .filter-btn.active { background: var(--primary); color: white; }
+    .search-input { padding: 6px 12px; border: 1px solid #c8e6c9; border-radius: 16px; font-size: 13px; min-width: 180px; background: white; }
+    .avail-toggle { font-size: 13px; color: #2e7d32; font-weight: bold; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; margin-left: 4px; }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 20px; }
     .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.07); transition: 0.2s; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
@@ -51,7 +53,7 @@
     .card-body p { font-size: 14px; color: #555; flex: 1; margin: 6px 0 10px; }
     .card-body h3 { margin: 6px 0 0; font-size: 17px; }
     .tag { background: var(--light); color: var(--dark); padding: 2px 8px; border-radius: 5px; font-size: 12px; display: inline-block; margin-right: 4px; margin-bottom: 3px; }
-    .owner-tag { background: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 5px; font-size: 12px; display: inline-block; margin-right: 4px; }
+    .owner-tag { background: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 5px; font-size: 12px; display: inline-block; margin-right: 4px; margin-bottom: 3px; }
     .status-tag { background: #fff3e0; color: #e65100; padding: 2px 8px; border-radius: 5px; font-size: 12px; font-weight: bold; }
     .points { color: #e65100; font-weight: bold; font-size: 16px; margin-bottom: 10px; }
 
@@ -81,8 +83,17 @@
     .form-group input, .form-group select, .form-group textarea { padding: 9px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: inherit; }
     .img-preview { max-height: 150px; border-radius: 8px; display: none; margin-top: 6px; border: 1px solid #ddd; object-fit: cover; }
 
-    .question { margin-bottom: 18px; }
-    .result-box { display: none; margin-top: 20px; padding: 18px; background: var(--light); border-left: 5px solid var(--primary); border-radius: 8px; }
+    /* 碳排檢測與有感化面板 */
+    .question { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px dashed #e5ece5; }
+    .question:last-of-type { border-bottom: none; }
+    .question label { display: inline-block; margin: 3px 0; cursor: pointer; font-size: 14px; }
+    .result-box { display: none; margin-top: 20px; padding: 20px; background: #f3faf3; border: 1px solid #c8e6c9; border-left: 6px solid var(--primary); border-radius: 12px; }
+    .feel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: 12px; margin: 14px 0; }
+    .feel-card { background: white; border: 1px solid #dcebdc; border-radius: 10px; padding: 12px 14px; }
+    .feel-card .feel-title { font-size: 12px; color: #555; font-weight: bold; }
+    .feel-card .feel-val { font-size: 20px; font-weight: bold; color: var(--dark); margin: 4px 0; }
+    .feel-card .feel-sub { font-size: 12px; color: #2e7d32; }
+    .feel-compare { background: #fffde7; border: 1px solid #ffe082; border-radius: 10px; padding: 12px 14px; margin: 12px 0; font-size: 14px; }
 
     /* DIY 創意卡片與按讚獎賞 */
     .diy-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; border-left: 5px solid #66bb6a; }
@@ -157,7 +168,7 @@
       <nav>
         <button id="nav-market" onclick="showSection('market')">二手衣市集</button>
         <button id="nav-list" onclick="showSection('list-item')">上架衣物</button>
-        <button id="nav-quiz" onclick="showSection('quiz')">衣櫃碳排檢測</button>
+        <button id="nav-quiz" onclick="showSection('quiz')">衣櫃碳排有感檢測</button>
         <button id="nav-diy" onclick="showSection('diy')">舊衣 DIY 改造</button>
         <button id="nav-closet" onclick="showSection('closet')">我的衣櫃 <span id="nav-notif-badge" class="notif-dot" style="display:none;">0</span></button>
       </nav>
@@ -181,6 +192,8 @@
       <button class="filter-btn" id="f-top" onclick="filterItems('top', this)">上衣 / 外套</button>
       <button class="filter-btn" id="f-bottom" onclick="filterItems('bottom', this)">褲裝 / 裙裝</button>
       <button class="filter-btn" id="f-acc" onclick="filterItems('acc', this)">配件 / 包包</button>
+      <input type="text" id="market-search" class="search-input" placeholder="搜尋衣物或賣家..." oninput="renderMarket()">
+      <label class="avail-toggle"><input type="checkbox" id="only-avail-chk" onchange="renderMarket()"> <span id="only-avail-lbl">只看可交換</span></label>
     </div>
     <div class="grid" id="item-grid"></div>
   </div>
@@ -233,26 +246,50 @@
     </div>
   </div>
 
-  <!-- 3. 衣櫃碳排檢測 -->
+  <!-- 3. 衣櫃碳排有感檢測 -->
   <div id="quiz" class="section">
-    <h2 id="quiz-title">🌍 衣櫃碳險——衣櫃碳排檢測</h2>
+    <h2 id="quiz-title">🌍 衣櫃碳排有感檢測——把抽象碳排變成生活感受</h2>
     <div class="box">
       <div class="rule-note" id="quiz-reward-note">
-        🎁 <strong>初次檢測獎勵：</strong>新帳號初始為 0 點，<strong>首次完成衣櫃碳排檢測即可獲得 +150 pt 永續啟動點數</strong>（每個帳號限領一次，測驗可重複進行）！
+        🎁 <strong>初次檢測獎勵：</strong>新帳號初始為 0 點，<strong>首次完成衣櫃碳排有感檢測即可獲得 +150 pt 永續啟動點數</strong>（每個帳號限領一次，測驗可重複進行）！
       </div>
+
       <div class="question">
-        <p><strong id="q1-text">1. 你平均每個月會買幾件新衣服？</strong></p>
-        <label><input type="radio" name="q1" value="1" checked> <span id="q1-o1">0～1 件（非常克制）</span></label><br>
-        <label><input type="radio" name="q1" value="3"> <span id="q1-o2">2～4 件（偶爾逛網拍）</span></label><br>
-        <label><input type="radio" name="q1" value="6"> <span id="q1-o3">5 件以上（快時尚重度愛好者）</span></label>
+        <p><strong id="q1-text">1. 【購買製造碳排】你平均每個月會買幾件新衣服？</strong></p>
+        <label><input type="radio" name="q1" value="1" checked> <span id="q1-o1">0～1 件（理性購買，減少製造與運輸碳排）</span></label><br>
+        <label><input type="radio" name="q1" value="3"> <span id="q1-o2">2～4 件（偶爾逛網拍添購）</span></label><br>
+        <label><input type="radio" name="q1" value="6"> <span id="q1-o3">5 件以上（快時尚高頻購買）</span></label>
       </div>
+
       <div class="question">
-        <p><strong id="q2-text">2. 你衣櫃裡有多少比例的衣服「超過一年沒穿過」？</strong></p>
-        <label><input type="radio" name="q2" value="1" checked> <span id="q2-o1">幾乎沒有（10% 以下）</span></label><br>
-        <label><input type="radio" name="q2" value="2"> <span id="q2-o2">大約三分之一（30% 左右）</span></label><br>
-        <label><input type="radio" name="q2" value="4"> <span id="q2-o3">一半以上都堆在角落</span></label>
+        <p><strong id="q2-text">2. 【沉沒碳排比例】你衣櫃裡有多少衣服「超過一年沒穿過」？</strong></p>
+        <label><input type="radio" name="q2" value="1" checked> <span id="q2-o1">10% 以下（每件衣服都有發揮價值）</span></label><br>
+        <label><input type="radio" name="q2" value="2"> <span id="q2-o2">約 30%（三分之一被遺忘在角落）</span></label><br>
+        <label><input type="radio" name="q2" value="4"> <span id="q2-o3">50% 以上（一半衣櫃都在白白耗碳）</span></label>
       </div>
-      <button class="btn-swap" style="max-width:220px;" id="calc-btn" onclick="calcCarbon()">計算我的衣櫃足跡</button>
+
+      <div class="question">
+        <p><strong id="q3-text">3. 【布料原料碳排】你平時買的衣服最常是哪種材質？</strong></p>
+        <label><input type="radio" name="q3" value="1" checked> <span id="q3-o1">天然棉麻或二手衣物（低碳循環優先）</span></label><br>
+        <label><input type="radio" name="q3" value="2"> <span id="q3-o2">棉與化纖混紡材質（日常常見布料）</span></label><br>
+        <label><input type="radio" name="q3" value="3"> <span id="q3-o3">聚酯纖維、尼龍等合成纖維（石化加工碳排較高）</span></label>
+      </div>
+
+      <div class="question">
+        <p><strong id="q4-text">4. 【洗滌烘衣碳排】平時洗完衣服通常怎麼處理？</strong></p>
+        <label><input type="radio" name="q4" value="1" checked> <span id="q4-o1">冷水洗滌＋自然晾乾（最省電低碳）</span></label><br>
+        <label><input type="radio" name="q4" value="2"> <span id="q4-o2">一般水洗＋偶爾使用烘衣機</span></label><br>
+        <label><input type="radio" name="q4" value="4"> <span id="q4-o3">溫熱水洗＋頻繁高溫烘乾（烘衣耗電碳排高）</span></label>
+      </div>
+
+      <div class="question">
+        <p><strong id="q5-text">5. 【淘汰廢棄碳排】穿不到或汰換的舊衣通常怎麼處理？</strong></p>
+        <label><input type="radio" name="q5" value="1" checked> <span id="q5-o1">二手交換、轉送或 DIY 改造（延長生命週期）</span></label><br>
+        <label><input type="radio" name="q5" value="2"> <span id="q5-o2">投入舊衣回收箱或暫存衣櫃</span></label><br>
+        <label><input type="radio" name="q5" value="4"> <span id="q5-o3">直接當一般垃圾丟棄焚燒（產生廢棄碳排）</span></label>
+      </div>
+
+      <button class="btn-swap" style="max-width:240px;" id="calc-btn" onclick="calcCarbon()">看看我的衣櫃碳排有多有感</button>
       <div id="quiz-result" class="result-box"></div>
     </div>
   </div>
@@ -465,7 +502,7 @@
     </div>
   </div>
 
-  <!-- 彈出小視窗 6：帳號登入 / 切換（含雙語切換與密碼保護的系統重置） -->
+  <!-- 彈出小視窗 6：帳號登入 / 切換（含雙語切換與全站同步重置） -->
   <div id="user-modal" class="modal-backdrop">
     <div class="modal-card">
       <div class="modal-header-row">
@@ -473,7 +510,7 @@
         <button type="button" class="lang-btn" id="um-lang-btn" onclick="toggleLang()">English / 中文</button>
       </div>
       <p id="um-desc" style="font-size:14px; color:#555;">
-        請輸入你的<strong>唯一帳號 ID（學號／信箱）</strong>與<strong>顯示暱稱</strong>。新帳號初始為 0 點，完成「衣櫃碳排檢測」即可領取 <strong>+150 pt</strong> 啟動點數！
+        請輸入你的<strong>唯一帳號 ID（學號／信箱）</strong>與<strong>顯示暱稱</strong>。新帳號初始為 0 點，完成「衣櫃碳排有感檢測」即可領取 <strong>+150 pt</strong> 啟動點數！
       </p>
       <div class="form-group">
         <label id="um-id-lbl" for="um-id-input">唯一帳號 ID / 學號（不可與他人重複）</label>
@@ -489,16 +526,16 @@
       </div>
 
       <div class="reset-zone">
-        <span id="reset-hint" style="font-size:12px; color:#777;">系統管理重置（需密碼）</span>
-        <button type="button" class="btn-reset-subtle" id="reset-btn" onclick="handleResetSystem()">重置系統資料</button>
+        <span id="reset-hint" style="font-size:12px; color:#777;">全站系統重置（需密碼）</span>
+        <button type="button" class="btn-reset-subtle" id="reset-btn" onclick="handleResetSystem()">重置全站資料</button>
       </div>
     </div>
   </div>
 
   <script>
     const CLOUD_BASE_URL = 'https://final-project-8e175-default-rtdb.firebaseio.com';
-    const STORAGE_KEY = 'rewear_prod_v4';
-    const ACCOUNT_KEY = 'rewear_current_account_v4';
+    const STORAGE_KEY = 'rewear_prod_v5';
+    const ACCOUNT_KEY = 'rewear_current_account_v5';
     const TAB_KEY = 'rewear_active_tab';
     const RESET_PASSCODE = 'NanaAnna1015522';
     const BASIC_ICONS = ['👕', '🧥', '👗', '👖', '👜', '👟', '🧢', '🧣'];
@@ -514,6 +551,7 @@
     let editingDiyId = null;
     let commentingItemId = null;
     let replyToNickname = '';
+    let replyToUserId = '';
     let currentAccount = loadCurrentAccount();
 
     function loadCurrentAccount() {
@@ -524,7 +562,6 @@
       return null;
     }
 
-    // 初始不含任何預設四件商品，避免無人回覆
     const defaultItems = [];
 
     const defaultDiy = [
@@ -568,13 +605,14 @@
     const dict = {
       zh: {
         brand: '🌱 ReWear 永續衣櫥',
-        navMarket: '二手衣市集', navList: '上架衣物', navQuiz: '衣櫃碳排檢測', navDiy: '舊衣 DIY 改造', navCloset: '我的衣櫃',
+        navMarket: '二手衣市集', navList: '上架衣物', navQuiz: '衣櫃碳排有感檢測', navDiy: '舊衣 DIY 改造', navCloset: '我的衣櫃',
         loginPromptBtn: '👤 請先登入', langBtn: 'English / 中文',
         heroTitle: '少買一點、多換一點，衣櫥更永續',
         heroDesc: '實踐 SDG 12 責任消費與 SDG 13 氣候行動',
         marketTitle: '👕 二手衣交換市集', filterLabel: '分類篩選：',
         fAll: '全部衣物', fTop: '上衣 / 外套', fBottom: '褲裝 / 裙裝', fAcc: '配件 / 包包',
-        marketEmpty: '目前市集還沒有上架的衣物，快去「上架衣物」成為第一位刊登者吧！',
+        searchPh: '搜尋衣物或賣家...', onlyAvailLbl: '只看可交換',
+        marketEmpty: '目前市集還沒有符合條件的衣物，快去「上架衣物」刊登吧！',
         favSave: '☆ 收藏', favSaved: '⭐ 已收藏',
         ownerPrefix: '上架者：', ptsCost: '開價點數', swapBtn: '直接交換', bargainBtn: '議價', commentBtn: '💬 問答',
         swappedBtn: '✅ 已售出', minePending: '⏳ 我的刊登（待成交）',
@@ -588,15 +626,19 @@
         lblPhoto: '上傳衣物照片（選填，支援手機拍照或選圖）',
         lblDesc: '衣物描述', phDesc: '簡單說明材質、穿搭特色或保存狀況...',
         btnSubmitItem: '刊登衣物（等待有人交換）',
-        quizTitle: '🌍 衣櫃碳險——衣櫃碳排檢測',
-        quizRewardNote: '🎁 <strong>初次檢測獎勵：</strong>新帳號初始為 0 點，<strong>首次完成衣櫃碳排檢測即可獲得 +150 pt 永續啟動點數</strong>（每個帳號限領一次，測驗可重複進行）！',
-        q1Text: '1. 你平均每個月會買幾件新衣服？',
-        q1O1: '0～1 件（非常克制）', q1O2: '2～4 件（偶爾逛網拍）', q1O3: '5 件以上（快時尚重度愛好者）',
-        q2Text: '2. 你衣櫃裡有多少比例的衣服「超過一年沒穿過」？',
-        q2O1: '幾乎沒有（10% 以下）', q2O2: '大約三分之一（30% 左右）', q2O3: '一半以上都堆在角落',
-        calcBtn: '計算我的衣櫃足跡',
-        resTitle: '📊 檢測結果出爐！',
-        resBody: (w, baths, c) => `你的衣櫃每年大約消耗了 <strong>${w} 公升</strong> 的水資源（相當於 <strong>${baths}</strong> 趟浴缸泡澡），並產生約 <strong>${c} 公斤</strong> 的碳排放！`,
+        quizTitle: '🌍 衣櫃碳排有感檢測——把抽象碳排變成生活感受',
+        quizRewardNote: '🎁 <strong>初次檢測獎勵：</strong>新帳號初始為 0 點，<strong>首次完成衣櫃碳排有感檢測即可獲得 +150 pt 永續啟動點數</strong>（每個帳號限領一次，測驗可重複進行）！',
+        q1Text: '1. 【購買製造碳排】你平均每個月會買幾件新衣服？',
+        q1O1: '0～1 件（理性購買，減少製造與運輸碳排）', q1O2: '2～4 件（偶爾逛網拍添購）', q1O3: '5 件以上（快時尚高頻購買）',
+        q2Text: '2. 【沉沒碳排比例】你衣櫃裡有多少衣服「超過一年沒穿過」？',
+        q2O1: '10% 以下（每件衣服都有發揮價值）', q2O2: '約 30%（三分之一被遺忘在角落）', q2O3: '50% 以上（一半衣櫃都在白白耗碳）',
+        q3Text: '3. 【布料原料碳排】你平時買的衣服最常是哪種材質？',
+        q3O1: '天然棉麻或二手衣物（低碳循環優先）', q3O2: '棉與化纖混紡材質（日常常見布料）', q3O3: '聚酯纖維、尼龍等合成纖維（石化加工碳排較高）',
+        q4Text: '4. 【洗滌烘衣碳排】平時洗完衣服通常怎麼處理？',
+        q4O1: '冷水洗滌＋自然晾乾（最省電低碳）', q4O2: '一般水洗＋偶爾使用烘衣機', q4O3: '溫熱水洗＋頻繁高溫烘乾（烘衣耗電碳排高）',
+        q5Text: '5. 【淘汰廢棄碳排】穿不到或汰換的舊衣通常怎麼處理？',
+        q5O1: '二手交換、轉送或 DIY 改造（延長生命週期）', q5O2: '投入舊衣回收箱或暫存衣櫃', q5O3: '直接當一般垃圾丟棄焚燒（產生廢棄碳排）',
+        calcBtn: '看看我的衣櫃碳排有多有感',
         resFirstReward: '🎉 <strong>恭喜首次完成檢測！已自動發放 +150 pt 永續啟動點數到你的帳戶！</strong>',
         resAlreadyRewarded: '✅ 你已領取過首次檢測獎勵（+150 pt），歡迎隨時重新檢視衣櫃足跡！',
         diyTitle: '✂️ 舊衣改造靈感庫與創意分享（1 讚 = 1 點，讚越多排越前面！）',
@@ -635,7 +677,7 @@
         acceptBtn: '接受議價並成交', rejectBtn: '拒絕',
         rejectAlert: '已拒絕此議價請求，並已通知出價的買家。',
         buyerNotEnoughAlert: (buyerName) => `買家「${buyerName}」目前點數不足，無法完成此次議價成交！`,
-        notifBannerText: (count) => `🔔 你有 <strong>${count}</strong> 則新的衣物留言或議價通知！`,
+        notifBannerText: (count) => `🔔 你有 <strong>${count}</strong> 則新的衣物留言、回覆或議價通知！`,
         recTitle: '📜 我的個人互動紀錄與通知', noRec: '尚無與你相關的互動紀錄。',
         bmTitle: '🛒 確認交換此衣物？',
         bmBody: (name, seller, cost, curr, after) => `
@@ -655,22 +697,23 @@
         cmEmpty: '目前還沒有留言，歡迎在下方發問或回覆！',
         replyBtn: '回覆', replyingTo: (nick) => `正在回覆 @${nick}`, clearReplyBtn: '取消對象',
         umTitle: '👤 登入 ReWear 永續衣櫥',
-        umDesc: '請輸入你的<strong>唯一帳號 ID（學號／信箱）</strong>與<strong>顯示暱稱</strong>。新帳號初始為 0 點，完成「衣櫃碳排檢測」即可領取 <strong>+150 pt</strong> 啟動點數！',
+        umDesc: '請輸入你的<strong>唯一帳號 ID（學號／信箱）</strong>與<strong>顯示暱稱</strong>。新帳號初始為 0 點，完成「衣櫃碳排有感檢測」即可領取 <strong>+150 pt</strong> 啟動點數！',
         umIdLbl: '唯一帳號 ID / 學號（不可與他人重複）', umIdPh: '例如：s112001 或 green_01',
         umNameLbl: '顯示暱稱', umNamePh: '例如：小綠',
         umCancel: '取消', umSave: '確認登入',
-        resetHint: '系統管理重置（需密碼）', resetBtn: '重置系統資料',
-        resetPassPrompt: '請輸入系統重置密碼：',
+        resetHint: '全站系統重置（需密碼）', resetBtn: '重置全站資料',
+        resetPassPrompt: '請輸入全站系統重置密碼：',
         resetWrongPass: '密碼錯誤，已取消重置。',
-        resetConfirmText: '⚠️ 確定要清空所有本機與 Firebase 雲端資料並重置系統嗎？此動作無法復原！',
-        resetDoneAlert: '系統已重置完成，所有資料已恢復為初始狀態。',
+        resetConfirmText: '⚠️ 確定要清空全站所有使用者與雲端資料並同步重置嗎？此動作無法復原！',
+        resetDoneAlert: '全站系統已重置完成，所有裝置連線時將同步恢復為全新初始狀態。',
+        remoteResetAlert: '系統管理員已重置全站資料，畫面已同步恢復為全新狀態，請重新登入！',
         needLoginAlert: '請先輸入帳號 ID 與暱稱完成登入！',
         idConflictAlert: (id, existName) => `帳號 ID「${id}」已被暱稱「${existName}」註冊使用，請改用其他帳號 ID，或輸入正確暱稱登入！`,
         bargainPrompt: (name, currPts) => `「${name}」目前開價 ${currPts} pt，請輸入你想議價的點數：`,
         bargainInvalid: '請輸入大於 0 的有效點數！',
         bargainSent: (name, offerPts) => `已對「${name}」提出 ${offerPts} pt 的議價請求，並已通知賣家！`,
         swapOk: (name, cost, rem) => `成交交換！「${name}」扣除 ${cost} pt，剩餘點數：${rem} pt。`,
-        swapNoPts: '點數不足，無法交換！你可以先完成「衣櫃碳排檢測」領取 150 點，或先使用「議價」出價。',
+        swapNoPts: '點數不足，無法交換！你可以先完成「衣櫃碳排有感檢測」領取 150 點，或先使用「議價」出價。',
         listOk: (name, pts) => `已刊登「${name}」（設定 ${pts} pt）。有人交換或接受議價成交後才會獲得點數！`,
         acceptedOk: (name, pts, rem) => `議價成交！「${name}」以 ${pts} pt 成交，你已獲得 +${pts} pt（目前點數：${rem} pt）！`,
         logList: (name, pts) => `[我刊登了] 「${name}」（開價 ${pts} pt）`,
@@ -680,20 +723,21 @@
         logBargainSent: (seller, name, pts) => `[提出議價] 向 ${seller} 出價 ${pts} pt 購買「${name}」`,
         logBargainReceived: (buyer, name, pts) => `[議價通知] ${buyer} 對我的「${name}」出價 ${pts} pt`,
         logBargainRejected: (seller, name, pts) => `[議價未通過] ${seller} 拒絕了你對「${name}」的 ${pts} pt 出價`,
-        logCommentReceived: (sender, name, text) => `[留言通知] ${sender} 在我的「${name}」留言：「${text}」`,
+        logCommentReceived: (sender, name, text) => `[問答通知] ${sender} 在「${name}」留言：「${text}」`,
         logILiked: (author, name) => `[我按讚了] ${author} 的改造創意「${name}」（對方 +1 pt）`,
         logGotLiked: (liker, name) => `[收到按讚] ${liker} 讚了我的改造創意「${name}」（+1 pt）`,
-        logQuiz: () => `[完成測驗] 首次完成衣櫃碳排檢測，獲得 +150 pt`
+        logQuiz: () => `[完成檢測] 首次完成衣櫃碳排有感檢測，獲得 +150 pt`
       },
       en: {
         brand: '🌱 ReWear Sustainable Closet',
-        navMarket: 'Swap Market', navList: 'List Item', navQuiz: 'Carbon Quiz', navDiy: 'DIY Upcycle', navCloset: 'My Closet',
+        navMarket: 'Swap Market', navList: 'List Item', navQuiz: 'Carbon Feel Quiz', navDiy: 'DIY Upcycle', navCloset: 'My Closet',
         loginPromptBtn: '👤 Sign In', langBtn: '中文 / English',
         heroTitle: 'Buy Less, Swap More, Keep Your Closet Core',
         heroDesc: 'Driving SDG 12 Responsible Consumption & SDG 13 Climate Action',
-        marketTitle: '👕 Second-Hand Swap Market', filterLabel: 'Filter by category:',
+        marketTitle: '👕 Second-Hand Swap Market', filterLabel: 'Filter:',
         fAll: 'All Items', fTop: 'Tops & Outerwear', fBottom: 'Pants & Skirts', fAcc: 'Bags & Accessories',
-        marketEmpty: 'No items listed yet. Head to "List Item" to be the first to post!',
+        searchPh: 'Search item or seller...', onlyAvailLbl: 'Available only',
+        marketEmpty: 'No matching items yet. Head to "List Item" to post!',
         favSave: '☆ Save', favSaved: '⭐ Saved',
         ownerPrefix: 'Seller: ', ptsCost: 'Asking Points', swapBtn: 'Swap Now', bargainBtn: 'Bargain', commentBtn: '💬 Q&A',
         swappedBtn: '✅ Sold', minePending: '⏳ My Listing (Pending)',
@@ -707,15 +751,19 @@
         lblPhoto: 'Upload Item Photo (Optional)',
         lblDesc: 'Description', phDesc: 'Share fabric, styling notes, or condition...',
         btnSubmitItem: 'List Item (Wait for Swap)',
-        quizTitle: '🌍 Closet Carbon Quest: Your Wardrobe Carbon Test',
-        quizRewardNote: '🎁 <strong>First-Time Quiz Bonus:</strong> New accounts start at 0 pt. <strong>Complete your first Carbon Test to earn +150 pt</strong> (once per account; quiz can be retaken anytime)!',
-        q1Text: '1. How many new clothing items do you buy per month on average?',
-        q1O1: '0–1 item (Very mindful)', q1O2: '2–4 items (Occasional online shopping)', q1O3: '5+ items (Heavy fast-fashion shopper)',
-        q2Text: '2. Roughly what share of your closet has gone unworn for over a year?',
-        q2O1: 'Almost none (Under 10%)', q2O2: 'About one-third (~30%)', q2O3: 'Half or more piled in the corner',
-        calcBtn: 'Calculate My Closet Footprint',
-        resTitle: '📊 Your Closet Footprint Result',
-        resBody: (w, baths, c) => `Your closet uses roughly <strong>${w} L</strong> of water per year (about <strong>${baths}</strong> bathtubs) and generates around <strong>${c} kg</strong> of CO₂e!`,
+        quizTitle: '🌍 Closet Carbon Feel Check: Making Carbon Tangible',
+        quizRewardNote: '🎁 <strong>First-Time Quiz Bonus:</strong> New accounts start at 0 pt. <strong>Complete your first Carbon Feel Check to earn +150 pt</strong> (once per account; quiz can be retaken anytime)!',
+        q1Text: '1. [Manufacturing & Shipping] How many new clothes do you buy per month?',
+        q1O1: '0–1 item (Mindful buying, lower manufacturing emissions)', q1O2: '2–4 items (Occasional shopping)', q1O3: '5+ items (Heavy fast-fashion buying)',
+        q2Text: '2. [Sunk Closet Emissions] What share of your closet has gone unworn for over a year?',
+        q2O1: 'Under 10% (Every piece gets worn)', q2O2: 'About 30% (One-third forgotten in the back)', q2O3: '50%+ (Half your closet sits idle)',
+        q3Text: '3. [Fabric Material] What fabric do you wear most often?',
+        q3O1: 'Natural cotton/linen or second-hand (Low-carbon circular)', q3O2: 'Cotton-synthetic blends (Everyday mix)', q3O3: 'Polyester/nylon synthetics (Higher petrochemical emissions)',
+        q4Text: '4. [Washing & Drying] How do you usually wash and dry your clothes?',
+        q4O1: 'Cold wash + air dry (Lowest energy footprint)', q4O2: 'Regular wash + occasional dryer use', q4O3: 'Warm/hot wash + frequent high-heat drying',
+        q5Text: '5. [End-of-Life Disposal] What happens to clothes you no longer wear?',
+        q5O1: 'Swap, pass on, or DIY upcycle (Extend lifespan)', q5O2: 'Donation bin or keep stored', q5O3: 'Throw into general trash for incineration',
+        calcBtn: 'See How Tangible My Closet Carbon Is',
         resFirstReward: '🎉 <strong>First test completed! +150 pt starter bonus has been credited to your account!</strong>',
         resAlreadyRewarded: '✅ You have already claimed the one-time +150 pt starter bonus. Feel free to retake anytime!',
         diyTitle: '✂️ DIY Upcycle Lab & Idea Sharing (1 Like = 1 pt, Top Likes First!)',
@@ -754,7 +802,7 @@
         acceptBtn: 'Accept & Complete', rejectBtn: 'Decline',
         rejectAlert: 'Bargain offer declined and buyer has been notified.',
         buyerNotEnoughAlert: (buyerName) => `Buyer "${buyerName}" does not have enough points to complete this deal.`,
-        notifBannerText: (count) => `🔔 You have <strong>${count}</strong> new comment or bargain notification(s)!`,
+        notifBannerText: (count) => `🔔 You have <strong>${count}</strong> new Q&A or bargain notification(s)!`,
         recTitle: '📜 My Personal Activity Log & Notifications', noRec: 'No personal activity yet.',
         bmTitle: '🛒 Confirm Swap Purchase?',
         bmBody: (name, seller, cost, curr, after) => `
@@ -774,22 +822,23 @@
         cmEmpty: 'No comments yet. Ask a question or leave a note below!',
         replyBtn: 'Reply', replyingTo: (nick) => `Replying to @${nick}`, clearReplyBtn: 'Clear',
         umTitle: '👤 Sign In to ReWear',
-        umDesc: 'Enter your <strong>Unique Account ID (Student ID / Email)</strong> and <strong>Display Name</strong>. New accounts start at 0 pt—complete the Carbon Test to earn <strong>+150 pt</strong>!',
+        umDesc: 'Enter your <strong>Unique Account ID (Student ID / Email)</strong> and <strong>Display Name</strong>. New accounts start at 0 pt—complete the Carbon Feel Check to earn <strong>+150 pt</strong>!',
         umIdLbl: 'Unique Account ID / Student ID', umIdPh: 'e.g., s112001 or green_01',
         umNameLbl: 'Display Nickname', umNamePh: 'e.g., Chloe',
         umCancel: 'Cancel', umSave: 'Sign In',
-        resetHint: 'Admin System Reset (Passcode Required)', resetBtn: 'Reset System Data',
-        resetPassPrompt: 'Enter system reset passcode:',
+        resetHint: 'Site-Wide Reset (Passcode Required)', resetBtn: 'Reset Entire Site',
+        resetPassPrompt: 'Enter site-wide reset passcode:',
         resetWrongPass: 'Incorrect passcode. Reset cancelled.',
-        resetConfirmText: '⚠️ Reset all local and Firebase cloud data back to initial defaults? This cannot be undone!',
-        resetDoneAlert: 'System has been reset to initial state.',
+        resetConfirmText: '⚠️ Reset ALL users and cloud data across the entire site? This cannot be undone!',
+        resetDoneAlert: 'Site-wide reset complete. All connected devices will sync to the fresh state.',
+        remoteResetAlert: 'The administrator has reset the entire site. Your session has been refreshed—please sign in again!',
         needLoginAlert: 'Please sign in with your Unique Account ID and Nickname first!',
         idConflictAlert: (id, existName) => `Account ID "${id}" is already registered to "${existName}". Please choose another ID or enter the matching nickname!`,
         bargainPrompt: (name, currPts) => `"${name}" is listed at ${currPts} pts. Enter your bargained points:`,
         bargainInvalid: 'Please enter a valid number greater than 0!',
         bargainSent: (name, offerPts) => `Bargain offer of ${offerPts} pts sent for "${name}", and seller has been notified!`,
         swapOk: (name, cost, rem) => `Swap complete! Used ${cost} pts for "${name}". Remaining: ${rem} pts.`,
-        swapNoPts: 'Not enough points to swap! Complete the Carbon Test for +150 pt or make a lower bargain offer.',
+        swapNoPts: 'Not enough points to swap! Complete the Carbon Feel Check for +150 pt or make a lower bargain offer.',
         listOk: (name, pts) => `Listed "${name}" at ${pts} pts. Points are credited once swapped!`,
         acceptedOk: (name, pts, rem) => `Deal closed! "${name}" swapped at ${pts} pts; you earned +${pts} pts (Balance: ${rem} pts).`,
         logList: (name, pts) => `[I Listed] "${name}" (${pts} pts)`,
@@ -799,18 +848,19 @@
         logBargainSent: (seller, name, pts) => `[Offer Sent] Offered ${pts} pts to ${seller} for "${name}"`,
         logBargainReceived: (buyer, name, pts) => `[Bargain Alert] ${buyer} offered ${pts} pts on my "${name}"`,
         logBargainRejected: (seller, name, pts) => `[Offer Declined] ${seller} declined your ${pts} pt offer on "${name}"`,
-        logCommentReceived: (sender, name, text) => `[Comment Alert] ${sender} commented on my "${name}": "${text}"`,
+        logCommentReceived: (sender, name, text) => `[Q&A Alert] ${sender} posted on "${name}": "${text}"`,
         logILiked: (author, name) => `[I Liked] ${author}'s DIY idea "${name}" (+1 pt to creator)`,
         logGotLiked: (liker, name) => `[Received Like] ${liker} liked my DIY idea "${name}" (+1 pt)`,
-        logQuiz: () => `[Quiz Bonus] Completed first Closet Carbon Test (+150 pt)`
+        logQuiz: () => `[Quiz Bonus] Completed first Closet Carbon Feel Check (+150 pt)`
       }
     };
 
     let state = loadLocalState();
     let currentFilter = 'all';
 
-    function getInitialState() {
+    function getInitialState(resetVersion = 1) {
       return {
+        resetVersion,
         lang: 'zh',
         users: {
           'user_han': { name: '阿涵', points: 0, quizRewarded: false, favorites: [], unreadCount: 0 },
@@ -827,13 +877,14 @@
       try {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
         if (saved && Array.isArray(saved.items) && Array.isArray(saved.diyPosts)) {
-          if (!saved.users) saved.users = getInitialState().users;
+          if (typeof saved.resetVersion !== 'number') saved.resetVersion = 1;
+          if (!saved.users) saved.users = getInitialState(saved.resetVersion).users;
           if (!Array.isArray(saved.offers)) saved.offers = [];
           if (!Array.isArray(saved.logs)) saved.logs = [];
           return saved;
         }
       } catch (e) {}
-      return getInitialState();
+      return getInitialState(1);
     }
 
     function ensureUserRecord(id, name) {
@@ -882,19 +933,39 @@
       }
     }
 
+    // 雲端同步（含全站版本號 resetVersion 比對：若管理員已重置全站，所有裝置自動清快取同步）
     async function syncFromCloud() {
       try {
         const res = await fetch(`${CLOUD_BASE_URL}/rewear_data.json`);
         const data = await res.json();
         if (data && Array.isArray(data.items) && Array.isArray(data.diyPosts)) {
+          const remoteVer = typeof data.resetVersion === 'number' ? data.resetVersion : 1;
+          const localVer = typeof state.resetVersion === 'number' ? state.resetVersion : 1;
+          const wasResetRemotely = remoteVer > localVer;
+
           state = {
+            resetVersion: remoteVer,
             lang: state.lang,
-            users: data.users || getInitialState().users,
+            users: data.users || getInitialState(remoteVer).users,
             items: (data.items || []).map(it => ({ ...it, comments: Array.isArray(it.comments) ? it.comments : [] })),
             diyPosts: data.diyPosts || [],
             offers: Array.isArray(data.offers) ? data.offers : [],
             logs: Array.isArray(data.logs) ? data.logs : []
           };
+
+          if (wasResetRemotely) {
+            currentAccount = null;
+            localStorage.removeItem(ACCOUNT_KEY);
+            sessionStorage.removeItem(ACCOUNT_KEY);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            closeModals();
+            showSection('market');
+            renderAll();
+            openUserModal();
+            alert(dict[state.lang].remoteResetAlert);
+            return;
+          }
+
           if (currentAccount) ensureUserRecord(currentAccount.id, currentAccount.name);
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
           renderAll();
@@ -907,7 +978,7 @@
       }
     }
 
-    // 密碼保護系統重置
+    // 密碼保護全站同步重置
     async function handleResetSystem() {
       const t = dict[state.lang];
       const pass = prompt(t.resetPassPrompt);
@@ -918,7 +989,8 @@
       }
       if (!confirm(t.resetConfirmText)) return;
 
-      state = getInitialState();
+      const nextVer = Math.max(Date.now(), (state.resetVersion || 1) + 1);
+      state = getInitialState(nextVer);
       currentAccount = null;
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(ACCOUNT_KEY);
@@ -1038,6 +1110,7 @@
     function closeModals() {
       commentingItemId = null;
       replyToNickname = '';
+      replyToUserId = '';
       document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
     }
 
@@ -1124,9 +1197,10 @@
       renderAll();
     }
 
-    // 收藏點選「返回市集」跳回二手市集
     function returnToMarketFromFavorite(itemId) {
       currentFilter = 'all';
+      document.getElementById('market-search').value = '';
+      document.getElementById('only-avail-chk').checked = false;
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       const fAll = document.getElementById('f-all');
       if (fAll) fAll.classList.add('active');
@@ -1136,24 +1210,27 @@
       if (cardEl) cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    // 商品問答 / 留言視窗（支援選人回覆 @對象）
+    // 商品問答 / 留言視窗（支援選人回覆 @對象＋通知被回覆者）
     function openCommentModal(itemId) {
       const item = state.items.find(i => i.id === itemId);
       if (!item) return;
       commentingItemId = itemId;
       replyToNickname = '';
+      replyToUserId = '';
       renderCommentList();
       document.getElementById('comment-modal').classList.add('open');
     }
 
-    function setReplyTarget(nickname) {
+    function setReplyTarget(nickname, userId) {
       replyToNickname = nickname;
+      replyToUserId = userId || '';
       renderReplyBar();
       document.getElementById('cm-input').focus();
     }
 
     function clearReplyTarget() {
       replyToNickname = '';
+      replyToUserId = '';
       renderReplyBar();
     }
 
@@ -1189,11 +1266,13 @@
           const isSeller = c.userId === item.ownerId;
           const badge = isSeller ? (state.lang === 'zh' ? ' [賣家]' : ' [Seller]') : '';
           const replyPrefix = c.replyTo ? `<strong>@${c.replyTo}</strong> ` : '';
+          const safeNick = String(c.userName).replace(/'/g, "\\'");
+          const safeUid = String(c.userId || '').replace(/'/g, "\\'");
           return `
             <div class="comment-item">
               <div class="comment-meta">
                 <span>${c.userName}${badge} · ${c.time || ''}</span>
-                <button type="button" class="btn-reply-sm" onclick="setReplyTarget('${String(c.userName).replace(/'/g, "\\'")}')">${t.replyBtn}</button>
+                <button type="button" class="btn-reply-sm" onclick="setReplyTarget('${safeNick}', '${safeUid}')">${t.replyBtn}</button>
               </div>
               <div>${replyPrefix}${c.text}</div>
             </div>
@@ -1224,21 +1303,25 @@
         time: timeStr
       });
 
-      // 若不是賣家自己留言，通知賣家
-      if (item.ownerId && item.ownerId !== currentAccount.id) {
-        addUnreadNotification(item.ownerId, item.ownerName);
+      const notifyTargets = new Set();
+      if (item.ownerId && item.ownerId !== currentAccount.id) notifyTargets.add(item.ownerId);
+      if (replyToUserId && replyToUserId !== currentAccount.id) notifyTargets.add(replyToUserId);
+
+      notifyTargets.forEach(targetId => {
+        addUnreadNotification(targetId);
         state.logs.unshift({
           type: 'comment_received',
-          sellerId: item.ownerId,
+          targetId,
           senderName: currentAccount.name,
           name: item.zh.name,
           enName: item.en.name,
           text
         });
-      }
+      });
 
       inputEl.value = '';
       replyToNickname = '';
+      replyToUserId = '';
       await persistState();
       renderCommentList();
       renderAll();
@@ -1249,9 +1332,18 @@
       const grid = document.getElementById('item-grid');
       const userRec = currentAccount ? ensureUserRecord(currentAccount.id, currentAccount.name) : null;
       const favIds = userRec ? userRec.favorites : [];
+      const keyword = (document.getElementById('market-search')?.value || '').trim().toLowerCase();
+      const onlyAvail = document.getElementById('only-avail-chk')?.checked || false;
 
       const filtered = state.items
         .filter(it => currentFilter === 'all' || it.cat === currentFilter)
+        .filter(it => !onlyAvail || it.status === 'available')
+        .filter(it => {
+          if (!keyword) return true;
+          const info = it[state.lang] || it.zh;
+          const hay = `${info.name} ${info.desc} ${it.ownerName || ''}`.toLowerCase();
+          return hay.includes(keyword);
+        })
         .sort((a, b) => {
           const aSold = a.status === 'swapped' ? 1 : 0;
           const bSold = b.status === 'swapped' ? 1 : 0;
@@ -1269,11 +1361,8 @@
         const isSaved = favIds.includes(it.id);
         const commentCount = Array.isArray(it.comments) ? it.comments.length : 0;
 
-        let statusBadge = '';
         let actionArea = '';
-
         if (it.status === 'swapped') {
-          statusBadge = `<span class="status-tag">${t.swappedBtn}</span>`;
           actionArea = `
             <div class="card-btns">
               <button class="btn-swap" disabled>${t.swappedBtn}</button>
@@ -1281,7 +1370,6 @@
             </div>
           `;
         } else if (isMine) {
-          statusBadge = `<span class="status-tag">${t.minePending}</span>`;
           actionArea = `
             <div class="card-btns">
               <button class="btn-swap" disabled>${t.minePending}</button>
@@ -1314,7 +1402,6 @@
                 <span class="tag">${info.catName}</span>
                 <span class="tag">${info.cond}</span>
                 <span class="owner-tag">${t.ownerPrefix}${it.ownerName || '同學'}</span>
-                ${statusBadge}
               </div>
               <h3>${info.name}</h3>
               <p>${info.desc}</p>
@@ -1495,7 +1582,6 @@
       showSection('market');
     }
 
-    // 取消刊登
     async function cancelListing(itemId) {
       if (!requireLogin()) return;
       const t = dict[state.lang];
@@ -1573,7 +1659,6 @@
       renderAll();
     }
 
-    // DIY 發布、編輯、刪除（支援圖片）
     async function handleAddDiy(e) {
       e.preventDefault();
       if (!requireLogin()) return;
@@ -1775,7 +1860,6 @@
       }).join('');
     }
 
-    // 接受議價前檢查買家點數是否足夠，避免變負數
     async function acceptOffer(offerId) {
       if (!requireLogin()) return;
       const t = dict[state.lang];
@@ -1816,7 +1900,6 @@
       alert(t.acceptedOk(dispName, offer.offerPts, getUserPoints(currentAccount.id)));
     }
 
-    // 拒絕議價：提示＋寫入紀錄通知出價買家
     async function rejectOffer(offerId) {
       if (!requireLogin()) return;
       const t = dict[state.lang];
@@ -1842,15 +1925,41 @@
       alert(t.rejectAlert);
     }
 
+    // 5 題碳排檢測 ＋ 「衣櫃碳排有感化」結果
     async function calcCarbon(isLangRefresh = false) {
       if (!isLangRefresh && !requireLogin()) return;
       const t = dict[state.lang];
       const q1 = parseInt(document.querySelector('input[name="q1"]:checked').value, 10);
       const q2 = parseInt(document.querySelector('input[name="q2"]:checked').value, 10);
+      const q3 = parseInt(document.querySelector('input[name="q3"]:checked').value, 10);
+      const q4 = parseInt(document.querySelector('input[name="q4"]:checked').value, 10);
+      const q5 = parseInt(document.querySelector('input[name="q5"]:checked').value, 10);
+
       const yearlyClothes = q1 * 12;
-      const waterNum = yearlyClothes * 2700 * q2;
-      const bathsNum = Math.round(waterNum / 150);
-      const carbonNum = (yearlyClothes * 10 * q2).toFixed(1);
+      const fabricFactor = q3 === 1 ? 0.85 : (q3 === 2 ? 1.0 : 1.25);
+      const careCarbon = yearlyClothes * q4 * 2.2;
+      const disposalCarbon = yearlyClothes * (q5 === 1 ? 0.5 : (q5 === 2 ? 1.5 : 3.2));
+      const baseProductionCarbon = yearlyClothes * 9.5 * fabricFactor;
+
+      const totalCarbon = Math.round(baseProductionCarbon + careCarbon + disposalCarbon);
+      const idleRatio = q2 === 1 ? 0.1 : (q2 === 2 ? 0.3 : 0.5);
+      const sunkCarbon = Math.round(totalCarbon * idleRatio);
+      const waterLiters = Math.round(yearlyClothes * 2700 * (q3 === 1 ? 1.1 : 0.9));
+
+      // 有感生活等價換算
+      const driveKm = Math.round(totalCarbon / 0.21); // 約每公里小客車 0.21 kg CO2e
+      const treesNeeded = Math.max(1, (totalCarbon / 12).toFixed(1)); // 一棵樹年吸碳約 12 kg
+      const bathsCount = Math.round(waterLiters / 150);
+      const savedBySwap = Math.max(15, Math.round(totalCarbon * 0.32));
+
+      let levelBadge = '';
+      if (totalCarbon <= 180) {
+        levelBadge = state.lang === 'zh' ? '🌱 低碳慢時尚守護者' : '🌱 Low-Carbon Slow Fashion Guardian';
+      } else if (totalCarbon <= 450) {
+        levelBadge = state.lang === 'zh' ? '🌿 轉型中的永續實踐家' : '🌿 Growing Sustainable Pratitioner';
+      } else {
+        levelBadge = state.lang === 'zh' ? '🔥 高碳衣櫃警訊（急需以換代買！）' : '🔥 High-Carbon Closet Alert (Time to Swap!)';
+      }
 
       const tipsList = ecoTips[state.lang];
       const randomTip = tipsList[Math.floor(Math.random() * tipsList.length)];
@@ -1869,20 +1978,74 @@
           });
           await persistState();
           renderAll();
-          rewardNote = `<p style="color:#1b5e20; margin-top:8px;">${t.resFirstReward}</p>`;
+          rewardNote = `<p style="color:#1b5e20; margin-top:10px;">${t.resFirstReward}</p>`;
         } else {
-          rewardNote = `<p style="color:#2e7d32; font-size:13px; margin-top:8px;">${t.resAlreadyRewarded}</p>`;
+          rewardNote = `<p style="color:#2e7d32; font-size:13px; margin-top:10px;">${t.resAlreadyRewarded}</p>`;
         }
       }
 
       const resBox = document.getElementById('quiz-result');
       resBox.style.display = 'block';
-      resBox.innerHTML = `
-        <h3>${t.resTitle}</h3>
-        <p>${t.resBody(waterNum.toLocaleString(), bathsNum.toLocaleString(), carbonNum)}</p>
-        <p>💡 <strong>${randomTip}</strong></p>
-        ${rewardNote}
-      `;
+
+      if (state.lang === 'zh') {
+        resBox.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <h3 style="margin:0;">📊 你的衣櫃碳排有感報告</h3>
+            <span class="status-tag">${levelBadge}</span>
+          </div>
+          <div class="feel-grid">
+            <div class="feel-card">
+              <div class="feel-title">年度衣櫃總碳排</div>
+              <div class="feel-val">${totalCarbon.toLocaleString()} kg CO₂e</div>
+              <div class="feel-sub">🚗 相當於開車行駛約 <strong>${driveKm.toLocaleString()} 公里</strong></div>
+            </div>
+            <div class="feel-card">
+              <div class="feel-title">閒置衣物「沉沒碳排」</div>
+              <div class="feel-val">${sunkCarbon.toLocaleString()} kg CO₂e</div>
+              <div class="feel-sub">🧥 掛在衣櫃沒穿，卻白白消耗了 <strong>${treesNeeded} 棵樹</strong> 一年的吸碳量</div>
+            </div>
+            <div class="feel-card">
+              <div class="feel-title">製衣與日常耗水足跡</div>
+              <div class="feel-val">${waterLiters.toLocaleString()} 公升</div>
+              <div class="feel-sub">🛁 相當於放滿 <strong>${bathsCount.toLocaleString()} 趟</strong> 標準浴缸的水</div>
+            </div>
+          </div>
+          <div class="feel-compare">
+            ✨ <strong>有感減碳行動：</strong>只要你把其中 3 成新衣消費改為在 ReWear 交換或延長穿著，一年就能省下約 <strong>${savedBySwap} kg 碳排</strong>（少開約 ${Math.round(savedBySwap / 0.21)} 公里車程）！
+          </div>
+          <p style="margin:6px 0;">💡 <strong>永續小提醒：</strong>${randomTip}</p>
+          ${rewardNote}
+        `;
+      } else {
+        resBox.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <h3 style="margin:0;">📊 Your Tangible Closet Carbon Report</h3>
+            <span class="status-tag">${levelBadge}</span>
+          </div>
+          <div class="feel-grid">
+            <div class="feel-card">
+              <div class="feel-title">Annual Closet Emissions</div>
+              <div class="feel-val">${totalCarbon.toLocaleString()} kg CO₂e</div>
+              <div class="feel-sub">🚗 Equal to driving roughly <strong>${driveKm.toLocaleString()} km</strong></div>
+            </div>
+            <div class="feel-card">
+              <div class="feel-title">Unworn "Sunk" Emissions</div>
+              <div class="feel-val">${sunkCarbon.toLocaleString()} kg CO₂e</div>
+              <div class="feel-sub">🧥 Equal to the annual absorption of <strong>${treesNeeded} trees</strong></div>
+            </div>
+            <div class="feel-card">
+              <div class="feel-title">Annual Water Footprint</div>
+              <div class="feel-val">${waterLiters.toLocaleString()} L</div>
+              <div class="feel-sub">🛁 Equal to filling <strong>${bathsCount.toLocaleString()} bathtubs</strong></div>
+            </div>
+          </div>
+          <div class="feel-compare">
+            ✨ <strong>Tangible Action:</strong> Shifting 30% of new purchases to ReWear swaps saves ~<strong>${savedBySwap} kg CO₂e</strong> per year (~${Math.round(savedBySwap / 0.21)} km of driving)!
+          </div>
+          <p style="margin:6px 0;">💡 <strong>Eco Tip:</strong> ${randomTip}</p>
+          ${rewardNote}
+        `;
+      }
     }
 
     function renderOffers() {
@@ -1948,7 +2111,6 @@
       document.getElementById('st-listed').innerText = `${myListedItems.length} / ${mySoldCount}`;
       document.getElementById('st-saved').innerText = ((mySwappedItems.length + mySoldCount) * 10).toFixed(1);
 
-      // (1) 我刊登的物品（可編輯＋取消刊登）
       if (!myListedItems.length) {
         myListedGrid.innerHTML = `<p class="empty-tip" style="grid-column:1 / -1;">${t.noMyListed}</p>`;
       } else {
@@ -1977,7 +2139,6 @@
         }).join('');
       }
 
-      // (2) 我收藏的衣物（兩個按鍵：返回市集 / 取消收藏）
       if (!myFavItems.length) {
         myFavGrid.innerHTML = `<p class="empty-tip" style="grid-column:1 / -1;">${t.noMyFav}</p>`;
       } else {
@@ -2001,7 +2162,6 @@
         }).join('');
       }
 
-      // (3) 我已交換取得的物品
       if (!mySwappedItems.length) {
         mySwappedGrid.innerHTML = `<p class="empty-tip" style="grid-column:1 / -1;">${t.noMySwapped}</p>`;
       } else {
@@ -2023,12 +2183,12 @@
 
       renderOffers();
 
-      // 個人互動紀錄與通知
       const personalLogs = state.logs.filter(l => {
         if (l.type === 'list' || l.type === 'cancel_list') return l.ownerId === uid;
         if (l.type === 'swap') return l.buyerId === uid || l.sellerId === uid;
         if (l.type === 'bargain_sent') return l.buyerId === uid;
-        if (l.type === 'bargain_received' || l.type === 'comment_received') return l.sellerId === uid;
+        if (l.type === 'bargain_received') return l.sellerId === uid;
+        if (l.type === 'comment_received') return (l.targetId || l.sellerId) === uid;
         if (l.type === 'bargain_rejected') return l.buyerId === uid;
         if (l.type === 'like') return l.likerId === uid || l.authorId === uid;
         if (l.type === 'quiz') return l.userId === uid;
@@ -2091,6 +2251,8 @@
       document.getElementById('f-top').innerText = t.fTop;
       document.getElementById('f-bottom').innerText = t.fBottom;
       document.getElementById('f-acc').innerText = t.fAcc;
+      document.getElementById('market-search').placeholder = t.searchPh;
+      document.getElementById('only-avail-lbl').innerText = t.onlyAvailLbl;
 
       document.getElementById('list-title').innerText = t.listTitle;
       document.getElementById('rule-note').innerHTML = t.ruleNote;
@@ -2119,6 +2281,18 @@
       document.getElementById('q2-o1').innerText = t.q2O1;
       document.getElementById('q2-o2').innerText = t.q2O2;
       document.getElementById('q2-o3').innerText = t.q2O3;
+      document.getElementById('q3-text').innerText = t.q3Text;
+      document.getElementById('q3-o1').innerText = t.q3O1;
+      document.getElementById('q3-o2').innerText = t.q3O2;
+      document.getElementById('q3-o3').innerText = t.q3O3;
+      document.getElementById('q4-text').innerText = t.q4Text;
+      document.getElementById('q4-o1').innerText = t.q4O1;
+      document.getElementById('q4-o2').innerText = t.q4O2;
+      document.getElementById('q4-o3').innerText = t.q4O3;
+      document.getElementById('q5-text').innerText = t.q5Text;
+      document.getElementById('q5-o1').innerText = t.q5O1;
+      document.getElementById('q5-o2').innerText = t.q5O2;
+      document.getElementById('q5-o3').innerText = t.q5O3;
       document.getElementById('calc-btn').innerText = t.calcBtn;
 
       document.getElementById('diy-title').innerText = t.diyTitle;
