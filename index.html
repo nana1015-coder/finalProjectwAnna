@@ -35,11 +35,17 @@
     .filter-btn.active { background: var(--primary); color: white; }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 20px; }
-    .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.07); transition: 0.2s; display: flex; flex-direction: column; justify-content: space-between; }
+    .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.07); transition: 0.2s; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
     .card:hover { transform: translateY(-4px); }
     .card.sold-card { opacity: 0.72; }
-    .card-img { height: 175px; background: var(--light); display: flex; align-items: center; justify-content: center; font-size: 56px; overflow: hidden; }
+    .card-img { height: 175px; background: var(--light); display: flex; align-items: center; justify-content: center; font-size: 56px; overflow: hidden; position: relative; }
     .card-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* 收藏按鈕 */
+    .fav-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.92); border: 1px solid #ddd; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-weight: bold; cursor: pointer; color: #555; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: 0.15s; }
+    .fav-btn:hover { background: #fffde7; border-color: #fbc02d; }
+    .fav-btn.saved { background: #fff8e1; color: #f57f17; border-color: #ffb300; }
+
     .card-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
     .card-body p { font-size: 14px; color: #555; flex: 1; margin: 6px 0 10px; }
     .card-body h3 { margin: 6px 0 0; font-size: 17px; }
@@ -48,12 +54,20 @@
     .status-tag { background: #fff3e0; color: #e65100; padding: 2px 8px; border-radius: 5px; font-size: 12px; font-weight: bold; }
     .points { color: #e65100; font-weight: bold; font-size: 16px; margin-bottom: 10px; }
 
-    .card-btns { display: flex; gap: 8px; }
-    .btn-swap { flex: 1; background: var(--primary); color: white; border: none; padding: 9px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold; }
+    .card-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+    .btn-swap { flex: 1; background: var(--primary); color: white; border: none; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold; min-width: 85px; }
     .btn-swap:hover { background: var(--dark); }
     .btn-swap:disabled { background: #9e9e9e; cursor: not-allowed; }
-    .btn-bargain { background: #fff8e1; color: #bf360c; border: 1px solid #ffb300; padding: 9px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold; }
+    .btn-bargain { background: #fff8e1; color: #bf360c; border: 1px solid #ffb300; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold; }
     .btn-bargain:hover { background: #ffecb3; }
+    .btn-comment { background: #f1f8e9; color: #2e7d32; border: 1px solid #a5d6a7; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold; }
+    .btn-comment:hover { background: #dcedc8; }
+
+    /* 圖示選擇器 */
+    .icon-picker { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+    .icon-opt { width: 42px; height: 42px; font-size: 22px; border: 2px solid #ddd; border-radius: 10px; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.15s; }
+    .icon-opt:hover { border-color: #81c784; background: #f1f8e9; }
+    .icon-opt.selected { border-color: var(--primary); background: var(--light); transform: scale(1.06); }
 
     /* 表單與區塊 */
     .box { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.07); margin-bottom: 20px; }
@@ -101,19 +115,28 @@
     ul.record-list { padding-left: 20px; margin: 8px 0 0; }
     ul.record-list li { margin-bottom: 6px; font-size: 14px; }
 
+    /* 留言列表樣式 */
+    .comment-list { max-height: 240px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 10px; padding: 12px; background: #fafafa; margin: 10px 0 12px; }
+    .comment-item { padding: 8px 10px; border-bottom: 1px solid #eaeaea; font-size: 14px; }
+    .comment-item:last-child { border-bottom: none; }
+    .comment-meta { font-size: 12px; color: #2e7d32; font-weight: bold; margin-bottom: 2px; }
+    .comment-form { display: flex; gap: 8px; }
+    .comment-form input { flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; }
+
     /* 彈出小視窗 */
     .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.52); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
     .modal-backdrop.open { display: flex; }
     .modal-card { background: white; max-width: 480px; width: 100%; border-radius: 14px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.22); animation: popIn 0.18s ease-out; max-height: 90vh; overflow-y: auto; }
     @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .modal-card h3 { margin: 0 0 10px; color: var(--dark); }
+    .modal-card h3 { margin: 0; color: var(--dark); }
+    .modal-header-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
     .step-content { background: var(--bg); border: 1px solid #e0e0e0; border-radius: 10px; padding: 14px 16px; white-space: pre-line; font-size: 14px; line-height: 1.7; margin: 12px 0 16px; }
     .confirm-box { background: var(--bg); border: 1px solid #dce7dc; border-radius: 10px; padding: 14px; margin: 12px 0 16px; font-size: 14px; }
   </style>
 </head>
 <body>
 
-  <!-- 導覽列（已移除雲端連線設定按鈕） -->
+  <!-- 導覽列 -->
   <header>
     <h1 id="brand-title">🌱 ReWear 永續衣櫥</h1>
     <div class="nav-group">
@@ -153,7 +176,7 @@
     <h2 id="list-title">📤 上架閒置衣物（上傳照片＋自行設定點數，成交才拿點數）</h2>
     <div class="box">
       <div class="rule-note" id="rule-note">
-        💡 <strong>交換與點數規則：</strong>你可以自行設定想要的交換點數並上傳真實衣物照片；上架時<strong>不會直接發放點數</strong>，必須等到有其他同學同意交換或接受議價、完成成交後，你才會拿到對應點數！
+        💡 <strong>交換與點數規則：</strong>你可以自行設定想要的交換點數並上傳真實衣物照片（若未傳照片也可從下方挑選基礎服飾圖示）；上架時<strong>不會直接發放點數</strong>，必須等到成交後才會拿到對應點數！
       </div>
       <form onsubmit="handleAddItem(event)">
         <div class="form-grid">
@@ -177,6 +200,10 @@
             <label id="lbl-pts" for="in-pts">自行設定交換點數（成交後入帳）</label>
             <input id="in-pts" type="number" min="10" max="1000" step="5" value="120" required>
           </div>
+        </div>
+        <div class="form-group">
+          <label id="lbl-icon">選擇基礎圖示（未上傳照片時顯示，可不選）</label>
+          <div class="icon-picker" id="add-icon-picker"></div>
         </div>
         <div class="form-group">
           <label id="lbl-photo" for="in-photo">上傳衣物照片（選填，支援手機拍照或選圖）</label>
@@ -251,7 +278,7 @@
 
   <!-- 5. 我的衣櫃 -->
   <div id="closet" class="section">
-    <h2 id="closet-title">👜 我的永續衣櫃、刊登管理與互動紀錄</h2>
+    <h2 id="closet-title">👜 我的永續衣櫃、收藏清單與互動紀錄</h2>
     <div class="box">
       <div class="stats-row">
         <div class="stat-card">
@@ -272,11 +299,15 @@
         </div>
       </div>
 
-      <!-- (1) 我刊登的物品（可編輯價格、圖片、說明） -->
-      <h3 id="my-listed-title">📦 我刊登的物品（未售出可編輯價格、圖片與說明）</h3>
+      <!-- (1) 我刊登的物品 -->
+      <h3 id="my-listed-title">📦 我刊登的物品（未售出可編輯價格、圖示/圖片與說明）</h3>
       <div id="my-listed-grid" class="mini-grid"></div>
 
-      <!-- (2) 我已交換的物品 -->
+      <!-- (2) 我收藏的物品 -->
+      <h3 id="my-fav-title">⭐ 我收藏的衣物（先存起來考慮）</h3>
+      <div id="my-fav-grid" class="mini-grid"></div>
+
+      <!-- (3) 我已交換的物品 -->
       <h3 id="my-swapped-title">🛍️ 我已交換取得的物品</h3>
       <div id="my-swapped-grid" class="mini-grid"></div>
 
@@ -320,6 +351,10 @@
           <input id="em-pts" type="number" min="10" max="1000" step="5" required>
         </div>
         <div class="form-group">
+          <label id="em-icon-lbl">更換基礎圖示（無照片時顯示）</label>
+          <div class="icon-picker" id="edit-icon-picker"></div>
+        </div>
+        <div class="form-group">
           <label id="em-photo-lbl" for="em-photo">更換衣物照片（不選則保留原圖）</label>
           <input id="em-photo" type="file" accept="image/*" onchange="previewUploadImage(event, 'em-preview', 'edit')">
           <img id="em-preview" class="img-preview" alt="Edit Preview">
@@ -336,10 +371,25 @@
     </div>
   </div>
 
-  <!-- 彈出小視窗 3：DIY 教學步驟 -->
+  <!-- 彈出小視窗 3：商品問答 / 留言區 -->
+  <div id="comment-modal" class="modal-backdrop" onclick="if(event.target===this) closeModals()">
+    <div class="modal-card">
+      <div class="modal-header-row">
+        <h3 id="cm-item-title">💬 商品問答與討論</h3>
+        <button type="button" class="filter-btn" onclick="closeModals()" id="cm-close-btn">關閉</button>
+      </div>
+      <div class="comment-list" id="cm-list"></div>
+      <form class="comment-form" onsubmit="submitComment(event)">
+        <input id="cm-input" type="text" required placeholder="詢問衣況、尺寸或面交時間...">
+        <button type="submit" class="btn-accept" id="cm-send-btn">送出</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 彈出小視窗 4：DIY 教學步驟 -->
   <div id="diy-modal" class="modal-backdrop" onclick="if(event.target===this) closeModals()">
     <div class="modal-card">
-      <h3 id="dm-title"></h3>
+      <h3 id="dm-title" style="margin-bottom:10px;"></h3>
       <div style="margin-bottom:8px;">
         <span class="tag" id="dm-tag"></span>
         <span class="owner-tag" id="dm-author"></span>
@@ -353,10 +403,13 @@
     </div>
   </div>
 
-  <!-- 彈出小視窗 4：帳號登入 / 切換（初始不自動登入，進入要求登入） -->
+  <!-- 彈出小視窗 5：帳號登入 / 切換（含雙語切換按鈕） -->
   <div id="user-modal" class="modal-backdrop">
     <div class="modal-card">
-      <h3 id="um-title">👤 登入 ReWear 永續衣櫥</h3>
+      <div class="modal-header-row">
+        <h3 id="um-title">👤 登入 ReWear 永續衣櫥</h3>
+        <button type="button" class="lang-btn" id="um-lang-btn" onclick="toggleLang()">English / 中文</button>
+      </div>
       <p id="um-desc" style="font-size:14px; color:#555;">
         請輸入你的<strong>唯一帳號 ID（學號／信箱）</strong>與<strong>顯示暱稱</strong>。新帳號初始為 0 點，完成「衣櫃碳排檢測」即可領取 <strong>+150 pt</strong> 啟動點數！
       </p>
@@ -377,14 +430,18 @@
 
   <script>
     const CLOUD_BASE_URL = 'https://final-project-8e175-default-rtdb.firebaseio.com';
-    const STORAGE_KEY = 'rewear_prod_v2';
-    const ACCOUNT_KEY = 'rewear_current_account_v2';
+    const STORAGE_KEY = 'rewear_prod_v3';
+    const ACCOUNT_KEY = 'rewear_current_account_v3';
     const TAB_KEY = 'rewear_active_tab';
+    const BASIC_ICONS = ['👕', '🧥', '👗', '👖', '👜', '👟', '🧢', '🧣'];
 
     let uploadedImageData = '';
     let editedImageData = '';
+    let selectedAddIcon = '';
+    let selectedEditIcon = '';
     let pendingBuyItemId = null;
     let editingItemId = null;
+    let commentingItemId = null;
     let currentAccount = loadCurrentAccount();
 
     function loadCurrentAccount() {
@@ -396,16 +453,16 @@
     }
 
     const defaultItems = [
-      { id: 1, cat: 'top', emoji: '🧥', img: '', ownerId: 'user_azhe', ownerName: '阿哲', pts: 150, status: 'available',
+      { id: 1, cat: 'top', emoji: '🧥', img: '', ownerId: 'user_azhe', ownerName: '阿哲', pts: 150, status: 'available', comments: [],
         zh: { catName: '上衣 / 外套', cond: '9成新・L號', name: '復古水洗丹寧外套', desc: '買太大很少穿，版型很挺適合秋冬穿搭。' },
         en: { catName: 'Tops & Outerwear', cond: '90% New · L', name: 'Vintage Washed Denim Jacket', desc: 'Slightly oversized, structured fit great for autumn & winter.' } },
-      { id: 2, cat: 'bottom', emoji: '👖', img: '', ownerId: 'user_mia', ownerName: 'Mia', pts: 100, status: 'available',
+      { id: 2, cat: 'bottom', emoji: '👖', img: '', ownerId: 'user_mia', ownerName: 'Mia', pts: 100, status: 'available', comments: [],
         zh: { catName: '褲裝 / 裙裝', cond: '8成新・M號', name: '日系卡其直筒寬褲', desc: '純棉材質非常透氣，無任何污漬破損。' },
         en: { catName: 'Pants & Skirts', cond: '80% New · M', name: 'Japanese Khaki Straight Trousers', desc: 'Breathable cotton fabric with no stains or tears.' } },
-      { id: 3, cat: 'top', emoji: '🧶', img: '', ownerId: 'user_yun', ownerName: '芸芸', pts: 120, status: 'available',
+      { id: 3, cat: 'top', emoji: '🧶', img: '', ownerId: 'user_yun', ownerName: '芸芸', pts: 120, status: 'available', comments: [],
         zh: { catName: '上衣 / 外套', cond: '全新吊牌未拆・F', name: '燕麥色針織開襟毛衣', desc: '網購重複下單，全新轉讓給有緣人！' },
         en: { catName: 'Tops & Outerwear', cond: 'Brand New w/ Tag · F', name: 'Oatmeal Knit Cardigan', desc: 'Duplicate online order—brand new for a good home!' } },
-      { id: 4, cat: 'acc', emoji: '👜', img: '', ownerId: 'user_kevin', ownerName: 'Kevin', pts: 80, status: 'available',
+      { id: 4, cat: 'acc', emoji: '👜', img: '', ownerId: 'user_kevin', ownerName: 'Kevin', pts: 80, status: 'available', comments: [],
         zh: { catName: '配件 / 包包', cond: '9成新', name: '文青帆布側背托特包', desc: '可裝得下 15 吋筆電與原文書，上課超實用。' },
         en: { catName: 'Bags & Accessories', cond: '90% New', name: 'Minimalist Canvas Tote Bag', desc: 'Fits a 15-inch laptop and textbooks—ideal for class.' } }
     ];
@@ -457,14 +514,16 @@
         heroDesc: '實踐 SDG 12 責任消費與 SDG 13 氣候行動',
         marketTitle: '👕 二手衣交換市集', filterLabel: '分類篩選：',
         fAll: '全部衣物', fTop: '上衣 / 外套', fBottom: '褲裝 / 裙裝', fAcc: '配件 / 包包',
-        ownerPrefix: '上架者：', ptsCost: '開價點數', swapBtn: '直接交換', bargainBtn: '議價',
+        favSave: '☆ 收藏', favSaved: '⭐ 已收藏',
+        ownerPrefix: '上架者：', ptsCost: '開價點數', swapBtn: '直接交換', bargainBtn: '議價', commentBtn: '💬 問答',
         swappedBtn: '✅ 已售出', minePending: '⏳ 我的刊登（待成交）',
         listTitle: '📤 上架閒置衣物（上傳照片＋自行設定點數，成交才拿點數）',
-        ruleNote: '💡 <strong>交換與點數規則：</strong>你可以自行設定想要的交換點數並上傳真實衣物照片；上架時<strong>不會直接發放點數</strong>，必須等到有其他同學同意交換或接受議價、完成成交後，你才會拿到對應點數！',
+        ruleNote: '💡 <strong>交換與點數規則：</strong>你可以自行設定想要的交換點數並上傳真實衣物照片（若未傳照片也可從下方挑選基礎服飾圖示）；上架時<strong>不會直接發放點數</strong>，必須等到成交後才會拿到對應點數！',
         lblName: '衣物名稱', phName: '例如：卡其風衣 / 條紋襯衫',
         lblCat: '衣物類別', optTop: '上衣 / 外套', optBottom: '褲裝 / 裙裝', optAcc: '配件 / 包包',
         lblCond: '新舊程度與尺寸', phCond: '例如：9成新・M號',
         lblPts: '自行設定交換點數（成交後入帳）',
+        lblIcon: '選擇基礎圖示（未上傳照片時顯示，可不選）',
         lblPhoto: '上傳衣物照片（選填，支援手機拍照或選圖）',
         lblDesc: '衣物描述', phDesc: '簡單說明材質、穿搭特色或保存狀況...',
         btnSubmitItem: '刊登衣物（等待有人交換）',
@@ -492,11 +551,14 @@
         likeBtn: '👍 讚', likedBtn: '❤️ 已讚', viewStepBtn: '查看教學步驟',
         dmClose: '關閉視窗',
         diyAddedAlert: (name) => `已發布改造創意「${name}」！當其他同學幫你按讚時，你將自動獲得 1 讚 = 1 點獎勵！`,
-        closetTitle: '👜 我的永續衣櫃、刊登管理與互動紀錄',
+        closetTitle: '👜 我的永續衣櫃、收藏清單與互動紀錄',
         stPtsLbl: '目前點數', stSwappedLbl: '已交換取得', stListedLbl: '刊登 / 已售出', stSavedLbl: '預估減碳量 (kg)',
-        myListedTitle: '📦 我刊登的物品（未售出可編輯價格、圖片與說明）',
+        myListedTitle: '📦 我刊登的物品（未售出可編輯價格、圖示/圖片與說明）',
         noMyListed: '你目前還沒有刊登任何衣物，快去「上架衣物」發布吧！',
         editBtn: '✏️ 編輯商品', soldDoneTag: '已成交售出',
+        myFavTitle: '⭐ 我收藏的衣物（先存起來考慮）',
+        noMyFav: '你目前還沒有收藏任何衣物，在市集點擊右上角「☆ 收藏」即可加入！',
+        unfavBtn: '取消收藏',
         mySwappedTitle: '🛍️ 我已交換取得的物品',
         noMySwapped: '你目前還沒有交換取得任何衣物。',
         offersTitle: '💬 收到的議價請求（買家出價 → 賣家決定是否成交）',
@@ -514,11 +576,15 @@
         `,
         bmCancel: '取消', bmConfirm: '確認扣除點數並交換',
         emTitle: '✏️ 編輯刊登衣物', emNameLbl: '衣物名稱', emCondLbl: '新舊程度與尺寸',
-        emPtsLbl: '交換點數', emPhotoLbl: '更換衣物照片（不選則保留原圖）', emDescLbl: '衣物描述',
+        emPtsLbl: '交換點數', emIconLbl: '更換基礎圖示（無照片時顯示）', emPhotoLbl: '更換衣物照片（不選則保留原圖）', emDescLbl: '衣物描述',
         emCancel: '取消', emSave: '儲存修改',
+        cmHeader: (name) => `💬 「${name}」問答討論`,
+        cmClose: '關閉', cmPh: '詢問衣況、尺寸或面交時間...', cmSend: '送出留言',
+        cmEmpty: '目前還沒有留言，歡迎在下方發問或回覆！',
         umTitle: '👤 登入 ReWear 永續衣櫥',
         umDesc: '請輸入你的<strong>唯一帳號 ID（學號／信箱）</strong>與<strong>顯示暱稱</strong>。新帳號初始為 0 點，完成「衣櫃碳排檢測」即可領取 <strong>+150 pt</strong> 啟動點數！',
-        umIdLbl: '唯一帳號 ID / 學號（不可與他人重複）', umNameLbl: '顯示暱稱',
+        umIdLbl: '唯一帳號 ID / 學號（不可與他人重複）', umIdPh: '例如：s112001 或 green_01',
+        umNameLbl: '顯示暱稱', umNamePh: '例如：小綠',
         umCancel: '取消', umSave: '確認登入',
         needLoginAlert: '請先輸入帳號 ID 與暱稱完成登入！',
         idConflictAlert: (id, existName) => `帳號 ID「${id}」已被暱稱「${existName}」註冊使用，請改用其他帳號 ID，或輸入正確暱稱登入！`,
@@ -544,14 +610,16 @@
         heroDesc: 'Driving SDG 12 Responsible Consumption & SDG 13 Climate Action',
         marketTitle: '👕 Second-Hand Swap Market', filterLabel: 'Filter by category:',
         fAll: 'All Items', fTop: 'Tops & Outerwear', fBottom: 'Pants & Skirts', fAcc: 'Bags & Accessories',
-        ownerPrefix: 'Seller: ', ptsCost: 'Asking Points', swapBtn: 'Swap Now', bargainBtn: 'Bargain',
+        favSave: '☆ Save', favSaved: '⭐ Saved',
+        ownerPrefix: 'Seller: ', ptsCost: 'Asking Points', swapBtn: 'Swap Now', bargainBtn: 'Bargain', commentBtn: '💬 Q&A',
         swappedBtn: '✅ Sold', minePending: '⏳ My Listing (Pending)',
         listTitle: '📤 List Unused Clothes (Photo Upload + Set Points)',
-        ruleNote: '💡 <strong>Swap & Point Rule:</strong> Upload real photos and set your asking points. No points are granted at listing—you earn points only when someone swaps or accepts a bargained offer!',
+        ruleNote: '💡 <strong>Swap & Point Rule:</strong> Upload real photos or pick a basic icon below, then set your asking points. No points are granted at listing—you earn points only when swapped!',
         lblName: 'Item Name', phName: 'e.g., Khaki Trench Coat / Striped Shirt',
         lblCat: 'Category', optTop: 'Tops & Outerwear', optBottom: 'Pants & Skirts', optAcc: 'Bags & Accessories',
         lblCond: 'Condition & Size', phCond: 'e.g., 90% New · Size M',
         lblPts: 'Set Asking Points (Credited upon swap)',
+        lblIcon: 'Choose a Basic Icon (Shown when no photo is uploaded)',
         lblPhoto: 'Upload Item Photo (Optional)',
         lblDesc: 'Description', phDesc: 'Share fabric, styling notes, or condition...',
         btnSubmitItem: 'List Item (Wait for Swap)',
@@ -579,11 +647,14 @@
         likeBtn: '👍 Like', likedBtn: '❤️ Liked', viewStepBtn: 'View Steps',
         dmClose: 'Close',
         diyAddedAlert: (name) => `Published DIY idea "${name}"! You will earn +1 pt for every like from peers.`,
-        closetTitle: '👜 My Sustainable Closet, Listings & Activity',
+        closetTitle: '👜 My Sustainable Closet, Saved Items & Activity',
         stPtsLbl: 'Points Balance', stSwappedLbl: 'Items Swapped In', stListedLbl: 'Listed / Sold', stSavedLbl: 'Est. CO₂ Saved (kg)',
-        myListedTitle: '📦 My Listed Items (Edit Price, Photo & Details Before Sold)',
+        myListedTitle: '📦 My Listed Items (Edit Price, Icon/Photo & Details Before Sold)',
         noMyListed: 'You have not listed any items yet.',
         editBtn: '✏️ Edit Item', soldDoneTag: 'Sold',
+        myFavTitle: '⭐ My Saved Items (Wishlist)',
+        noMyFav: 'You have not saved any items yet. Click "☆ Save" on any item in the market!',
+        unfavBtn: 'Remove',
         mySwappedTitle: '🛍️ Items I Swapped In',
         noMySwapped: 'You have not swapped in any items yet.',
         offersTitle: '💬 Incoming Bargain Offers (Buyer Offer → Seller Decides)',
@@ -601,11 +672,15 @@
         `,
         bmCancel: 'Cancel', bmConfirm: 'Confirm & Swap',
         emTitle: '✏️ Edit Listed Item', emNameLbl: 'Item Name', emCondLbl: 'Condition & Size',
-        emPtsLbl: 'Asking Points', emPhotoLbl: 'Replace Photo (Leave blank to keep current)', emDescLbl: 'Description',
+        emPtsLbl: 'Asking Points', emIconLbl: 'Change Basic Icon (Shown if no photo)', emPhotoLbl: 'Replace Photo (Leave blank to keep current)', emDescLbl: 'Description',
         emCancel: 'Cancel', emSave: 'Save Changes',
+        cmHeader: (name) => `💬 Q&A for "${name}"`,
+        cmClose: 'Close', cmPh: 'Ask about size, condition, or meetup...', cmSend: 'Post',
+        cmEmpty: 'No comments yet. Ask a question or leave a note below!',
         umTitle: '👤 Sign In to ReWear',
         umDesc: 'Enter your <strong>Unique Account ID (Student ID / Email)</strong> and <strong>Display Name</strong>. New accounts start at 0 pt—complete the Carbon Test to earn <strong>+150 pt</strong>!',
-        umIdLbl: 'Unique Account ID / Student ID', umNameLbl: 'Display Nickname',
+        umIdLbl: 'Unique Account ID / Student ID', umIdPh: 'e.g., s112001 or green_01',
+        umNameLbl: 'Display Nickname', umNamePh: 'e.g., Chloe',
         umCancel: 'Cancel', umSave: 'Sign In',
         needLoginAlert: 'Please sign in with your Unique Account ID and Nickname first!',
         idConflictAlert: (id, existName) => `Account ID "${id}" is already registered to "${existName}". Please choose another ID or enter the matching nickname!`,
@@ -632,12 +707,12 @@
       return {
         lang: 'zh',
         users: {
-          'user_azhe': { name: '阿哲', points: 0, quizRewarded: false },
-          'user_mia': { name: 'Mia', points: 0, quizRewarded: false },
-          'user_yun': { name: '芸芸', points: 0, quizRewarded: false },
-          'user_kevin': { name: 'Kevin', points: 0, quizRewarded: false },
-          'user_han': { name: '阿涵', points: 0, quizRewarded: false },
-          'user_yu': { name: '小宇', points: 0, quizRewarded: false }
+          'user_azhe': { name: '阿哲', points: 0, quizRewarded: false, favorites: [] },
+          'user_mia': { name: 'Mia', points: 0, quizRewarded: false, favorites: [] },
+          'user_yun': { name: '芸芸', points: 0, quizRewarded: false, favorites: [] },
+          'user_kevin': { name: 'Kevin', points: 0, quizRewarded: false, favorites: [] },
+          'user_han': { name: '阿涵', points: 0, quizRewarded: false, favorites: [] },
+          'user_yu': { name: '小宇', points: 0, quizRewarded: false, favorites: [] }
         },
         items: JSON.parse(JSON.stringify(defaultItems)),
         diyPosts: JSON.parse(JSON.stringify(defaultDiy)),
@@ -659,10 +734,12 @@
       return getInitialState();
     }
 
-    // 9. 新帳號初始為 0 點
     function ensureUserRecord(id, name) {
       if (!state.users[id]) {
-        state.users[id] = { name: name || id, points: 0, quizRewarded: false };
+        state.users[id] = { name: name || id, points: 0, quizRewarded: false, favorites: [] };
+      }
+      if (!Array.isArray(state.users[id].favorites)) {
+        state.users[id].favorites = [];
       }
       return state.users[id];
     }
@@ -706,7 +783,7 @@
           state = {
             lang: state.lang,
             users: data.users || getInitialState().users,
-            items: data.items || [],
+            items: (data.items || []).map(it => ({ ...it, comments: Array.isArray(it.comments) ? it.comments : [] })),
             diyPosts: data.diyPosts || [],
             offers: Array.isArray(data.offers) ? data.offers : [],
             logs: Array.isArray(data.logs) ? data.logs : []
@@ -714,12 +791,38 @@
           if (currentAccount) ensureUserRecord(currentAccount.id, currentAccount.name);
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
           renderAll();
+          if (commentingItemId) renderCommentList();
         } else {
           await persistState();
         }
       } catch (err) {
         console.warn('Unable to read cloud data:', err);
       }
+    }
+
+    // 基礎圖示選擇器渲染
+    function renderIconPickers() {
+      const addContainer = document.getElementById('add-icon-picker');
+      if (addContainer) {
+        addContainer.innerHTML = BASIC_ICONS.map(ic => `
+          <button type="button" class="icon-opt ${selectedAddIcon === ic ? 'selected' : ''}" onclick="selectBasicIcon('${ic}', 'add')">${ic}</button>
+        `).join('');
+      }
+      const editContainer = document.getElementById('edit-icon-picker');
+      if (editContainer) {
+        editContainer.innerHTML = BASIC_ICONS.map(ic => `
+          <button type="button" class="icon-opt ${selectedEditIcon === ic ? 'selected' : ''}" onclick="selectBasicIcon('${ic}', 'edit')">${ic}</button>
+        `).join('');
+      }
+    }
+
+    function selectBasicIcon(icon, mode) {
+      if (mode === 'add') {
+        selectedAddIcon = selectedAddIcon === icon ? '' : icon;
+      } else {
+        selectedEditIcon = icon;
+      }
+      renderIconPickers();
     }
 
     function previewUploadImage(e, previewId, targetMode) {
@@ -788,6 +891,7 @@
     }
 
     function closeModals() {
+      commentingItemId = null;
       document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
     }
 
@@ -799,7 +903,6 @@
       if (document.getElementById('quiz-result').style.display === 'block') calcCarbon(true);
     }
 
-    // 4. 記住目前分頁（F5 重新整理留在原頁面）
     function showSection(id) {
       const validIds = ['market', 'list-item', 'quiz', 'diy', 'closet'];
       const targetId = validIds.includes(id) ? id : 'market';
@@ -831,10 +934,90 @@
       renderMarket();
     }
 
-    // 6. 售出的商品往後排到最後面
+    // 收藏切換
+    async function toggleFavorite(itemId) {
+      if (!requireLogin()) return;
+      const userRec = ensureUserRecord(currentAccount.id, currentAccount.name);
+      const idx = userRec.favorites.indexOf(itemId);
+      if (idx === -1) {
+        userRec.favorites.push(itemId);
+      } else {
+        userRec.favorites.splice(idx, 1);
+      }
+      await persistState();
+      renderAll();
+    }
+
+    // 商品問答 / 留言視窗
+    function openCommentModal(itemId) {
+      const item = state.items.find(i => i.id === itemId);
+      if (!item) return;
+      commentingItemId = itemId;
+      renderCommentList();
+      document.getElementById('comment-modal').classList.add('open');
+    }
+
+    function renderCommentList() {
+      const t = dict[state.lang];
+      const item = state.items.find(i => i.id === commentingItemId);
+      if (!item) return;
+      const info = item[state.lang] || item.zh;
+      document.getElementById('cm-item-title').innerText = t.cmHeader(info.name);
+      document.getElementById('cm-close-btn').innerText = t.cmClose;
+      document.getElementById('cm-input').placeholder = t.cmPh;
+      document.getElementById('cm-send-btn').innerText = t.cmSend;
+
+      const listEl = document.getElementById('cm-list');
+      const comments = Array.isArray(item.comments) ? item.comments : [];
+      if (!comments.length) {
+        listEl.innerHTML = `<div style="color:#777; font-size:13px; text-align:center; padding:16px 0;">${t.cmEmpty}</div>`;
+      } else {
+        listEl.innerHTML = comments.map(c => {
+          const isSeller = c.userId === item.ownerId;
+          const badge = isSeller ? (state.lang === 'zh' ? ' [賣家]' : ' [Seller]') : '';
+          return `
+            <div class="comment-item">
+              <div class="comment-meta">${c.userName}${badge} · ${c.time || ''}</div>
+              <div>${c.text}</div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    async function submitComment(e) {
+      e.preventDefault();
+      if (!requireLogin() || !commentingItemId) return;
+      const inputEl = document.getElementById('cm-input');
+      const text = inputEl.value.trim();
+      if (!text) return;
+
+      const item = state.items.find(i => i.id === commentingItemId);
+      if (!item) return;
+      if (!Array.isArray(item.comments)) item.comments = [];
+
+      const now = new Date();
+      const timeStr = `${now.getMonth() + 1}/${now.getDate()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+      item.comments.push({
+        userId: currentAccount.id,
+        userName: currentAccount.name,
+        text,
+        time: timeStr
+      });
+
+      inputEl.value = '';
+      await persistState();
+      renderCommentList();
+      renderMarket();
+    }
+
     function renderMarket() {
       const t = dict[state.lang];
       const grid = document.getElementById('item-grid');
+      const userRec = currentAccount ? ensureUserRecord(currentAccount.id, currentAccount.name) : null;
+      const favIds = userRec ? userRec.favorites : [];
+
       const filtered = state.items
         .filter(it => currentFilter === 'all' || it.cat === currentFilter)
         .sort((a, b) => {
@@ -846,29 +1029,49 @@
       grid.innerHTML = filtered.map(it => {
         const info = it[state.lang] || it.zh;
         const isMine = currentAccount && it.ownerId === currentAccount.id;
+        const isSaved = favIds.includes(it.id);
+        const commentCount = Array.isArray(it.comments) ? it.comments.length : 0;
+
         let statusBadge = '';
         let actionArea = '';
 
         if (it.status === 'swapped') {
           statusBadge = `<span class="status-tag">${t.swappedBtn}</span>`;
-          actionArea = `<button class="btn-swap" disabled>${t.swappedBtn}</button>`;
+          actionArea = `
+            <div class="card-btns">
+              <button class="btn-swap" disabled>${t.swappedBtn}</button>
+              <button class="btn-comment" onclick="openCommentModal(${it.id})">${t.commentBtn} (${commentCount})</button>
+            </div>
+          `;
         } else if (isMine) {
           statusBadge = `<span class="status-tag">${t.minePending}</span>`;
-          actionArea = `<button class="btn-swap" disabled>${t.minePending}</button>`;
+          actionArea = `
+            <div class="card-btns">
+              <button class="btn-swap" disabled>${t.minePending}</button>
+              <button class="btn-comment" onclick="openCommentModal(${it.id})">${t.commentBtn} (${commentCount})</button>
+            </div>
+          `;
         } else {
           actionArea = `
             <div class="card-btns">
               <button class="btn-swap" onclick="openBuyConfirm(${it.id})">${t.swapBtn}</button>
               <button class="btn-bargain" onclick="openBargain(${it.id})">${t.bargainBtn}</button>
+              <button class="btn-comment" onclick="openCommentModal(${it.id})">${t.commentBtn} (${commentCount})</button>
             </div>
           `;
         }
 
         const mediaHtml = it.img ? `<img src="${it.img}" alt="${info.name}">` : it.emoji;
+        const favBtnHtml = !isMine
+          ? `<button class="fav-btn ${isSaved ? 'saved' : ''}" onclick="toggleFavorite(${it.id})">${isSaved ? t.favSaved : t.favSave}</button>`
+          : '';
 
         return `
           <div class="card ${it.status === 'swapped' ? 'sold-card' : ''}">
-            <div class="card-img">${mediaHtml}</div>
+            <div class="card-img">
+              ${mediaHtml}
+              ${favBtnHtml}
+            </div>
             <div class="card-body">
               <div>
                 <span class="tag">${info.catName}</span>
@@ -886,7 +1089,6 @@
       }).join('');
     }
 
-    // 2. 購買二次確認小視窗
     function openBuyConfirm(id) {
       if (!requireLogin()) return;
       const t = dict[state.lang];
@@ -994,15 +1196,18 @@
         acc: { zh: '配件 / 包包', en: 'Bags & Accessories', emoji: '🎒' }
       };
 
+      const finalEmoji = selectedAddIcon || catMap[cat].emoji;
+
       const newItem = {
         id: Date.now(),
         cat,
-        emoji: catMap[cat].emoji,
+        emoji: finalEmoji,
         img: uploadedImageData || '',
         ownerId: currentAccount.id,
         ownerName: currentAccount.name,
         pts,
         status: 'available',
+        comments: [],
         zh: { catName: catMap[cat].zh, cond, name, desc },
         en: { catName: catMap[cat].en, cond, name, desc }
       };
@@ -1020,6 +1225,8 @@
 
       e.target.reset();
       uploadedImageData = '';
+      selectedAddIcon = '';
+      renderIconPickers();
       document.getElementById('photo-preview').style.display = 'none';
       document.getElementById('in-pts').value = 120;
       renderAll();
@@ -1027,7 +1234,6 @@
       showSection('market');
     }
 
-    // 3. 編輯我刊登的物品
     function openEditModal(id) {
       if (!requireLogin()) return;
       const item = state.items.find(i => i.id === id && i.ownerId === currentAccount.id && i.status === 'available');
@@ -1035,8 +1241,10 @@
 
       editingItemId = id;
       editedImageData = item.img || '';
-      const info = item[state.lang] || item.zh;
+      selectedEditIcon = item.emoji || '👕';
+      renderIconPickers();
 
+      const info = item[state.lang] || item.zh;
       document.getElementById('em-name').value = info.name;
       document.getElementById('em-cond').value = info.cond;
       document.getElementById('em-pts').value = item.pts;
@@ -1066,6 +1274,7 @@
       const desc = document.getElementById('em-desc').value.trim();
 
       item.pts = pts;
+      item.emoji = selectedEditIcon || item.emoji;
       item.img = editedImageData;
       item.zh.name = name;
       item.zh.cond = cond;
@@ -1218,7 +1427,6 @@
       alert(t.acceptedOk(dispName, offer.offerPts, getUserPoints(currentAccount.id)));
     }
 
-    // 5. 拒絕議價後同步寫回雲端與本機，F5 不會再跑回來
     async function rejectOffer(offerId) {
       if (!requireLogin()) return;
       state.offers = state.offers.filter(o => o.offerId !== offerId);
@@ -1226,7 +1434,6 @@
       renderOffers();
     }
 
-    // 9. 首次測驗拿 150 點（限一次，可重複測） + 10. 隨機永續建議
     async function calcCarbon(isLangRefresh = false) {
       if (!isLangRefresh && !requireLogin()) return;
       const t = dict[state.lang];
@@ -1301,10 +1508,10 @@
       }).join('');
     }
 
-    // 1. 個人化互動紀錄 + 3. 我刊登的物品（可編輯）與我已交換的物品
     function renderCloset() {
       const t = dict[state.lang];
       const myListedGrid = document.getElementById('my-listed-grid');
+      const myFavGrid = document.getElementById('my-fav-grid');
       const mySwappedGrid = document.getElementById('my-swapped-grid');
       const listEl = document.getElementById('record-list');
 
@@ -1314,6 +1521,7 @@
         document.getElementById('st-listed').innerText = '0 / 0';
         document.getElementById('st-saved').innerText = '0.0';
         myListedGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMyListed}</p>`;
+        myFavGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMyFav}</p>`;
         mySwappedGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMySwapped}</p>`;
         renderOffers();
         listEl.innerHTML = `<li>${t.noRec}</li>`;
@@ -1321,7 +1529,9 @@
       }
 
       const uid = currentAccount.id;
+      const userRec = ensureUserRecord(uid, currentAccount.name);
       const myListedItems = state.items.filter(i => i.ownerId === uid);
+      const myFavItems = state.items.filter(i => userRec.favorites.includes(i.id));
       const mySwappedItems = state.items.filter(i => i.swappedById === uid);
       const mySoldCount = myListedItems.filter(i => i.status === 'swapped').length;
 
@@ -1354,7 +1564,34 @@
         }).join('');
       }
 
-      // (2) 我已交換取得的物品
+      // (2) 我收藏的衣物
+      if (!myFavItems.length) {
+        myFavGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMyFav}</p>`;
+      } else {
+        myFavGrid.innerHTML = myFavItems.map(it => {
+          const info = it[state.lang] || it.zh;
+          const media = it.img ? `<img src="${it.img}" alt="${info.name}">` : it.emoji;
+          const statusAction = it.status === 'available'
+            ? `<button class="btn-accept" style="padding:5px 10px; font-size:12px;" onclick="openBuyConfirm(${it.id})">${t.swapBtn}</button>`
+            : `<span class="status-tag">${t.swappedBtn}</span>`;
+          return `
+            <div class="mini-card">
+              <div class="mini-img">${media}</div>
+              <div class="mini-body">
+                <div><span class="owner-tag">${t.ownerPrefix}${it.ownerName || '同學'}</span> <span class="points" style="font-size:14px;">${it.pts} pt</span></div>
+                <h4>${info.name}</h4>
+                <p>${info.desc}</p>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                  ${statusAction}
+                  <button class="filter-btn" style="padding:4px 10px; font-size:12px;" onclick="toggleFavorite(${it.id})">${t.unfavBtn}</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // (3) 我已交換取得的物品
       if (!mySwappedItems.length) {
         mySwappedGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMySwapped}</p>`;
       } else {
@@ -1376,7 +1613,7 @@
 
       renderOffers();
 
-      // 1. 只顯示與「我」相關的互動紀錄
+      // 個人互動紀錄
       const personalLogs = state.logs.filter(l => {
         if (l.type === 'list') return l.ownerId === uid;
         if (l.type === 'swap') return l.buyerId === uid || l.sellerId === uid;
@@ -1413,6 +1650,7 @@
       document.getElementById('nav-diy').innerText = t.navDiy;
       document.getElementById('nav-closet').innerText = t.navCloset;
       document.getElementById('lang-toggle').innerText = t.langBtn;
+      document.getElementById('um-lang-btn').innerText = t.langBtn;
 
       const userBtn = document.getElementById('user-badge-btn');
       if (currentAccount) {
@@ -1442,6 +1680,7 @@
       document.getElementById('lbl-cond').innerText = t.lblCond;
       document.getElementById('in-cond').placeholder = t.phCond;
       document.getElementById('lbl-pts').innerText = t.lblPts;
+      document.getElementById('lbl-icon').innerText = t.lblIcon;
       document.getElementById('lbl-photo').innerText = t.lblPhoto;
       document.getElementById('lbl-desc').innerText = t.lblDesc;
       document.getElementById('in-desc').placeholder = t.phDesc;
@@ -1478,6 +1717,7 @@
       document.getElementById('st-listed-lbl').innerText = t.stListedLbl;
       document.getElementById('st-saved-lbl').innerText = t.stSavedLbl;
       document.getElementById('my-listed-title').innerText = t.myListedTitle;
+      document.getElementById('my-fav-title').innerText = t.myFavTitle;
       document.getElementById('my-swapped-title').innerText = t.mySwappedTitle;
       document.getElementById('offers-title').innerText = t.offersTitle;
       document.getElementById('rec-title').innerText = t.recTitle;
@@ -1486,6 +1726,7 @@
       document.getElementById('em-name-lbl').innerText = t.emNameLbl;
       document.getElementById('em-cond-lbl').innerText = t.emCondLbl;
       document.getElementById('em-pts-lbl').innerText = t.emPtsLbl;
+      document.getElementById('em-icon-lbl').innerText = t.emIconLbl;
       document.getElementById('em-photo-lbl').innerText = t.emPhotoLbl;
       document.getElementById('em-desc-lbl').innerText = t.emDescLbl;
       document.getElementById('em-cancel').innerText = t.emCancel;
@@ -1494,16 +1735,18 @@
       document.getElementById('um-title').innerText = t.umTitle;
       document.getElementById('um-desc').innerHTML = t.umDesc;
       document.getElementById('um-id-lbl').innerText = t.umIdLbl;
+      document.getElementById('um-id-input').placeholder = t.umIdPh;
       document.getElementById('um-name-lbl').innerText = t.umNameLbl;
+      document.getElementById('um-name-input').placeholder = t.umNamePh;
       document.getElementById('um-cancel').innerText = t.umCancel;
       document.getElementById('um-save').innerText = t.umSave;
 
+      renderIconPickers();
       renderMarket();
       renderDiy();
       renderCloset();
     }
 
-    // 初始化：恢復上次分頁，並檢查是否已登入
     const initialTab = location.hash.replace('#', '') || localStorage.getItem(TAB_KEY) || 'market';
     showSection(initialTab);
     renderAll();
