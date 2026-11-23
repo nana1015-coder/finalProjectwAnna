@@ -13,8 +13,9 @@
     header { background: var(--primary); color: white; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
     header h1 { margin: 0; font-size: 20px; }
     .nav-group { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
-    nav button { background: transparent; border: 1px solid rgba(255,255,255,0.8); color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: 0.2s; }
+    nav button { background: transparent; border: 1px solid rgba(255,255,255,0.8); color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: 0.2s; position: relative; }
     nav button:hover, nav button.active { background: white; color: var(--primary); font-weight: bold; }
+    .notif-dot { background: #ff5252; color: white; border-radius: 999px; padding: 1px 6px; font-size: 11px; font-weight: bold; margin-left: 4px; display: inline-block; }
     .badge-pill { background: rgba(0,0,0,0.22); padding: 6px 12px; border-radius: 20px; font-size: 13px; cursor: pointer; border: none; color: white; font-weight: bold; }
     .badge-pill:hover { background: rgba(0,0,0,0.35); }
     .lang-btn { background: var(--accent); color: #222; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: bold; }
@@ -72,6 +73,8 @@
     /* 表單與區塊 */
     .box { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.07); margin-bottom: 20px; }
     .rule-note { background: #e8f5e9; border-left: 4px solid var(--primary); padding: 12px 16px; border-radius: 6px; margin-bottom: 18px; font-size: 14px; }
+    .notif-banner { background: #fff8e1; border-left: 4px solid #ffb300; padding: 12px 16px; border-radius: 6px; margin-bottom: 18px; font-size: 14px; }
+    .empty-tip { color: #666; font-size: 14px; background: #f6f8f6; padding: 14px 16px; border-radius: 10px; }
     .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 15px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
     .form-group label { font-weight: bold; font-size: 14px; }
@@ -83,16 +86,19 @@
 
     /* DIY 創意卡片與按讚獎賞 */
     .diy-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; border-left: 5px solid #66bb6a; }
+    .diy-thumb { width: 92px; height: 92px; border-radius: 10px; object-fit: cover; border: 1px solid #e0e0e0; flex-shrink: 0; }
     .diy-info { flex: 1; min-width: 240px; }
     .diy-info h3 { margin: 6px 0 4px; font-size: 17px; }
     .diy-info p { margin: 0 0 8px; font-size: 14px; color: #555; }
     .diy-meta { font-size: 13px; color: #2e7d32; font-weight: bold; }
     .diy-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-    .diy-btn-row { display: flex; gap: 8px; align-items: center; }
+    .diy-btn-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
     .btn-like { background: #fff0f3; color: #c62828; border: 1px solid #ef9a9a; padding: 7px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.2s; }
     .btn-like:hover { background: #ffcdd2; }
     .btn-like.liked { background: #e53935; color: white; border-color: #e53935; }
     .btn-like:disabled { opacity: 0.75; cursor: not-allowed; }
+    .btn-danger-sm { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; }
+    .btn-danger-sm:hover { background: #ffcdd2; }
 
     /* 我的衣櫃區塊 */
     .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 22px; }
@@ -116,12 +122,20 @@
     ul.record-list li { margin-bottom: 6px; font-size: 14px; }
 
     /* 留言列表樣式 */
-    .comment-list { max-height: 240px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 10px; padding: 12px; background: #fafafa; margin: 10px 0 12px; }
+    .comment-list { max-height: 250px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 10px; padding: 12px; background: #fafafa; margin: 10px 0 10px; }
     .comment-item { padding: 8px 10px; border-bottom: 1px solid #eaeaea; font-size: 14px; }
     .comment-item:last-child { border-bottom: none; }
-    .comment-meta { font-size: 12px; color: #2e7d32; font-weight: bold; margin-bottom: 2px; }
+    .comment-meta { font-size: 12px; color: #2e7d32; font-weight: bold; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .btn-reply-sm { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: bold; cursor: pointer; }
+    .btn-reply-sm:hover { background: #c8e6c9; }
+    .reply-bar { display: none; justify-content: space-between; align-items: center; background: #e8f5e9; color: #1b5e20; padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; margin-bottom: 8px; }
     .comment-form { display: flex; gap: 8px; }
     .comment-form input { flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; }
+
+    /* 重置系統區 */
+    .reset-zone { margin-top: 18px; padding-top: 14px; border-top: 1px dashed #ddd; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .btn-reset-subtle { background: transparent; color: #b71c1c; border: 1px solid #ef9a9a; padding: 5px 10px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+    .btn-reset-subtle:hover { background: #ffebee; }
 
     /* 彈出小視窗 */
     .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.52); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
@@ -145,7 +159,7 @@
         <button id="nav-list" onclick="showSection('list-item')">上架衣物</button>
         <button id="nav-quiz" onclick="showSection('quiz')">衣櫃碳排檢測</button>
         <button id="nav-diy" onclick="showSection('diy')">舊衣 DIY 改造</button>
-        <button id="nav-closet" onclick="showSection('closet')">我的衣櫃</button>
+        <button id="nav-closet" onclick="showSection('closet')">我的衣櫃 <span id="nav-notif-badge" class="notif-dot" style="display:none;">0</span></button>
       </nav>
       <button class="badge-pill" id="user-badge-btn" onclick="openUserModal()">👤 請先登入</button>
       <button class="lang-btn" id="lang-toggle" onclick="toggleLang()">English / 中文</button>
@@ -263,6 +277,11 @@
           </div>
         </div>
         <div class="form-group">
+          <label id="diy-lbl-photo" for="diy-in-photo">分享改造作品照片（選填）</label>
+          <input id="diy-in-photo" type="file" accept="image/*" onchange="previewUploadImage(event, 'diy-photo-preview', 'diyAdd')">
+          <img id="diy-photo-preview" class="img-preview" alt="DIY Preview">
+        </div>
+        <div class="form-group">
           <label id="diy-lbl-desc" for="diy-in-desc">改造靈感簡介</label>
           <input id="diy-in-desc" type="text" required placeholder="簡單說明原本是什麼衣服、怎麼改造...">
         </div>
@@ -280,6 +299,8 @@
   <div id="closet" class="section">
     <h2 id="closet-title">👜 我的永續衣櫃、收藏清單與互動紀錄</h2>
     <div class="box">
+      <div id="closet-notif-banner" class="notif-banner" style="display:none;"></div>
+
       <div class="stats-row">
         <div class="stat-card">
           <div id="st-pts-lbl">目前點數</div>
@@ -300,7 +321,7 @@
       </div>
 
       <!-- (1) 我刊登的物品 -->
-      <h3 id="my-listed-title">📦 我刊登的物品（未售出可編輯價格、圖示/圖片與說明）</h3>
+      <h3 id="my-listed-title">📦 我刊登的物品（未售出可編輯或取消刊登）</h3>
       <div id="my-listed-grid" class="mini-grid"></div>
 
       <!-- (2) 我收藏的物品 -->
@@ -315,8 +336,8 @@
       <h3 id="offers-title">💬 收到的議價請求（買家出價 → 賣家決定是否成交）</h3>
       <div id="offers-list"></div>
 
-      <!-- 個人互動紀錄 -->
-      <h3 id="rec-title" style="margin-top:20px;">📜 我的個人互動紀錄</h3>
+      <!-- 個人互動紀錄與通知 -->
+      <h3 id="rec-title" style="margin-top:20px;">📜 我的個人互動紀錄與通知</h3>
       <ul class="record-list" id="record-list"></ul>
     </div>
   </div>
@@ -379,6 +400,10 @@
         <button type="button" class="filter-btn" onclick="closeModals()" id="cm-close-btn">關閉</button>
       </div>
       <div class="comment-list" id="cm-list"></div>
+      <div class="reply-bar" id="cm-reply-bar">
+        <span id="cm-reply-label"></span>
+        <button type="button" class="btn-reply-sm" onclick="clearReplyTarget()" id="cm-reply-clear">取消對象</button>
+      </div>
       <form class="comment-form" onsubmit="submitComment(event)">
         <input id="cm-input" type="text" required placeholder="詢問衣況、尺寸或面交時間...">
         <button type="submit" class="btn-accept" id="cm-send-btn">送出</button>
@@ -390,6 +415,9 @@
   <div id="diy-modal" class="modal-backdrop" onclick="if(event.target===this) closeModals()">
     <div class="modal-card">
       <h3 id="dm-title" style="margin-bottom:10px;"></h3>
+      <div id="dm-img-wrap" style="margin-bottom:10px; display:none;">
+        <img id="dm-img" style="width:100%; max-height:200px; object-fit:cover; border-radius:10px;" alt="DIY">
+      </div>
       <div style="margin-bottom:8px;">
         <span class="tag" id="dm-tag"></span>
         <span class="owner-tag" id="dm-author"></span>
@@ -403,7 +431,41 @@
     </div>
   </div>
 
-  <!-- 彈出小視窗 5：帳號登入 / 切換（含雙語切換按鈕） -->
+  <!-- 彈出小視窗 5：編輯 DIY 創意 -->
+  <div id="diy-edit-modal" class="modal-backdrop" onclick="if(event.target===this) closeModals()">
+    <div class="modal-card">
+      <h3 id="dem-title" style="margin-bottom:10px;">✏️ 編輯改造創意</h3>
+      <form onsubmit="saveEditedDiy(event)">
+        <div class="form-group">
+          <label id="dem-name-lbl" for="dem-name">改造作品名稱</label>
+          <input id="dem-name" type="text" required>
+        </div>
+        <div class="form-group">
+          <label id="dem-tag-lbl" for="dem-tag">難度 / 所需時間</label>
+          <input id="dem-tag" type="text" required>
+        </div>
+        <div class="form-group">
+          <label id="dem-photo-lbl" for="dem-photo">更換改造照片（不選則保留原圖）</label>
+          <input id="dem-photo" type="file" accept="image/*" onchange="previewUploadImage(event, 'dem-preview', 'diyEdit')">
+          <img id="dem-preview" class="img-preview" alt="DIY Edit Preview">
+        </div>
+        <div class="form-group">
+          <label id="dem-desc-lbl" for="dem-desc">改造靈感簡介</label>
+          <input id="dem-desc" type="text" required>
+        </div>
+        <div class="form-group">
+          <label id="dem-steps-lbl" for="dem-steps">詳細製作步驟</label>
+          <textarea id="dem-steps" rows="3" required></textarea>
+        </div>
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <button type="button" class="filter-btn" onclick="closeModals()" id="dem-cancel">取消</button>
+          <button type="submit" class="btn-accept" id="dem-save">儲存修改</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 彈出小視窗 6：帳號登入 / 切換（含雙語切換與密碼保護的系統重置） -->
   <div id="user-modal" class="modal-backdrop">
     <div class="modal-card">
       <div class="modal-header-row">
@@ -425,23 +487,33 @@
         <button class="filter-btn" onclick="closeUserModalIfLoggedIn()" id="um-cancel" style="display:none;">取消</button>
         <button class="btn-accept" onclick="saveUserAccount()" id="um-save">確認登入</button>
       </div>
+
+      <div class="reset-zone">
+        <span id="reset-hint" style="font-size:12px; color:#777;">系統管理重置（需密碼）</span>
+        <button type="button" class="btn-reset-subtle" id="reset-btn" onclick="handleResetSystem()">重置系統資料</button>
+      </div>
     </div>
   </div>
 
   <script>
     const CLOUD_BASE_URL = 'https://final-project-8e175-default-rtdb.firebaseio.com';
-    const STORAGE_KEY = 'rewear_prod_v3';
-    const ACCOUNT_KEY = 'rewear_current_account_v3';
+    const STORAGE_KEY = 'rewear_prod_v4';
+    const ACCOUNT_KEY = 'rewear_current_account_v4';
     const TAB_KEY = 'rewear_active_tab';
+    const RESET_PASSCODE = 'NanaAnna1015522';
     const BASIC_ICONS = ['👕', '🧥', '👗', '👖', '👜', '👟', '🧢', '🧣'];
 
     let uploadedImageData = '';
     let editedImageData = '';
+    let diyUploadedImageData = '';
+    let diyEditedImageData = '';
     let selectedAddIcon = '';
     let selectedEditIcon = '';
     let pendingBuyItemId = null;
     let editingItemId = null;
+    let editingDiyId = null;
     let commentingItemId = null;
+    let replyToNickname = '';
     let currentAccount = loadCurrentAccount();
 
     function loadCurrentAccount() {
@@ -452,24 +524,12 @@
       return null;
     }
 
-    const defaultItems = [
-      { id: 1, cat: 'top', emoji: '🧥', img: '', ownerId: 'user_azhe', ownerName: '阿哲', pts: 150, status: 'available', comments: [],
-        zh: { catName: '上衣 / 外套', cond: '9成新・L號', name: '復古水洗丹寧外套', desc: '買太大很少穿，版型很挺適合秋冬穿搭。' },
-        en: { catName: 'Tops & Outerwear', cond: '90% New · L', name: 'Vintage Washed Denim Jacket', desc: 'Slightly oversized, structured fit great for autumn & winter.' } },
-      { id: 2, cat: 'bottom', emoji: '👖', img: '', ownerId: 'user_mia', ownerName: 'Mia', pts: 100, status: 'available', comments: [],
-        zh: { catName: '褲裝 / 裙裝', cond: '8成新・M號', name: '日系卡其直筒寬褲', desc: '純棉材質非常透氣，無任何污漬破損。' },
-        en: { catName: 'Pants & Skirts', cond: '80% New · M', name: 'Japanese Khaki Straight Trousers', desc: 'Breathable cotton fabric with no stains or tears.' } },
-      { id: 3, cat: 'top', emoji: '🧶', img: '', ownerId: 'user_yun', ownerName: '芸芸', pts: 120, status: 'available', comments: [],
-        zh: { catName: '上衣 / 外套', cond: '全新吊牌未拆・F', name: '燕麥色針織開襟毛衣', desc: '網購重複下單，全新轉讓給有緣人！' },
-        en: { catName: 'Tops & Outerwear', cond: 'Brand New w/ Tag · F', name: 'Oatmeal Knit Cardigan', desc: 'Duplicate online order—brand new for a good home!' } },
-      { id: 4, cat: 'acc', emoji: '👜', img: '', ownerId: 'user_kevin', ownerName: 'Kevin', pts: 80, status: 'available', comments: [],
-        zh: { catName: '配件 / 包包', cond: '9成新', name: '文青帆布側背托特包', desc: '可裝得下 15 吋筆電與原文書，上課超實用。' },
-        en: { catName: 'Bags & Accessories', cond: '90% New', name: 'Minimalist Canvas Tote Bag', desc: 'Fits a 15-inch laptop and textbooks—ideal for class.' } }
-    ];
+    // 初始不含任何預設四件商品，避免無人回覆
+    const defaultItems = [];
 
     const defaultDiy = [
       {
-        id: 101, authorId: 'user_han', likes: 18, likedBy: [],
+        id: 101, authorId: 'user_han', likes: 18, likedBy: [], img: '',
         zh: { tag: '免針線・新手友善', author: '阿涵', name: '舊 T-shirt 變身「編織環保購物袋」',
           desc: '只需一把剪刀！剪去袖子與領口，將下擺剪成流蘇打結，15 分鐘完成超耐用買菜袋。',
           steps: '1. 剪掉 T-shirt 兩側袖子與領口。\n2. 衣服翻面，底部剪出約 5 公分長的流蘇條。\n3. 將前後兩片流蘇兩兩打死結。\n4. 翻回正面即完成耐用購物袋！' },
@@ -478,7 +538,7 @@
           steps: '1. Cut off sleeves and collar of the t-shirt.\n2. Turn inside out and cut ~5cm fringe strips at the bottom.\n3. Tie paired front/back fringes tightly.\n4. Turn right-side out—done!' }
       },
       {
-        id: 102, authorId: 'user_yu', likes: 25, likedBy: [],
+        id: 102, authorId: 'user_yu', likes: 25, likedBy: [], img: '',
         zh: { tag: '進階手作・30分鐘', author: '小宇', name: '破洞牛仔褲改造成「文青筆電保護套」',
           desc: '利用牛仔布耐磨的特性，裁剪褲管並縫合底部，加上鈕扣就能保護平板與筆電。',
           steps: '1. 測量筆電長寬，裁剪牛仔褲大腿較寬處。\n2. 翻面縫合底部邊緣。\n3. 頂部留出翻蓋空間並縫上鈕扣即完成！' },
@@ -514,6 +574,7 @@
         heroDesc: '實踐 SDG 12 責任消費與 SDG 13 氣候行動',
         marketTitle: '👕 二手衣交換市集', filterLabel: '分類篩選：',
         fAll: '全部衣物', fTop: '上衣 / 外套', fBottom: '褲裝 / 裙裝', fAcc: '配件 / 包包',
+        marketEmpty: '目前市集還沒有上架的衣物，快去「上架衣物」成為第一位刊登者吧！',
         favSave: '☆ 收藏', favSaved: '⭐ 已收藏',
         ownerPrefix: '上架者：', ptsCost: '開價點數', swapBtn: '直接交換', bargainBtn: '議價', commentBtn: '💬 問答',
         swappedBtn: '✅ 已售出', minePending: '⏳ 我的刊登（待成交）',
@@ -543,28 +604,39 @@
         diyShareTitle: '💡 分享你的舊衣改造創意',
         diyLblName: '改造作品名稱', diyPhName: '例如：舊衛衣改短版罩衫',
         diyLblTag: '難度 / 所需時間', diyPhTag: '例如：免針線・15分鐘',
+        diyLblPhoto: '分享改造作品照片（選填）',
         diyLblDesc: '改造靈感簡介', diyPhDesc: '簡單說明原本是什麼衣服、怎麼改造...',
         diyLblSteps: '詳細製作步驟', diyPhSteps: '寫下 1. 2. 3. 簡單步驟...',
         diyBtnSubmit: '發布我的改造創意',
         diyAuthorPrefix: '分享者：',
         diyEarnedText: (pts) => `創作者已獲點數：${pts} pt（1 讚 = 1 pt）`,
         likeBtn: '👍 讚', likedBtn: '❤️ 已讚', viewStepBtn: '查看教學步驟',
+        editDiyBtn: '✏️ 編輯', delDiyBtn: '🗑️ 刪除',
+        delDiyConfirm: (name) => `確定要刪除改造創意「${name}」嗎？刪除後無法復原。`,
+        demTitle: '✏️ 編輯改造創意', demNameLbl: '改造作品名稱', demTagLbl: '難度 / 所需時間',
+        demPhotoLbl: '更換改造照片（不選則保留原圖）', demDescLbl: '改造靈感簡介', demStepsLbl: '詳細製作步驟',
+        demCancel: '取消', demSave: '儲存修改',
         dmClose: '關閉視窗',
         diyAddedAlert: (name) => `已發布改造創意「${name}」！當其他同學幫你按讚時，你將自動獲得 1 讚 = 1 點獎勵！`,
         closetTitle: '👜 我的永續衣櫃、收藏清單與互動紀錄',
         stPtsLbl: '目前點數', stSwappedLbl: '已交換取得', stListedLbl: '刊登 / 已售出', stSavedLbl: '預估減碳量 (kg)',
-        myListedTitle: '📦 我刊登的物品（未售出可編輯價格、圖示/圖片與說明）',
+        myListedTitle: '📦 我刊登的物品（未售出可編輯或取消刊登）',
         noMyListed: '你目前還沒有刊登任何衣物，快去「上架衣物」發布吧！',
-        editBtn: '✏️ 編輯商品', soldDoneTag: '已成交售出',
+        editBtn: '✏️ 編輯商品', cancelListBtn: '取消刊登', soldDoneTag: '已成交售出',
+        cancelListConfirm: (name) => `確定要取消刊登「${name}」嗎？`,
+        cancelListDone: (name) => `已取消刊登「${name}」。`,
         myFavTitle: '⭐ 我收藏的衣物（先存起來考慮）',
         noMyFav: '你目前還沒有收藏任何衣物，在市集點擊右上角「☆ 收藏」即可加入！',
-        unfavBtn: '取消收藏',
+        backMarketBtn: '返回市集', unfavBtn: '取消收藏',
         mySwappedTitle: '🛍️ 我已交換取得的物品',
         noMySwapped: '你目前還沒有交換取得任何衣物。',
         offersTitle: '💬 收到的議價請求（買家出價 → 賣家決定是否成交）',
         noOffers: '目前尚未收到針對你上架衣物的議價請求。',
         acceptBtn: '接受議價並成交', rejectBtn: '拒絕',
-        recTitle: '📜 我的個人互動紀錄', noRec: '尚無與你相關的互動紀錄。',
+        rejectAlert: '已拒絕此議價請求，並已通知出價的買家。',
+        buyerNotEnoughAlert: (buyerName) => `買家「${buyerName}」目前點數不足，無法完成此次議價成交！`,
+        notifBannerText: (count) => `🔔 你有 <strong>${count}</strong> 則新的衣物留言或議價通知！`,
+        recTitle: '📜 我的個人互動紀錄與通知', noRec: '尚無與你相關的互動紀錄。',
         bmTitle: '🛒 確認交換此衣物？',
         bmBody: (name, seller, cost, curr, after) => `
           <div><strong>商品名稱：</strong>${name}</div>
@@ -581,23 +653,34 @@
         cmHeader: (name) => `💬 「${name}」問答討論`,
         cmClose: '關閉', cmPh: '詢問衣況、尺寸或面交時間...', cmSend: '送出留言',
         cmEmpty: '目前還沒有留言，歡迎在下方發問或回覆！',
+        replyBtn: '回覆', replyingTo: (nick) => `正在回覆 @${nick}`, clearReplyBtn: '取消對象',
         umTitle: '👤 登入 ReWear 永續衣櫥',
         umDesc: '請輸入你的<strong>唯一帳號 ID（學號／信箱）</strong>與<strong>顯示暱稱</strong>。新帳號初始為 0 點，完成「衣櫃碳排檢測」即可領取 <strong>+150 pt</strong> 啟動點數！',
         umIdLbl: '唯一帳號 ID / 學號（不可與他人重複）', umIdPh: '例如：s112001 或 green_01',
         umNameLbl: '顯示暱稱', umNamePh: '例如：小綠',
         umCancel: '取消', umSave: '確認登入',
+        resetHint: '系統管理重置（需密碼）', resetBtn: '重置系統資料',
+        resetPassPrompt: '請輸入系統重置密碼：',
+        resetWrongPass: '密碼錯誤，已取消重置。',
+        resetConfirmText: '⚠️ 確定要清空所有本機與 Firebase 雲端資料並重置系統嗎？此動作無法復原！',
+        resetDoneAlert: '系統已重置完成，所有資料已恢復為初始狀態。',
         needLoginAlert: '請先輸入帳號 ID 與暱稱完成登入！',
         idConflictAlert: (id, existName) => `帳號 ID「${id}」已被暱稱「${existName}」註冊使用，請改用其他帳號 ID，或輸入正確暱稱登入！`,
         bargainPrompt: (name, currPts) => `「${name}」目前開價 ${currPts} pt，請輸入你想議價的點數：`,
         bargainInvalid: '請輸入大於 0 的有效點數！',
-        bargainSent: (name, offerPts) => `已對「${name}」提出 ${offerPts} pt 的議價請求，等待賣家確認！`,
+        bargainSent: (name, offerPts) => `已對「${name}」提出 ${offerPts} pt 的議價請求，並已通知賣家！`,
         swapOk: (name, cost, rem) => `成交交換！「${name}」扣除 ${cost} pt，剩餘點數：${rem} pt。`,
-        swapNoPts: '點數不足！你可以先完成「衣櫃碳排檢測」領取 150 點，或先使用「議價」出價。',
+        swapNoPts: '點數不足，無法交換！你可以先完成「衣櫃碳排檢測」領取 150 點，或先使用「議價」出價。',
         listOk: (name, pts) => `已刊登「${name}」（設定 ${pts} pt）。有人交換或接受議價成交後才會獲得點數！`,
         acceptedOk: (name, pts, rem) => `議價成交！「${name}」以 ${pts} pt 成交，你已獲得 +${pts} pt（目前點數：${rem} pt）！`,
         logList: (name, pts) => `[我刊登了] 「${name}」（開價 ${pts} pt）`,
+        logCancelList: (name) => `[取消刊登] 已取消刊登「${name}」`,
         logBuy: (seller, name, pts) => `[我購買了] 向 ${seller} 交換「${name}」（-${pts} pt）`,
         logSold: (buyer, name, pts) => `[已售出] ${buyer} 購買了我的「${name}」（+${pts} pt）`,
+        logBargainSent: (seller, name, pts) => `[提出議價] 向 ${seller} 出價 ${pts} pt 購買「${name}」`,
+        logBargainReceived: (buyer, name, pts) => `[議價通知] ${buyer} 對我的「${name}」出價 ${pts} pt`,
+        logBargainRejected: (seller, name, pts) => `[議價未通過] ${seller} 拒絕了你對「${name}」的 ${pts} pt 出價`,
+        logCommentReceived: (sender, name, text) => `[留言通知] ${sender} 在我的「${name}」留言：「${text}」`,
         logILiked: (author, name) => `[我按讚了] ${author} 的改造創意「${name}」（對方 +1 pt）`,
         logGotLiked: (liker, name) => `[收到按讚] ${liker} 讚了我的改造創意「${name}」（+1 pt）`,
         logQuiz: () => `[完成測驗] 首次完成衣櫃碳排檢測，獲得 +150 pt`
@@ -610,6 +693,7 @@
         heroDesc: 'Driving SDG 12 Responsible Consumption & SDG 13 Climate Action',
         marketTitle: '👕 Second-Hand Swap Market', filterLabel: 'Filter by category:',
         fAll: 'All Items', fTop: 'Tops & Outerwear', fBottom: 'Pants & Skirts', fAcc: 'Bags & Accessories',
+        marketEmpty: 'No items listed yet. Head to "List Item" to be the first to post!',
         favSave: '☆ Save', favSaved: '⭐ Saved',
         ownerPrefix: 'Seller: ', ptsCost: 'Asking Points', swapBtn: 'Swap Now', bargainBtn: 'Bargain', commentBtn: '💬 Q&A',
         swappedBtn: '✅ Sold', minePending: '⏳ My Listing (Pending)',
@@ -639,28 +723,39 @@
         diyShareTitle: '💡 Share Your DIY Upcycle Idea',
         diyLblName: 'Upcycle Project Title', diyPhName: 'e.g., Hoodie into a Cropped Cardigan',
         diyLblTag: 'Difficulty / Time', diyPhTag: 'e.g., No Sew · 15 mins',
+        diyLblPhoto: 'Upcycle Photo (Optional)',
         diyLblDesc: 'Idea Summary', diyPhDesc: 'Describe the original garment and transformation...',
         diyLblSteps: 'Step-by-Step Guide', diyPhSteps: 'Write simple 1. 2. 3. steps...',
         diyBtnSubmit: 'Publish DIY Idea',
         diyAuthorPrefix: 'Creator: ',
         diyEarnedText: (pts) => `Creator Earned: ${pts} pt (1 Like = 1 pt)`,
         likeBtn: '👍 Like', likedBtn: '❤️ Liked', viewStepBtn: 'View Steps',
+        editDiyBtn: '✏️ Edit', delDiyBtn: '🗑️ Delete',
+        delDiyConfirm: (name) => `Delete DIY idea "${name}"? This cannot be undone.`,
+        demTitle: '✏️ Edit DIY Idea', demNameLbl: 'Upcycle Project Title', demTagLbl: 'Difficulty / Time',
+        demPhotoLbl: 'Replace Photo (Leave blank to keep current)', demDescLbl: 'Idea Summary', demStepsLbl: 'Step-by-Step Guide',
+        demCancel: 'Cancel', demSave: 'Save Changes',
         dmClose: 'Close',
         diyAddedAlert: (name) => `Published DIY idea "${name}"! You will earn +1 pt for every like from peers.`,
         closetTitle: '👜 My Sustainable Closet, Saved Items & Activity',
         stPtsLbl: 'Points Balance', stSwappedLbl: 'Items Swapped In', stListedLbl: 'Listed / Sold', stSavedLbl: 'Est. CO₂ Saved (kg)',
-        myListedTitle: '📦 My Listed Items (Edit Price, Icon/Photo & Details Before Sold)',
+        myListedTitle: '📦 My Listed Items (Edit or Unlist Before Sold)',
         noMyListed: 'You have not listed any items yet.',
-        editBtn: '✏️ Edit Item', soldDoneTag: 'Sold',
+        editBtn: '✏️ Edit Item', cancelListBtn: 'Unlist', soldDoneTag: 'Sold',
+        cancelListConfirm: (name) => `Unlist "${name}" from the market?`,
+        cancelListDone: (name) => `Unlisted "${name}".`,
         myFavTitle: '⭐ My Saved Items (Wishlist)',
         noMyFav: 'You have not saved any items yet. Click "☆ Save" on any item in the market!',
-        unfavBtn: 'Remove',
+        backMarketBtn: 'Back to Market', unfavBtn: 'Remove',
         mySwappedTitle: '🛍️ Items I Swapped In',
         noMySwapped: 'You have not swapped in any items yet.',
         offersTitle: '💬 Incoming Bargain Offers (Buyer Offer → Seller Decides)',
         noOffers: 'No incoming bargain offers on your listed items yet.',
         acceptBtn: 'Accept & Complete', rejectBtn: 'Decline',
-        recTitle: '📜 My Personal Activity Log', noRec: 'No personal activity yet.',
+        rejectAlert: 'Bargain offer declined and buyer has been notified.',
+        buyerNotEnoughAlert: (buyerName) => `Buyer "${buyerName}" does not have enough points to complete this deal.`,
+        notifBannerText: (count) => `🔔 You have <strong>${count}</strong> new comment or bargain notification(s)!`,
+        recTitle: '📜 My Personal Activity Log & Notifications', noRec: 'No personal activity yet.',
         bmTitle: '🛒 Confirm Swap Purchase?',
         bmBody: (name, seller, cost, curr, after) => `
           <div><strong>Item:</strong> ${name}</div>
@@ -677,23 +772,34 @@
         cmHeader: (name) => `💬 Q&A for "${name}"`,
         cmClose: 'Close', cmPh: 'Ask about size, condition, or meetup...', cmSend: 'Post',
         cmEmpty: 'No comments yet. Ask a question or leave a note below!',
+        replyBtn: 'Reply', replyingTo: (nick) => `Replying to @${nick}`, clearReplyBtn: 'Clear',
         umTitle: '👤 Sign In to ReWear',
         umDesc: 'Enter your <strong>Unique Account ID (Student ID / Email)</strong> and <strong>Display Name</strong>. New accounts start at 0 pt—complete the Carbon Test to earn <strong>+150 pt</strong>!',
         umIdLbl: 'Unique Account ID / Student ID', umIdPh: 'e.g., s112001 or green_01',
         umNameLbl: 'Display Nickname', umNamePh: 'e.g., Chloe',
         umCancel: 'Cancel', umSave: 'Sign In',
+        resetHint: 'Admin System Reset (Passcode Required)', resetBtn: 'Reset System Data',
+        resetPassPrompt: 'Enter system reset passcode:',
+        resetWrongPass: 'Incorrect passcode. Reset cancelled.',
+        resetConfirmText: '⚠️ Reset all local and Firebase cloud data back to initial defaults? This cannot be undone!',
+        resetDoneAlert: 'System has been reset to initial state.',
         needLoginAlert: 'Please sign in with your Unique Account ID and Nickname first!',
         idConflictAlert: (id, existName) => `Account ID "${id}" is already registered to "${existName}". Please choose another ID or enter the matching nickname!`,
         bargainPrompt: (name, currPts) => `"${name}" is listed at ${currPts} pts. Enter your bargained points:`,
         bargainInvalid: 'Please enter a valid number greater than 0!',
-        bargainSent: (name, offerPts) => `Bargain offer of ${offerPts} pts sent for "${name}", waiting for seller review!`,
+        bargainSent: (name, offerPts) => `Bargain offer of ${offerPts} pts sent for "${name}", and seller has been notified!`,
         swapOk: (name, cost, rem) => `Swap complete! Used ${cost} pts for "${name}". Remaining: ${rem} pts.`,
-        swapNoPts: 'Not enough points! Complete the Carbon Test for +150 pt or make a lower bargain offer.',
+        swapNoPts: 'Not enough points to swap! Complete the Carbon Test for +150 pt or make a lower bargain offer.',
         listOk: (name, pts) => `Listed "${name}" at ${pts} pts. Points are credited once swapped!`,
         acceptedOk: (name, pts, rem) => `Deal closed! "${name}" swapped at ${pts} pts; you earned +${pts} pts (Balance: ${rem} pts).`,
         logList: (name, pts) => `[I Listed] "${name}" (${pts} pts)`,
+        logCancelList: (name) => `[Unlisted] Removed listing "${name}"`,
         logBuy: (seller, name, pts) => `[I Swapped In] "${name}" from ${seller} (-${pts} pts)`,
         logSold: (buyer, name, pts) => `[Item Sold] ${buyer} swapped my "${name}" (+${pts} pts)`,
+        logBargainSent: (seller, name, pts) => `[Offer Sent] Offered ${pts} pts to ${seller} for "${name}"`,
+        logBargainReceived: (buyer, name, pts) => `[Bargain Alert] ${buyer} offered ${pts} pts on my "${name}"`,
+        logBargainRejected: (seller, name, pts) => `[Offer Declined] ${seller} declined your ${pts} pt offer on "${name}"`,
+        logCommentReceived: (sender, name, text) => `[Comment Alert] ${sender} commented on my "${name}": "${text}"`,
         logILiked: (author, name) => `[I Liked] ${author}'s DIY idea "${name}" (+1 pt to creator)`,
         logGotLiked: (liker, name) => `[Received Like] ${liker} liked my DIY idea "${name}" (+1 pt)`,
         logQuiz: () => `[Quiz Bonus] Completed first Closet Carbon Test (+150 pt)`
@@ -707,12 +813,8 @@
       return {
         lang: 'zh',
         users: {
-          'user_azhe': { name: '阿哲', points: 0, quizRewarded: false, favorites: [] },
-          'user_mia': { name: 'Mia', points: 0, quizRewarded: false, favorites: [] },
-          'user_yun': { name: '芸芸', points: 0, quizRewarded: false, favorites: [] },
-          'user_kevin': { name: 'Kevin', points: 0, quizRewarded: false, favorites: [] },
-          'user_han': { name: '阿涵', points: 0, quizRewarded: false, favorites: [] },
-          'user_yu': { name: '小宇', points: 0, quizRewarded: false, favorites: [] }
+          'user_han': { name: '阿涵', points: 0, quizRewarded: false, favorites: [], unreadCount: 0 },
+          'user_yu': { name: '小宇', points: 0, quizRewarded: false, favorites: [], unreadCount: 0 }
         },
         items: JSON.parse(JSON.stringify(defaultItems)),
         diyPosts: JSON.parse(JSON.stringify(defaultDiy)),
@@ -736,11 +838,10 @@
 
     function ensureUserRecord(id, name) {
       if (!state.users[id]) {
-        state.users[id] = { name: name || id, points: 0, quizRewarded: false, favorites: [] };
+        state.users[id] = { name: name || id, points: 0, quizRewarded: false, favorites: [], unreadCount: 0 };
       }
-      if (!Array.isArray(state.users[id].favorites)) {
-        state.users[id].favorites = [];
-      }
+      if (!Array.isArray(state.users[id].favorites)) state.users[id].favorites = [];
+      if (typeof state.users[id].unreadCount !== 'number') state.users[id].unreadCount = 0;
       return state.users[id];
     }
 
@@ -752,6 +853,12 @@
     function addUserPoints(id, delta, fallbackName = id) {
       const rec = ensureUserRecord(id, fallbackName);
       rec.points += delta;
+    }
+
+    function addUnreadNotification(userId, fallbackName = userId) {
+      if (!userId) return;
+      const rec = ensureUserRecord(userId, fallbackName);
+      rec.unreadCount = (rec.unreadCount || 0) + 1;
     }
 
     function requireLogin() {
@@ -779,7 +886,7 @@
       try {
         const res = await fetch(`${CLOUD_BASE_URL}/rewear_data.json`);
         const data = await res.json();
-        if (data && Array.isArray(data.items)) {
+        if (data && Array.isArray(data.items) && Array.isArray(data.diyPosts)) {
           state = {
             lang: state.lang,
             users: data.users || getInitialState().users,
@@ -800,7 +907,41 @@
       }
     }
 
-    // 基礎圖示選擇器渲染
+    // 密碼保護系統重置
+    async function handleResetSystem() {
+      const t = dict[state.lang];
+      const pass = prompt(t.resetPassPrompt);
+      if (pass === null) return;
+      if (pass !== RESET_PASSCODE) {
+        alert(t.resetWrongPass);
+        return;
+      }
+      if (!confirm(t.resetConfirmText)) return;
+
+      state = getInitialState();
+      currentAccount = null;
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(ACCOUNT_KEY);
+      sessionStorage.removeItem(ACCOUNT_KEY);
+      localStorage.removeItem(TAB_KEY);
+
+      try {
+        await fetch(`${CLOUD_BASE_URL}/rewear_data.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(state)
+        });
+      } catch (err) {
+        console.warn('Reset cloud sync failed:', err);
+      }
+
+      closeModals();
+      showSection('market');
+      renderAll();
+      openUserModal();
+      alert(t.resetDoneAlert);
+    }
+
     function renderIconPickers() {
       const addContainer = document.getElementById('add-icon-picker');
       if (addContainer) {
@@ -831,6 +972,8 @@
       if (!file) {
         if (targetMode === 'add') uploadedImageData = '';
         if (targetMode === 'edit') editedImageData = '';
+        if (targetMode === 'diyAdd') diyUploadedImageData = '';
+        if (targetMode === 'diyEdit') diyEditedImageData = '';
         preview.style.display = 'none';
         return;
       }
@@ -848,6 +991,8 @@
           const dataUrl = canvas.toDataURL('image/jpeg', 0.72);
           if (targetMode === 'add') uploadedImageData = dataUrl;
           if (targetMode === 'edit') editedImageData = dataUrl;
+          if (targetMode === 'diyAdd') diyUploadedImageData = dataUrl;
+          if (targetMode === 'diyEdit') diyEditedImageData = dataUrl;
           preview.src = dataUrl;
           preview.style.display = 'block';
         };
@@ -892,6 +1037,7 @@
 
     function closeModals() {
       commentingItemId = null;
+      replyToNickname = '';
       document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
     }
 
@@ -903,7 +1049,7 @@
       if (document.getElementById('quiz-result').style.display === 'block') calcCarbon(true);
     }
 
-    function showSection(id) {
+    async function showSection(id) {
       const validIds = ['market', 'list-item', 'quiz', 'diy', 'closet'];
       const targetId = validIds.includes(id) ? id : 'market';
 
@@ -925,6 +1071,37 @@
       if (location.hash !== `#${targetId}`) {
         history.replaceState(null, '', `#${targetId}`);
       }
+
+      if (targetId === 'closet' && currentAccount) {
+        const rec = ensureUserRecord(currentAccount.id, currentAccount.name);
+        if (rec.unreadCount > 0) {
+          rec.unreadCount = 0;
+          await persistState();
+          updateNotificationUI();
+        }
+      }
+    }
+
+    function updateNotificationUI() {
+      const t = dict[state.lang];
+      const badge = document.getElementById('nav-notif-badge');
+      const banner = document.getElementById('closet-notif-banner');
+      if (!currentAccount) {
+        badge.style.display = 'none';
+        banner.style.display = 'none';
+        return;
+      }
+      const rec = ensureUserRecord(currentAccount.id, currentAccount.name);
+      const count = rec.unreadCount || 0;
+      if (count > 0) {
+        badge.innerText = count;
+        badge.style.display = 'inline-block';
+        banner.innerHTML = t.notifBannerText(count);
+        banner.style.display = 'block';
+      } else {
+        badge.style.display = 'none';
+        banner.style.display = 'none';
+      }
     }
 
     function filterItems(cat, btn) {
@@ -934,7 +1111,6 @@
       renderMarket();
     }
 
-    // 收藏切換
     async function toggleFavorite(itemId) {
       if (!requireLogin()) return;
       const userRec = ensureUserRecord(currentAccount.id, currentAccount.name);
@@ -948,13 +1124,49 @@
       renderAll();
     }
 
-    // 商品問答 / 留言視窗
+    // 收藏點選「返回市集」跳回二手市集
+    function returnToMarketFromFavorite(itemId) {
+      currentFilter = 'all';
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      const fAll = document.getElementById('f-all');
+      if (fAll) fAll.classList.add('active');
+      renderMarket();
+      showSection('market');
+      const cardEl = document.getElementById(`market-card-${itemId}`);
+      if (cardEl) cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // 商品問答 / 留言視窗（支援選人回覆 @對象）
     function openCommentModal(itemId) {
       const item = state.items.find(i => i.id === itemId);
       if (!item) return;
       commentingItemId = itemId;
+      replyToNickname = '';
       renderCommentList();
       document.getElementById('comment-modal').classList.add('open');
+    }
+
+    function setReplyTarget(nickname) {
+      replyToNickname = nickname;
+      renderReplyBar();
+      document.getElementById('cm-input').focus();
+    }
+
+    function clearReplyTarget() {
+      replyToNickname = '';
+      renderReplyBar();
+    }
+
+    function renderReplyBar() {
+      const t = dict[state.lang];
+      const bar = document.getElementById('cm-reply-bar');
+      if (replyToNickname) {
+        document.getElementById('cm-reply-label').innerText = t.replyingTo(replyToNickname);
+        document.getElementById('cm-reply-clear').innerText = t.clearReplyBtn;
+        bar.style.display = 'flex';
+      } else {
+        bar.style.display = 'none';
+      }
     }
 
     function renderCommentList() {
@@ -966,6 +1178,7 @@
       document.getElementById('cm-close-btn').innerText = t.cmClose;
       document.getElementById('cm-input').placeholder = t.cmPh;
       document.getElementById('cm-send-btn').innerText = t.cmSend;
+      renderReplyBar();
 
       const listEl = document.getElementById('cm-list');
       const comments = Array.isArray(item.comments) ? item.comments : [];
@@ -975,10 +1188,14 @@
         listEl.innerHTML = comments.map(c => {
           const isSeller = c.userId === item.ownerId;
           const badge = isSeller ? (state.lang === 'zh' ? ' [賣家]' : ' [Seller]') : '';
+          const replyPrefix = c.replyTo ? `<strong>@${c.replyTo}</strong> ` : '';
           return `
             <div class="comment-item">
-              <div class="comment-meta">${c.userName}${badge} · ${c.time || ''}</div>
-              <div>${c.text}</div>
+              <div class="comment-meta">
+                <span>${c.userName}${badge} · ${c.time || ''}</span>
+                <button type="button" class="btn-reply-sm" onclick="setReplyTarget('${String(c.userName).replace(/'/g, "\\'")}')">${t.replyBtn}</button>
+              </div>
+              <div>${replyPrefix}${c.text}</div>
             </div>
           `;
         }).join('');
@@ -1002,14 +1219,29 @@
       item.comments.push({
         userId: currentAccount.id,
         userName: currentAccount.name,
+        replyTo: replyToNickname || '',
         text,
         time: timeStr
       });
 
+      // 若不是賣家自己留言，通知賣家
+      if (item.ownerId && item.ownerId !== currentAccount.id) {
+        addUnreadNotification(item.ownerId, item.ownerName);
+        state.logs.unshift({
+          type: 'comment_received',
+          sellerId: item.ownerId,
+          senderName: currentAccount.name,
+          name: item.zh.name,
+          enName: item.en.name,
+          text
+        });
+      }
+
       inputEl.value = '';
+      replyToNickname = '';
       await persistState();
       renderCommentList();
-      renderMarket();
+      renderAll();
     }
 
     function renderMarket() {
@@ -1025,6 +1257,11 @@
           const bSold = b.status === 'swapped' ? 1 : 0;
           return aSold - bSold;
         });
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="empty-tip" style="grid-column:1 / -1;">${t.marketEmpty}</div>`;
+        return;
+      }
 
       grid.innerHTML = filtered.map(it => {
         const info = it[state.lang] || it.zh;
@@ -1067,7 +1304,7 @@
           : '';
 
         return `
-          <div class="card ${it.status === 'swapped' ? 'sold-card' : ''}">
+          <div id="market-card-${it.id}" class="card ${it.status === 'swapped' ? 'sold-card' : ''}">
             <div class="card-img">
               ${mediaHtml}
               ${favBtnHtml}
@@ -1175,6 +1412,30 @@
         askingPts: item.pts,
         offerPts
       });
+
+      if (item.ownerId) {
+        addUnreadNotification(item.ownerId, item.ownerName);
+      }
+
+      state.logs.unshift({
+        type: 'bargain_sent',
+        buyerId: currentAccount.id,
+        sellerId: item.ownerId,
+        sellerName: item.ownerName || '同學',
+        name: item.zh.name,
+        enName: item.en.name,
+        pts: offerPts
+      });
+
+      state.logs.unshift({
+        type: 'bargain_received',
+        sellerId: item.ownerId,
+        buyerName: currentAccount.name,
+        name: item.zh.name,
+        enName: item.en.name,
+        pts: offerPts
+      });
+
       await persistState();
       renderAll();
       alert(t.bargainSent(dispName, offerPts));
@@ -1234,6 +1495,29 @@
       showSection('market');
     }
 
+    // 取消刊登
+    async function cancelListing(itemId) {
+      if (!requireLogin()) return;
+      const t = dict[state.lang];
+      const item = state.items.find(i => i.id === itemId && i.ownerId === currentAccount.id && i.status === 'available');
+      if (!item) return;
+      const dispName = (item[state.lang] || item.zh).name;
+      if (!confirm(t.cancelListConfirm(dispName))) return;
+
+      state.items = state.items.filter(i => i.id !== itemId);
+      state.offers = state.offers.filter(o => o.itemId !== itemId);
+      state.logs.unshift({
+        type: 'cancel_list',
+        ownerId: currentAccount.id,
+        name: item.zh.name,
+        enName: item.en.name
+      });
+
+      await persistState();
+      renderAll();
+      alert(t.cancelListDone(dispName));
+    }
+
     function openEditModal(id) {
       if (!requireLogin()) return;
       const item = state.items.find(i => i.id === id && i.ownerId === currentAccount.id && i.status === 'available');
@@ -1289,6 +1573,7 @@
       renderAll();
     }
 
+    // DIY 發布、編輯、刪除（支援圖片）
     async function handleAddDiy(e) {
       e.preventDefault();
       if (!requireLogin()) return;
@@ -1303,6 +1588,7 @@
         authorId: currentAccount.id,
         likes: 0,
         likedBy: [],
+        img: diyUploadedImageData || '',
         zh: { tag, author: currentAccount.name, name, desc, steps },
         en: { tag, author: currentAccount.name, name, desc, steps }
       };
@@ -1310,8 +1596,86 @@
       state.diyPosts.push(newPost);
       await persistState();
       e.target.reset();
+      diyUploadedImageData = '';
+      document.getElementById('diy-photo-preview').style.display = 'none';
       renderDiy();
       alert(t.diyAddedAlert(name));
+    }
+
+    function openEditDiyModal(id) {
+      if (!requireLogin()) return;
+      const post = state.diyPosts.find(p => p.id === id && p.authorId === currentAccount.id);
+      if (!post) return;
+      const t = dict[state.lang];
+      const info = post[state.lang] || post.zh;
+
+      editingDiyId = id;
+      diyEditedImageData = post.img || '';
+
+      document.getElementById('dem-title').innerText = t.demTitle;
+      document.getElementById('dem-name-lbl').innerText = t.demNameLbl;
+      document.getElementById('dem-tag-lbl').innerText = t.demTagLbl;
+      document.getElementById('dem-photo-lbl').innerText = t.demPhotoLbl;
+      document.getElementById('dem-desc-lbl').innerText = t.demDescLbl;
+      document.getElementById('dem-steps-lbl').innerText = t.demStepsLbl;
+      document.getElementById('dem-cancel').innerText = t.demCancel;
+      document.getElementById('dem-save').innerText = t.demSave;
+
+      document.getElementById('dem-name').value = info.name;
+      document.getElementById('dem-tag').value = info.tag;
+      document.getElementById('dem-desc').value = info.desc;
+      document.getElementById('dem-steps').value = info.steps;
+      document.getElementById('dem-photo').value = '';
+
+      const preview = document.getElementById('dem-preview');
+      if (diyEditedImageData) {
+        preview.src = diyEditedImageData;
+        preview.style.display = 'block';
+      } else {
+        preview.style.display = 'none';
+      }
+
+      document.getElementById('diy-edit-modal').classList.add('open');
+    }
+
+    async function saveEditedDiy(e) {
+      e.preventDefault();
+      if (!requireLogin() || !editingDiyId) return;
+      const post = state.diyPosts.find(p => p.id === editingDiyId && p.authorId === currentAccount.id);
+      if (!post) return;
+
+      const name = document.getElementById('dem-name').value.trim();
+      const tag = document.getElementById('dem-tag').value.trim();
+      const desc = document.getElementById('dem-desc').value.trim();
+      const steps = document.getElementById('dem-steps').value.trim();
+
+      post.img = diyEditedImageData;
+      post.zh.name = name;
+      post.zh.tag = tag;
+      post.zh.desc = desc;
+      post.zh.steps = steps;
+      post.en.name = name;
+      post.en.tag = tag;
+      post.en.desc = desc;
+      post.en.steps = steps;
+
+      editingDiyId = null;
+      closeModals();
+      await persistState();
+      renderDiy();
+    }
+
+    async function deleteDiy(id) {
+      if (!requireLogin()) return;
+      const t = dict[state.lang];
+      const post = state.diyPosts.find(p => p.id === id && p.authorId === currentAccount.id);
+      if (!post) return;
+      const dispName = (post[state.lang] || post.zh).name;
+      if (!confirm(t.delDiyConfirm(dispName))) return;
+
+      state.diyPosts = state.diyPosts.filter(p => p.id !== id);
+      await persistState();
+      renderDiy();
     }
 
     async function likeDiy(id) {
@@ -1349,6 +1713,14 @@
       const info = post[state.lang] || post.zh;
 
       document.getElementById('dm-title').innerText = info.name;
+      const imgWrap = document.getElementById('dm-img-wrap');
+      const imgEl = document.getElementById('dm-img');
+      if (post.img) {
+        imgEl.src = post.img;
+        imgWrap.style.display = 'block';
+      } else {
+        imgWrap.style.display = 'none';
+      }
       document.getElementById('dm-tag').innerText = info.tag;
       document.getElementById('dm-author').innerText = `${t.diyAuthorPrefix}${info.author}`;
       document.getElementById('dm-pts').innerText = t.diyEarnedText(post.likes);
@@ -1369,9 +1741,17 @@
         const isSelfPost = currentAccount && p.authorId === currentAccount.id;
         const earnedPts = p.likes * 1;
         const rankBadge = index === 0 ? '🏆 TOP 1 · ' : '';
+        const thumbHtml = p.img ? `<img class="diy-thumb" src="${p.img}" alt="${info.name}">` : '';
+        const ownerBtns = isSelfPost
+          ? `
+            <button type="button" class="filter-btn" style="padding:4px 10px; font-size:12px;" onclick="openEditDiyModal(${p.id})">${t.editDiyBtn}</button>
+            <button type="button" class="btn-danger-sm" onclick="deleteDiy(${p.id})">${t.delDiyBtn}</button>
+          `
+          : '';
 
         return `
           <div class="diy-card">
+            ${thumbHtml}
             <div class="diy-info">
               <div>
                 <span class="tag">${rankBadge}${info.tag}</span>
@@ -1388,18 +1768,27 @@
                 </button>
                 <button class="filter-btn" onclick="openDiyModal(${p.id})">${t.viewStepBtn}</button>
               </div>
+              <div class="diy-btn-row">${ownerBtns}</div>
             </div>
           </div>
         `;
       }).join('');
     }
 
+    // 接受議價前檢查買家點數是否足夠，避免變負數
     async function acceptOffer(offerId) {
       if (!requireLogin()) return;
       const t = dict[state.lang];
       const idx = state.offers.findIndex(o => o.offerId === offerId);
       if (idx === -1) return;
       const offer = state.offers[idx];
+
+      const buyerPts = getUserPoints(offer.buyerId);
+      if (buyerPts < offer.offerPts) {
+        alert(t.buyerNotEnoughAlert(offer.buyerName || '同學'));
+        return;
+      }
+
       const item = state.items.find(i => i.id === offer.itemId);
       if (item) {
         item.status = 'swapped';
@@ -1427,11 +1816,30 @@
       alert(t.acceptedOk(dispName, offer.offerPts, getUserPoints(currentAccount.id)));
     }
 
+    // 拒絕議價：提示＋寫入紀錄通知出價買家
     async function rejectOffer(offerId) {
       if (!requireLogin()) return;
-      state.offers = state.offers.filter(o => o.offerId !== offerId);
+      const t = dict[state.lang];
+      const idx = state.offers.findIndex(o => o.offerId === offerId);
+      if (idx === -1) return;
+      const offer = state.offers[idx];
+      state.offers.splice(idx, 1);
+
+      if (offer.buyerId) {
+        addUnreadNotification(offer.buyerId, offer.buyerName);
+        state.logs.unshift({
+          type: 'bargain_rejected',
+          buyerId: offer.buyerId,
+          sellerName: currentAccount.name,
+          name: offer.zhName,
+          enName: offer.enName,
+          pts: offer.offerPts
+        });
+      }
+
       await persistState();
-      renderOffers();
+      renderAll();
+      alert(t.rejectAlert);
     }
 
     async function calcCarbon(isLangRefresh = false) {
@@ -1481,13 +1889,13 @@
       const t = dict[state.lang];
       const container = document.getElementById('offers-list');
       if (!currentAccount) {
-        container.innerHTML = `<p style="color:#666; font-size:14px;">${t.noOffers}</p>`;
+        container.innerHTML = `<p class="empty-tip">${t.noOffers}</p>`;
         return;
       }
 
       const myOffers = state.offers.filter(o => o.sellerId === currentAccount.id);
       if (!myOffers.length) {
-        container.innerHTML = `<p style="color:#666; font-size:14px;">${t.noOffers}</p>`;
+        container.innerHTML = `<p class="empty-tip">${t.noOffers}</p>`;
         return;
       }
 
@@ -1520,9 +1928,9 @@
         document.getElementById('st-swapped').innerText = '0';
         document.getElementById('st-listed').innerText = '0 / 0';
         document.getElementById('st-saved').innerText = '0.0';
-        myListedGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMyListed}</p>`;
-        myFavGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMyFav}</p>`;
-        mySwappedGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMySwapped}</p>`;
+        myListedGrid.innerHTML = `<p class="empty-tip" style="grid-column:1 / -1;">${t.noMyListed}</p>`;
+        myFavGrid.innerHTML = `<p class="empty-tip" style="grid-column:1 / -1;">${t.noMyFav}</p>`;
+        mySwappedGrid.innerHTML = `<p class="empty-tip" style="grid-column:1 / -1;">${t.noMySwapped}</p>`;
         renderOffers();
         listEl.innerHTML = `<li>${t.noRec}</li>`;
         return;
@@ -1540,15 +1948,20 @@
       document.getElementById('st-listed').innerText = `${myListedItems.length} / ${mySoldCount}`;
       document.getElementById('st-saved').innerText = ((mySwappedItems.length + mySoldCount) * 10).toFixed(1);
 
-      // (1) 我刊登的物品
+      // (1) 我刊登的物品（可編輯＋取消刊登）
       if (!myListedItems.length) {
-        myListedGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMyListed}</p>`;
+        myListedGrid.innerHTML = `<p class="empty-tip" style="grid-column:1 / -1;">${t.noMyListed}</p>`;
       } else {
         myListedGrid.innerHTML = myListedItems.map(it => {
           const info = it[state.lang] || it.zh;
           const media = it.img ? `<img src="${it.img}" alt="${info.name}">` : it.emoji;
           const action = it.status === 'available'
-            ? `<button class="filter-btn" onclick="openEditModal(${it.id})">${t.editBtn}</button>`
+            ? `
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button class="filter-btn" style="padding:4px 10px; font-size:12px;" onclick="openEditModal(${it.id})">${t.editBtn}</button>
+                <button class="btn-danger-sm" onclick="cancelListing(${it.id})">${t.cancelListBtn}</button>
+              </div>
+            `
             : `<span class="status-tag">${t.soldDoneTag}</span>`;
           return `
             <div class="mini-card">
@@ -1564,16 +1977,13 @@
         }).join('');
       }
 
-      // (2) 我收藏的衣物
+      // (2) 我收藏的衣物（兩個按鍵：返回市集 / 取消收藏）
       if (!myFavItems.length) {
-        myFavGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMyFav}</p>`;
+        myFavGrid.innerHTML = `<p class="empty-tip" style="grid-column:1 / -1;">${t.noMyFav}</p>`;
       } else {
         myFavGrid.innerHTML = myFavItems.map(it => {
           const info = it[state.lang] || it.zh;
           const media = it.img ? `<img src="${it.img}" alt="${info.name}">` : it.emoji;
-          const statusAction = it.status === 'available'
-            ? `<button class="btn-accept" style="padding:5px 10px; font-size:12px;" onclick="openBuyConfirm(${it.id})">${t.swapBtn}</button>`
-            : `<span class="status-tag">${t.swappedBtn}</span>`;
           return `
             <div class="mini-card">
               <div class="mini-img">${media}</div>
@@ -1582,7 +1992,7 @@
                 <h4>${info.name}</h4>
                 <p>${info.desc}</p>
                 <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                  ${statusAction}
+                  <button class="btn-accept" style="padding:5px 10px; font-size:12px;" onclick="returnToMarketFromFavorite(${it.id})">${t.backMarketBtn}</button>
                   <button class="filter-btn" style="padding:4px 10px; font-size:12px;" onclick="toggleFavorite(${it.id})">${t.unfavBtn}</button>
                 </div>
               </div>
@@ -1593,7 +2003,7 @@
 
       // (3) 我已交換取得的物品
       if (!mySwappedItems.length) {
-        mySwappedGrid.innerHTML = `<p style="color:#666; font-size:14px;">${t.noMySwapped}</p>`;
+        mySwappedGrid.innerHTML = `<p class="empty-tip" style="grid-column:1 / -1;">${t.noMySwapped}</p>`;
       } else {
         mySwappedGrid.innerHTML = mySwappedItems.map(it => {
           const info = it[state.lang] || it.zh;
@@ -1613,10 +2023,13 @@
 
       renderOffers();
 
-      // 個人互動紀錄
+      // 個人互動紀錄與通知
       const personalLogs = state.logs.filter(l => {
-        if (l.type === 'list') return l.ownerId === uid;
+        if (l.type === 'list' || l.type === 'cancel_list') return l.ownerId === uid;
         if (l.type === 'swap') return l.buyerId === uid || l.sellerId === uid;
+        if (l.type === 'bargain_sent') return l.buyerId === uid;
+        if (l.type === 'bargain_received' || l.type === 'comment_received') return l.sellerId === uid;
+        if (l.type === 'bargain_rejected') return l.buyerId === uid;
         if (l.type === 'like') return l.likerId === uid || l.authorId === uid;
         if (l.type === 'quiz') return l.userId === uid;
         return false;
@@ -1628,10 +2041,15 @@
         listEl.innerHTML = personalLogs.map(l => {
           const dispName = state.lang === 'en' ? (l.enName || l.name) : l.name;
           if (l.type === 'list') return `<li>${t.logList(dispName, l.pts)}</li>`;
+          if (l.type === 'cancel_list') return `<li>${t.logCancelList(dispName)}</li>`;
           if (l.type === 'swap') {
             if (l.buyerId === uid) return `<li>${t.logBuy(l.sellerName || '同學', dispName, l.pts)}</li>`;
             return `<li>${t.logSold(l.buyerName || '同學', dispName, l.pts)}</li>`;
           }
+          if (l.type === 'bargain_sent') return `<li>${t.logBargainSent(l.sellerName || '同學', dispName, l.pts)}</li>`;
+          if (l.type === 'bargain_received') return `<li>${t.logBargainReceived(l.buyerName || '同學', dispName, l.pts)}</li>`;
+          if (l.type === 'bargain_rejected') return `<li>${t.logBargainRejected(l.sellerName || '同學', dispName, l.pts)}</li>`;
+          if (l.type === 'comment_received') return `<li>${t.logCommentReceived(l.senderName || '同學', dispName, l.text)}</li>`;
           if (l.type === 'like') {
             if (l.likerId === uid) return `<li>${t.logILiked(l.authorName || '創作者', dispName)}</li>`;
             return `<li>${t.logGotLiked(l.likerName || '同學', dispName)}</li>`;
@@ -1648,7 +2066,12 @@
       document.getElementById('nav-list').innerText = t.navList;
       document.getElementById('nav-quiz').innerText = t.navQuiz;
       document.getElementById('nav-diy').innerText = t.navDiy;
-      document.getElementById('nav-closet').innerText = t.navCloset;
+
+      const closetNav = document.getElementById('nav-closet');
+      const badge = document.getElementById('nav-notif-badge');
+      closetNav.firstChild.nodeValue = `${t.navCloset} `;
+      closetNav.appendChild(badge);
+
       document.getElementById('lang-toggle').innerText = t.langBtn;
       document.getElementById('um-lang-btn').innerText = t.langBtn;
 
@@ -1705,6 +2128,7 @@
       document.getElementById('diy-in-name').placeholder = t.diyPhName;
       document.getElementById('diy-lbl-tag').innerText = t.diyLblTag;
       document.getElementById('diy-in-tag').placeholder = t.diyPhTag;
+      document.getElementById('diy-lbl-photo').innerText = t.diyLblPhoto;
       document.getElementById('diy-lbl-desc').innerText = t.diyLblDesc;
       document.getElementById('diy-in-desc').placeholder = t.diyPhDesc;
       document.getElementById('diy-lbl-steps').innerText = t.diyLblSteps;
@@ -1740,7 +2164,10 @@
       document.getElementById('um-name-input').placeholder = t.umNamePh;
       document.getElementById('um-cancel').innerText = t.umCancel;
       document.getElementById('um-save').innerText = t.umSave;
+      document.getElementById('reset-hint').innerText = t.resetHint;
+      document.getElementById('reset-btn').innerText = t.resetBtn;
 
+      updateNotificationUI();
       renderIconPickers();
       renderMarket();
       renderDiy();
