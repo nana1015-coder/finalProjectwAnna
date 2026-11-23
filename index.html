@@ -90,7 +90,7 @@
     ul.record-list { padding-left: 20px; margin: 8px 0 0; }
     ul.record-list li { margin-bottom: 6px; font-size: 14px; }
 
-    /* 彈出小視窗（DIY 步驟、登入、雲端設定） */
+    /* 彈出小視窗 */
     .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.48); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
     .modal-backdrop.open { display: flex; }
     .modal-card { background: white; max-width: 480px; width: 100%; border-radius: 14px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.22); animation: popIn 0.18s ease-out; }
@@ -113,12 +113,12 @@
         <button id="nav-closet" onclick="showSection('closet', this)">我的衣櫃</button>
       </nav>
       <button class="badge-pill" onclick="openUserModal()">👤 <span id="user-name-display">小綠</span> (<strong id="user-points">300</strong> pt)</button>
-      <button class="badge-pill" id="cloud-status-btn" onclick="openCloudModal()">💾 本機模式</button>
+      <button class="badge-pill" id="cloud-status-btn" onclick="openCloudModal()">☁️ 雲端已連線</button>
       <button class="lang-btn" id="lang-toggle" onclick="toggleLang()">English / 中文</button>
     </div>
   </header>
 
-  <!-- 精簡主視覺標語 -->
+  <!-- 主視覺標語 -->
   <div class="hero">
     <h2 id="hero-title">少買一點、多換一點，衣櫥更永續</h2>
     <p id="hero-desc">實踐 SDG 12 責任消費與 SDG 13 氣候行動</p>
@@ -235,7 +235,7 @@
     <div id="diy-list"></div>
   </div>
 
-  <!-- 5. 我的衣櫃（正式版：已移除模擬買家與重設示範資料） -->
+  <!-- 5. 我的衣櫃 -->
   <div id="closet" class="section">
     <h2 id="closet-title">👜 我的永續衣櫃、議價與紀錄</h2>
     <div class="box">
@@ -283,7 +283,7 @@
     </div>
   </div>
 
-  <!-- 彈出小視窗 2：唯一帳號 ID + 顯示暱稱登入（防止重名撞號） -->
+  <!-- 彈出小視窗 2：唯一帳號 ID + 顯示暱稱登入 -->
   <div id="user-modal" class="modal-backdrop" onclick="if(event.target===this) closeModals()">
     <div class="modal-card">
       <h3 id="um-title">👤 會員登入 / 切換帳號</h3>
@@ -305,12 +305,12 @@
     </div>
   </div>
 
-  <!-- 彈出小視窗 3：雲端跨裝置同步設定（Firebase Realtime Database） -->
+  <!-- 彈出小視窗 3：雲端跨裝置同步設定 -->
   <div id="cloud-modal" class="modal-backdrop" onclick="if(event.target===this) closeModals()">
     <div class="modal-card">
       <h3 id="cm-title">☁️ 跨裝置雲端同步設定（Firebase）</h3>
       <p id="cm-desc" style="font-size:14px; color:#555;">
-        未填寫時預設使用「本機儲存模式」。貼上免費的 Firebase Realtime Database 網址（例如 <code>https://your-app.firebaseio.com</code>），全班同學用不同裝置打開都能即時同步商品、議價與按讚點數！
+        目前已預設綁定你的 Firebase Realtime Database 網址，跨裝置打開會自動同步商品、議價與按讚點數；如需更換或切回本機模式可在此調整。
       </p>
       <div class="form-group">
         <input id="cm-input" type="url" placeholder="https://your-project-default-rtdb.firebaseio.com">
@@ -324,12 +324,13 @@
   </div>
 
   <script>
+    const DEFAULT_CLOUD_URL = 'https://final-project-8e175-default-rtdb.firebaseio.com';
     const STORAGE_KEY = 'rewear_prod_v1';
     const CLOUD_URL_KEY = 'rewear_firebase_url';
     const ACCOUNT_KEY = 'rewear_current_account';
 
     let uploadedImageData = '';
-    let cloudBaseUrl = localStorage.getItem(CLOUD_URL_KEY) || '';
+    let cloudBaseUrl = (localStorage.getItem(CLOUD_URL_KEY) || DEFAULT_CLOUD_URL).replace(/\/+$/, '');
     let currentAccount = loadCurrentAccount();
 
     function loadCurrentAccount() {
@@ -562,8 +563,7 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       if (cloudBaseUrl) {
         try {
-          const cleanUrl = cloudBaseUrl.replace(/\/+$/, '');
-          await fetch(`${cleanUrl}/rewear_data.json`, {
+          await fetch(`${cloudBaseUrl}/rewear_data.json`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(state)
@@ -577,8 +577,7 @@
     async function syncFromCloud() {
       if (!cloudBaseUrl) return;
       try {
-        const cleanUrl = cloudBaseUrl.replace(/\/+$/, '');
-        const res = await fetch(`${cleanUrl}/rewear_data.json`);
+        const res = await fetch(`${cloudBaseUrl}/rewear_data.json`);
         const data = await res.json();
         if (data && Array.isArray(data.items)) {
           state = {
@@ -640,7 +639,6 @@
       const name = document.getElementById('um-name-input').value.trim();
       if (!id || !name) return;
 
-      // 防止唯一帳號 ID 被不同暱稱重複冒用
       if (state.users[id] && state.users[id].name !== name) {
         alert(t.idConflictAlert(id, state.users[id].name));
         return;
@@ -660,7 +658,7 @@
     }
 
     async function saveCloudUrl() {
-      const url = document.getElementById('cm-input').value.trim();
+      const url = document.getElementById('cm-input').value.trim().replace(/\/+$/, '');
       if (!url) return;
       cloudBaseUrl = url;
       localStorage.setItem(CLOUD_URL_KEY, cloudBaseUrl);
@@ -671,7 +669,7 @@
 
     function clearCloudUrl() {
       cloudBaseUrl = '';
-      localStorage.removeItem(CLOUD_URL_KEY);
+      localStorage.setItem(CLOUD_URL_KEY, '');
       closeModals();
       renderAll();
     }
@@ -872,7 +870,6 @@
       alert(t.diyAddedAlert(name));
     }
 
-    // 1 讚 = 1 點：點數加給「分享創意的作者」，而非按讚的人
     function likeDiy(id) {
       const post = state.diyPosts.find(p => p.id === id);
       if (!post) return;
@@ -898,7 +895,6 @@
       renderAll();
     }
 
-    // 自訂小視窗顯示 DIY 教學步驟
     function openDiyModal(id) {
       const t = dict[state.lang];
       const post = state.diyPosts.find(p => p.id === id);
