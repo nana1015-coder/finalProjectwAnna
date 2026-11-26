@@ -41,11 +41,13 @@
     .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.07); transition: 0.2s; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
     .card:hover { transform: translateY(-4px); }
     .card.sold-card { opacity: 0.72; }
-    .card-img { height: 175px; background: var(--light); display: flex; align-items: center; justify-content: center; font-size: 56px; overflow: hidden; position: relative; }
-    .card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .card-img { height: 175px; background: var(--light); display: flex; align-items: center; justify-content: center; font-size: 56px; overflow: hidden; position: relative; cursor: zoom-in; }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s; }
+    .card-img:hover img { transform: scale(1.03); }
+    .zoom-hint { position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.55); color: white; font-size: 11px; padding: 2px 8px; border-radius: 10px; pointer-events: none; }
 
     /* 收藏按鈕 */
-    .fav-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.92); border: 1px solid #ddd; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-weight: bold; cursor: pointer; color: #555; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: 0.15s; }
+    .fav-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.92); border: 1px solid #ddd; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-weight: bold; cursor: pointer; color: #555; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: 0.15s; z-index: 2; }
     .fav-btn:hover { background: #fffde7; border-color: #fbc02d; }
     .fav-btn.saved { background: #fff8e1; color: #f57f17; border-color: #ffb300; }
 
@@ -66,18 +68,27 @@
     .btn-comment { background: #f1f8e9; color: #2e7d32; border: 1px solid #a5d6a7; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: bold; }
     .btn-comment:hover { background: #dcedc8; }
 
-    /* 圖示選擇器 */
+    /* 圖示與星等選擇器 */
     .icon-picker { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
     .icon-opt { width: 42px; height: 42px; font-size: 22px; border: 2px solid #ddd; border-radius: 10px; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.15s; }
     .icon-opt:hover { border-color: #81c784; background: #f1f8e9; }
     .icon-opt.selected { border-color: var(--primary); background: var(--light); transform: scale(1.06); }
+
+    .star-picker { display: inline-flex; gap: 6px; align-items: center; margin-top: 2px; }
+    .star-btn { background: #fff8e1; border: 1px solid #ffd54f; color: #ffb300; font-size: 22px; line-height: 1; padding: 5px 8px; border-radius: 8px; cursor: pointer; transition: 0.15s; }
+    .star-btn:hover { background: #ffecb3; transform: scale(1.06); }
+    .star-btn.active { background: #fff3c4; border-color: #ffa000; color: #ff8f00; }
+    .star-label { font-size: 13px; font-weight: bold; color: #2e7d32; margin-left: 6px; }
+
+    .inline-fill { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 14px; }
+    .inline-fill input { width: 90px; padding: 8px 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; text-align: center; }
 
     /* 表單與區塊 */
     .box { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.07); margin-bottom: 20px; }
     .rule-note { background: #e8f5e9; border-left: 4px solid var(--primary); padding: 12px 16px; border-radius: 6px; margin-bottom: 18px; font-size: 14px; }
     .notif-banner { background: #fff8e1; border-left: 4px solid #ffb300; padding: 12px 16px; border-radius: 6px; margin-bottom: 18px; font-size: 14px; }
     .empty-tip { color: #666; font-size: 14px; background: #f6f8f6; padding: 14px 16px; border-radius: 10px; }
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 15px; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
     .form-group label { font-weight: bold; font-size: 14px; }
     .form-group input, .form-group select, .form-group textarea { padding: 9px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: inherit; }
@@ -148,7 +159,7 @@
     .btn-reset-subtle { background: transparent; color: #b71c1c; border: 1px solid #ef9a9a; padding: 5px 10px; border-radius: 8px; font-size: 12px; cursor: pointer; }
     .btn-reset-subtle:hover { background: #ffebee; }
 
-    /* 彈出小視窗 */
+    /* 彈出視窗與全螢幕圖片檢視 */
     .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.52); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
     .modal-backdrop.open { display: flex; }
     .modal-card { background: white; max-width: 480px; width: 100%; border-radius: 14px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.22); animation: popIn 0.18s ease-out; max-height: 90vh; overflow-y: auto; }
@@ -157,6 +168,13 @@
     .modal-header-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
     .step-content { background: var(--bg); border: 1px solid #e0e0e0; border-radius: 10px; padding: 14px 16px; white-space: pre-line; font-size: 14px; line-height: 1.7; margin: 12px 0 16px; }
     .confirm-box { background: var(--bg); border: 1px solid #dce7dc; border-radius: 10px; padding: 14px; margin: 12px 0 16px; font-size: 14px; }
+
+    .lightbox-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.86); z-index: 300; align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; }
+    .lightbox-backdrop.open { display: flex; }
+    .lightbox-box { max-width: 90vw; max-height: 88vh; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: default; }
+    .lightbox-box img { max-width: 90vw; max-height: 78vh; border-radius: 12px; box-shadow: 0 12px 36px rgba(0,0,0,0.5); object-fit: contain; background: white; }
+    .lightbox-emoji { font-size: 120px; background: var(--light); width: 220px; height: 220px; border-radius: 24px; display: flex; align-items: center; justify-content: center; }
+    .lightbox-caption { color: white; font-size: 15px; font-weight: bold; text-align: center; }
   </style>
 </head>
 <body>
@@ -289,7 +307,7 @@
         <label><input type="radio" name="q5" value="4"> <span id="q5-o3">直接當一般垃圾丟棄焚燒（產生廢棄碳排）</span></label>
       </div>
 
-      <button class="btn-swap" style="max-width:240px;" id="calc-btn" onclick="calcCarbon()">看看我的衣櫃碳排有多有感</button>
+      <button class="btn-swap" style="max-width:240px;" id="calc-btn" onclick="calcCarbon()">看看我的衣櫃碳排量</button>
       <div id="quiz-result" class="result-box"></div>
     </div>
   </div>
@@ -309,8 +327,16 @@
             <input id="diy-in-name" type="text" required placeholder="例如：舊衛衣改短版罩衫">
           </div>
           <div class="form-group">
-            <label id="diy-lbl-tag" for="diy-in-tag">難度 / 所需時間</label>
-            <input id="diy-in-tag" type="text" required placeholder="例如：免針線・15分鐘">
+            <label id="diy-lbl-diff">難度星級（1～5 星）</label>
+            <div class="star-picker" id="add-star-picker"></div>
+          </div>
+          <div class="form-group">
+            <label id="diy-lbl-time" for="diy-in-mins">預計用時</label>
+            <div class="inline-fill">
+              <span id="diy-time-pre">預計用時</span>
+              <input id="diy-in-mins" type="number" min="1" max="600" value="15" required>
+              <span id="diy-time-unit">分鐘</span>
+            </div>
           </div>
         </div>
         <div class="form-group">
@@ -376,6 +402,16 @@
       <!-- 個人互動紀錄與通知 -->
       <h3 id="rec-title" style="margin-top:20px;">📜 我的個人互動紀錄與通知</h3>
       <ul class="record-list" id="record-list"></ul>
+    </div>
+  </div>
+
+  <!-- 全螢幕圖片放大檢視 -->
+  <div id="image-lightbox" class="lightbox-backdrop" onclick="closeImageLightbox()">
+    <div class="lightbox-box" onclick="event.stopPropagation()">
+      <img id="lb-img" style="display:none;" alt="Full view">
+      <div id="lb-emoji" class="lightbox-emoji" style="display:none;"></div>
+      <div id="lb-caption" class="lightbox-caption"></div>
+      <button type="button" class="filter-btn" onclick="closeImageLightbox()" id="lb-close-btn">關閉看圖</button>
     </div>
   </div>
 
@@ -478,8 +514,16 @@
           <input id="dem-name" type="text" required>
         </div>
         <div class="form-group">
-          <label id="dem-tag-lbl" for="dem-tag">難度 / 所需時間</label>
-          <input id="dem-tag" type="text" required>
+          <label id="dem-diff-lbl">難度星級（1～5 星）</label>
+          <div class="star-picker" id="edit-star-picker"></div>
+        </div>
+        <div class="form-group">
+          <label id="dem-time-lbl" for="dem-mins">預計用時</label>
+          <div class="inline-fill">
+            <span id="dem-time-pre">預計用時</span>
+            <input id="dem-mins" type="number" min="1" max="600" required>
+            <span id="dem-time-unit">分鐘</span>
+          </div>
         </div>
         <div class="form-group">
           <label id="dem-photo-lbl" for="dem-photo">更換改造照片（不選則保留原圖）</label>
@@ -534,8 +578,8 @@
 
   <script>
     const CLOUD_BASE_URL = 'https://final-project-8e175-default-rtdb.firebaseio.com';
-    const STORAGE_KEY = 'rewear_prod_v5';
-    const ACCOUNT_KEY = 'rewear_current_account_v5';
+    const STORAGE_KEY = 'rewear_prod_v6';
+    const ACCOUNT_KEY = 'rewear_current_account_v6';
     const TAB_KEY = 'rewear_active_tab';
     const RESET_PASSCODE = 'NanaAnna1015522';
     const BASIC_ICONS = ['👕', '🧥', '👗', '👖', '👜', '👟', '🧢', '🧣'];
@@ -546,6 +590,8 @@
     let diyEditedImageData = '';
     let selectedAddIcon = '';
     let selectedEditIcon = '';
+    let selectedAddStars = 2;
+    let selectedEditStars = 2;
     let pendingBuyItemId = null;
     let editingItemId = null;
     let editingDiyId = null;
@@ -564,22 +610,23 @@
 
     const defaultItems = [];
 
+    // 初始 2 個舊衣改造創意皆設為 0 讚
     const defaultDiy = [
       {
-        id: 101, authorId: 'user_han', likes: 18, likedBy: [], img: '',
-        zh: { tag: '免針線・新手友善', author: '阿涵', name: '舊 T-shirt 變身「編織環保購物袋」',
+        id: 101, authorId: 'user_han', stars: 2, minutes: 15, likes: 0, likedBy: [], img: '',
+        zh: { author: '阿涵', name: '舊 T-shirt 變身「編織環保購物袋」',
           desc: '只需一把剪刀！剪去袖子與領口，將下擺剪成流蘇打結，15 分鐘完成超耐用買菜袋。',
           steps: '1. 剪掉 T-shirt 兩側袖子與領口。\n2. 衣服翻面，底部剪出約 5 公分長的流蘇條。\n3. 將前後兩片流蘇兩兩打死結。\n4. 翻回正面即完成耐用購物袋！' },
-        en: { tag: 'No Sewing · Beginner', author: 'Han', name: 'Old T-Shirt into a Braided Tote Bag',
+        en: { author: 'Han', name: 'Old T-Shirt into a Braided Tote Bag',
           desc: 'Just scissors! Cut off sleeves & collar, fringe and knot the hem—done in 15 mins.',
           steps: '1. Cut off sleeves and collar of the t-shirt.\n2. Turn inside out and cut ~5cm fringe strips at the bottom.\n3. Tie paired front/back fringes tightly.\n4. Turn right-side out—done!' }
       },
       {
-        id: 102, authorId: 'user_yu', likes: 25, likedBy: [], img: '',
-        zh: { tag: '進階手作・30分鐘', author: '小宇', name: '破洞牛仔褲改造成「文青筆電保護套」',
+        id: 102, authorId: 'user_yu', stars: 3, minutes: 30, likes: 0, likedBy: [], img: '',
+        zh: { author: '小宇', name: '破洞牛仔褲改造成「文青筆電保護套」',
           desc: '利用牛仔布耐磨的特性，裁剪褲管並縫合底部，加上鈕扣就能保護平板與筆電。',
           steps: '1. 測量筆電長寬，裁剪牛仔褲大腿較寬處。\n2. 翻面縫合底部邊緣。\n3. 頂部留出翻蓋空間並縫上鈕扣即完成！' },
-        en: { tag: 'Intermediate · 30 mins', author: 'Yu', name: 'Worn Jeans into a Laptop Sleeve',
+        en: { author: 'Yu', name: 'Worn Jeans into a Laptop Sleeve',
           desc: 'Use durable denim leg fabric, sew the bottom, and add a button for device protection.',
           steps: '1. Measure your laptop and cut a wide section of the jeans leg.\n2. Sew the bottom seam inside out.\n3. Leave top flap room and attach a button—done!' }
       }
@@ -612,6 +659,7 @@
         marketTitle: '👕 二手衣交換市集', filterLabel: '分類篩選：',
         fAll: '全部衣物', fTop: '上衣 / 外套', fBottom: '褲裝 / 裙裝', fAcc: '配件 / 包包',
         searchPh: '搜尋衣物或賣家...', onlyAvailLbl: '只看可交換',
+        zoomHint: '🔍 點擊看大圖', lbClose: '關閉看圖',
         marketEmpty: '目前市集還沒有符合條件的衣物，快去「上架衣物」刊登吧！',
         favSave: '☆ 收藏', favSaved: '⭐ 已收藏',
         ownerPrefix: '上架者：', ptsCost: '開價點數', swapBtn: '直接交換', bargainBtn: '議價', commentBtn: '💬 問答',
@@ -638,14 +686,17 @@
         q4O1: '冷水洗滌＋自然晾乾（最省電低碳）', q4O2: '一般水洗＋偶爾使用烘衣機', q4O3: '溫熱水洗＋頻繁高溫烘乾（烘衣耗電碳排高）',
         q5Text: '5. 【淘汰廢棄碳排】穿不到或汰換的舊衣通常怎麼處理？',
         q5O1: '二手交換、轉送或 DIY 改造（延長生命週期）', q5O2: '投入舊衣回收箱或暫存衣櫃', q5O3: '直接當一般垃圾丟棄焚燒（產生廢棄碳排）',
-        calcBtn: '看看我的衣櫃碳排有多有感',
+        calcBtn: '看看我的衣櫃碳排量',
         resFirstReward: '🎉 <strong>恭喜首次完成檢測！已自動發放 +150 pt 永續啟動點數到你的帳戶！</strong>',
         resAlreadyRewarded: '✅ 你已領取過首次檢測獎勵（+150 pt），歡迎隨時重新檢視衣櫃足跡！',
         diyTitle: '✂️ 舊衣改造靈感庫與創意分享（1 讚 = 1 點，讚越多排越前面！）',
         diyRuleNote: '❤️ <strong>按讚獎賞規則：</strong>大家覺得不錯的改造創意可按讚支持，每獲得 <strong>1 個讚，分享該創意的作者即可獲得 1 點獎勵</strong>，並依讚數由高到低排序！',
         diyShareTitle: '💡 分享你的舊衣改造創意',
         diyLblName: '改造作品名稱', diyPhName: '例如：舊衛衣改短版罩衫',
-        diyLblTag: '難度 / 所需時間', diyPhTag: '例如：免針線・15分鐘',
+        diyLblDiff: '難度星級（點選 1～5 星）',
+        starText: (n) => `${n} 星難度`,
+        diyLblTime: '預計用時', diyTimePre: '預計用時', diyTimeUnit: '分鐘',
+        diyTimeBadge: (mins) => `預計用時 ${mins} 分鐘`,
         diyLblPhoto: '分享改造作品照片（選填）',
         diyLblDesc: '改造靈感簡介', diyPhDesc: '簡單說明原本是什麼衣服、怎麼改造...',
         diyLblSteps: '詳細製作步驟', diyPhSteps: '寫下 1. 2. 3. 簡單步驟...',
@@ -655,7 +706,8 @@
         likeBtn: '👍 讚', likedBtn: '❤️ 已讚', viewStepBtn: '查看教學步驟',
         editDiyBtn: '✏️ 編輯', delDiyBtn: '🗑️ 刪除',
         delDiyConfirm: (name) => `確定要刪除改造創意「${name}」嗎？刪除後無法復原。`,
-        demTitle: '✏️ 編輯改造創意', demNameLbl: '改造作品名稱', demTagLbl: '難度 / 所需時間',
+        demTitle: '✏️ 編輯改造創意', demNameLbl: '改造作品名稱', demDiffLbl: '難度星級（點選 1～5 星）',
+        demTimeLbl: '預計用時', demTimePre: '預計用時', demTimeUnit: '分鐘',
         demPhotoLbl: '更換改造照片（不選則保留原圖）', demDescLbl: '改造靈感簡介', demStepsLbl: '詳細製作步驟',
         demCancel: '取消', demSave: '儲存修改',
         dmClose: '關閉視窗',
@@ -737,6 +789,7 @@
         marketTitle: '👕 Second-Hand Swap Market', filterLabel: 'Filter:',
         fAll: 'All Items', fTop: 'Tops & Outerwear', fBottom: 'Pants & Skirts', fAcc: 'Bags & Accessories',
         searchPh: 'Search item or seller...', onlyAvailLbl: 'Available only',
+        zoomHint: '🔍 Click to zoom', lbClose: 'Close Photo',
         marketEmpty: 'No matching items yet. Head to "List Item" to post!',
         favSave: '☆ Save', favSaved: '⭐ Saved',
         ownerPrefix: 'Seller: ', ptsCost: 'Asking Points', swapBtn: 'Swap Now', bargainBtn: 'Bargain', commentBtn: '💬 Q&A',
@@ -763,14 +816,17 @@
         q4O1: 'Cold wash + air dry (Lowest energy footprint)', q4O2: 'Regular wash + occasional dryer use', q4O3: 'Warm/hot wash + frequent high-heat drying',
         q5Text: '5. [End-of-Life Disposal] What happens to clothes you no longer wear?',
         q5O1: 'Swap, pass on, or DIY upcycle (Extend lifespan)', q5O2: 'Donation bin or keep stored', q5O3: 'Throw into general trash for incineration',
-        calcBtn: 'See How Tangible My Closet Carbon Is',
+        calcBtn: 'See My Closet Carbon',
         resFirstReward: '🎉 <strong>First test completed! +150 pt starter bonus has been credited to your account!</strong>',
         resAlreadyRewarded: '✅ You have already claimed the one-time +150 pt starter bonus. Feel free to retake anytime!',
         diyTitle: '✂️ DIY Upcycle Lab & Idea Sharing (1 Like = 1 pt, Top Likes First!)',
         diyRuleNote: '❤️ <strong>Like Reward Rule:</strong> Every <strong>1 like awards 1 point to the idea creator</strong>. Cards show points earned and sort automatically from highest to lowest likes!',
         diyShareTitle: '💡 Share Your DIY Upcycle Idea',
         diyLblName: 'Upcycle Project Title', diyPhName: 'e.g., Hoodie into a Cropped Cardigan',
-        diyLblTag: 'Difficulty / Time', diyPhTag: 'e.g., No Sew · 15 mins',
+        diyLblDiff: 'Difficulty (1–5 Stars)',
+        starText: (n) => `${n}-Star Difficulty`,
+        diyLblTime: 'Est. Time', diyTimePre: 'Est. Time:', diyTimeUnit: 'mins',
+        diyTimeBadge: (mins) => `Est. ${mins} mins`,
         diyLblPhoto: 'Upcycle Photo (Optional)',
         diyLblDesc: 'Idea Summary', diyPhDesc: 'Describe the original garment and transformation...',
         diyLblSteps: 'Step-by-Step Guide', diyPhSteps: 'Write simple 1. 2. 3. steps...',
@@ -780,7 +836,8 @@
         likeBtn: '👍 Like', likedBtn: '❤️ Liked', viewStepBtn: 'View Steps',
         editDiyBtn: '✏️ Edit', delDiyBtn: '🗑️ Delete',
         delDiyConfirm: (name) => `Delete DIY idea "${name}"? This cannot be undone.`,
-        demTitle: '✏️ Edit DIY Idea', demNameLbl: 'Upcycle Project Title', demTagLbl: 'Difficulty / Time',
+        demTitle: '✏️ Edit DIY Idea', demNameLbl: 'Upcycle Project Title', demDiffLbl: 'Difficulty (1–5 Stars)',
+        demTimeLbl: 'Est. Time', demTimePre: 'Est. Time:', demTimeUnit: 'mins',
         demPhotoLbl: 'Replace Photo (Leave blank to keep current)', demDescLbl: 'Idea Summary', demStepsLbl: 'Step-by-Step Guide',
         demCancel: 'Cancel', demSave: 'Save Changes',
         dmClose: 'Close',
@@ -893,6 +950,8 @@
       }
       if (!Array.isArray(state.users[id].favorites)) state.users[id].favorites = [];
       if (typeof state.users[id].unreadCount !== 'number') state.users[id].unreadCount = 0;
+      if (typeof state.users[id].points !== 'number') state.users[id].points = 0;
+      if (typeof state.users[id].quizRewarded !== 'boolean') state.users[id].quizRewarded = false;
       return state.users[id];
     }
 
@@ -933,7 +992,7 @@
       }
     }
 
-    // 雲端同步（含全站版本號 resetVersion 比對：若管理員已重置全站，所有裝置自動清快取同步）
+    // 雲端同步（含全站版本號 resetVersion 比對與帳號點數/測驗領取狀態安全合併）
     async function syncFromCloud() {
       try {
         const res = await fetch(`${CLOUD_BASE_URL}/rewear_data.json`);
@@ -943,17 +1002,8 @@
           const localVer = typeof state.resetVersion === 'number' ? state.resetVersion : 1;
           const wasResetRemotely = remoteVer > localVer;
 
-          state = {
-            resetVersion: remoteVer,
-            lang: state.lang,
-            users: data.users || getInitialState(remoteVer).users,
-            items: (data.items || []).map(it => ({ ...it, comments: Array.isArray(it.comments) ? it.comments : [] })),
-            diyPosts: data.diyPosts || [],
-            offers: Array.isArray(data.offers) ? data.offers : [],
-            logs: Array.isArray(data.logs) ? data.logs : []
-          };
-
           if (wasResetRemotely) {
+            state = getInitialState(remoteVer);
             currentAccount = null;
             localStorage.removeItem(ACCOUNT_KEY);
             sessionStorage.removeItem(ACCOUNT_KEY);
@@ -966,7 +1016,39 @@
             return;
           }
 
-          if (currentAccount) ensureUserRecord(currentAccount.id, currentAccount.name);
+          const mergedUsers = Object.assign({}, data.users || {}, state.users || {});
+          if (data.users && state.users) {
+            Object.keys(data.users).forEach(uid => {
+              const rUser = data.users[uid];
+              const lUser = state.users[uid];
+              if (lUser) {
+                const quizDone = Boolean(rUser.quizRewarded || lUser.quizRewarded);
+                const pts = Math.max(Number(rUser.points || 0), Number(lUser.points || 0));
+                mergedUsers[uid] = Object.assign({}, rUser, lUser, {
+                  points: pts,
+                  quizRewarded: quizDone
+                });
+              }
+            });
+          }
+
+          state = {
+            resetVersion: Math.max(remoteVer, localVer),
+            lang: state.lang,
+            users: mergedUsers,
+            items: (data.items || []).map(it => ({ ...it, comments: Array.isArray(it.comments) ? it.comments : [] })),
+            diyPosts: data.diyPosts || [],
+            offers: Array.isArray(data.offers) ? data.offers : [],
+            logs: Array.isArray(data.logs) ? data.logs : []
+          };
+
+          if (currentAccount) {
+            const curRec = ensureUserRecord(currentAccount.id, currentAccount.name);
+            currentAccount.name = curRec.name || currentAccount.name;
+            sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify(currentAccount));
+            localStorage.setItem(ACCOUNT_KEY, JSON.stringify(currentAccount));
+          }
+
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
           renderAll();
           if (commentingItemId) renderCommentList();
@@ -1036,6 +1118,63 @@
         selectedEditIcon = icon;
       }
       renderIconPickers();
+    }
+
+    function renderStarPickers() {
+      const t = dict[state.lang];
+      const addStarBox = document.getElementById('add-star-picker');
+      if (addStarBox) {
+        addStarBox.innerHTML = [1, 2, 3, 4, 5].map(n => `
+          <button type="button" class="star-btn ${n <= selectedAddStars ? 'active' : ''}" onclick="setStarRating(${n}, 'add')">${n <= selectedAddStars ? '★' : '☆'}</button>
+        `).join('') + `<span class="star-label">${t.starText(selectedAddStars)}</span>`;
+      }
+
+      const editStarBox = document.getElementById('edit-star-picker');
+      if (editStarBox) {
+        editStarBox.innerHTML = [1, 2, 3, 4, 5].map(n => `
+          <button type="button" class="star-btn ${n <= selectedEditStars ? 'active' : ''}" onclick="setStarRating(${n}, 'edit')">${n <= selectedEditStars ? '★' : '☆'}</button>
+        `).join('') + `<span class="star-label">${t.starText(selectedEditStars)}</span>`;
+      }
+    }
+
+    function setStarRating(stars, mode) {
+      if (mode === 'add') selectedAddStars = stars;
+      else selectedEditStars = stars;
+      renderStarPickers();
+    }
+
+    function formatDifficultyBadge(post) {
+      const t = dict[state.lang];
+      const stars = typeof post.stars === 'number' ? post.stars : 2;
+      const mins = typeof post.minutes === 'number' ? post.minutes : 15;
+      const starIcons = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+      return `${starIcons} (${stars}/5) · ${t.diyTimeBadge(mins)}`;
+    }
+
+    function openImageLightbox(itemId) {
+      const t = dict[state.lang];
+      const item = state.items.find(i => i.id === itemId);
+      if (!item) return;
+      const info = item[state.lang] || item.zh;
+      const lbImg = document.getElementById('lb-img');
+      const lbEmoji = document.getElementById('lb-emoji');
+
+      if (item.img) {
+        lbImg.src = item.img;
+        lbImg.style.display = 'block';
+        lbEmoji.style.display = 'none';
+      } else {
+        lbEmoji.innerText = item.emoji || '👕';
+        lbEmoji.style.display = 'flex';
+        lbImg.style.display = 'none';
+      }
+      document.getElementById('lb-caption').innerText = `${info.name}（${info.cond} · ${item.pts} pt）`;
+      document.getElementById('lb-close-btn').innerText = t.lbClose;
+      document.getElementById('image-lightbox').classList.add('open');
+    }
+
+    function closeImageLightbox() {
+      document.getElementById('image-lightbox').classList.remove('open');
     }
 
     function previewUploadImage(e, previewId, targetMode) {
@@ -1210,7 +1349,6 @@
       if (cardEl) cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    // 商品問答 / 留言視窗（支援選人回覆 @對象＋通知被回覆者）
     function openCommentModal(itemId) {
       const item = state.items.find(i => i.id === itemId);
       if (!item) return;
@@ -1388,13 +1526,14 @@
 
         const mediaHtml = it.img ? `<img src="${it.img}" alt="${info.name}">` : it.emoji;
         const favBtnHtml = !isMine
-          ? `<button class="fav-btn ${isSaved ? 'saved' : ''}" onclick="toggleFavorite(${it.id})">${isSaved ? t.favSaved : t.favSave}</button>`
+          ? `<button class="fav-btn ${isSaved ? 'saved' : ''}" onclick="event.stopPropagation(); toggleFavorite(${it.id})">${isSaved ? t.favSaved : t.favSave}</button>`
           : '';
 
         return `
           <div id="market-card-${it.id}" class="card ${it.status === 'swapped' ? 'sold-card' : ''}">
-            <div class="card-img">
+            <div class="card-img" onclick="openImageLightbox(${it.id})">
               ${mediaHtml}
+              <span class="zoom-hint">${t.zoomHint}</span>
               ${favBtnHtml}
             </div>
             <div class="card-body">
@@ -1659,30 +1798,36 @@
       renderAll();
     }
 
+    // DIY 發布、編輯、刪除（支援 1-5 星難度與預計用時 ___ 分鐘）
     async function handleAddDiy(e) {
       e.preventDefault();
       if (!requireLogin()) return;
       const t = dict[state.lang];
       const name = document.getElementById('diy-in-name').value.trim();
-      const tag = document.getElementById('diy-in-tag').value.trim();
+      const minutes = Math.max(1, parseInt(document.getElementById('diy-in-mins').value, 10) || 15);
       const desc = document.getElementById('diy-in-desc').value.trim();
       const steps = document.getElementById('diy-in-steps').value.trim();
 
       const newPost = {
         id: Date.now(),
         authorId: currentAccount.id,
+        stars: selectedAddStars,
+        minutes,
         likes: 0,
         likedBy: [],
         img: diyUploadedImageData || '',
-        zh: { tag, author: currentAccount.name, name, desc, steps },
-        en: { tag, author: currentAccount.name, name, desc, steps }
+        zh: { author: currentAccount.name, name, desc, steps },
+        en: { author: currentAccount.name, name, desc, steps }
       };
 
       state.diyPosts.push(newPost);
       await persistState();
       e.target.reset();
       diyUploadedImageData = '';
+      selectedAddStars = 2;
+      document.getElementById('diy-in-mins').value = 15;
       document.getElementById('diy-photo-preview').style.display = 'none';
+      renderStarPickers();
       renderDiy();
       alert(t.diyAddedAlert(name));
     }
@@ -1695,11 +1840,15 @@
       const info = post[state.lang] || post.zh;
 
       editingDiyId = id;
+      selectedEditStars = typeof post.stars === 'number' ? post.stars : 2;
       diyEditedImageData = post.img || '';
 
       document.getElementById('dem-title').innerText = t.demTitle;
       document.getElementById('dem-name-lbl').innerText = t.demNameLbl;
-      document.getElementById('dem-tag-lbl').innerText = t.demTagLbl;
+      document.getElementById('dem-diff-lbl').innerText = t.demDiffLbl;
+      document.getElementById('dem-time-lbl').innerText = t.demTimeLbl;
+      document.getElementById('dem-time-pre').innerText = t.demTimePre;
+      document.getElementById('dem-time-unit').innerText = t.demTimeUnit;
       document.getElementById('dem-photo-lbl').innerText = t.demPhotoLbl;
       document.getElementById('dem-desc-lbl').innerText = t.demDescLbl;
       document.getElementById('dem-steps-lbl').innerText = t.demStepsLbl;
@@ -1707,10 +1856,11 @@
       document.getElementById('dem-save').innerText = t.demSave;
 
       document.getElementById('dem-name').value = info.name;
-      document.getElementById('dem-tag').value = info.tag;
+      document.getElementById('dem-mins').value = typeof post.minutes === 'number' ? post.minutes : 15;
       document.getElementById('dem-desc').value = info.desc;
       document.getElementById('dem-steps').value = info.steps;
       document.getElementById('dem-photo').value = '';
+      renderStarPickers();
 
       const preview = document.getElementById('dem-preview');
       if (diyEditedImageData) {
@@ -1730,17 +1880,17 @@
       if (!post) return;
 
       const name = document.getElementById('dem-name').value.trim();
-      const tag = document.getElementById('dem-tag').value.trim();
+      const minutes = Math.max(1, parseInt(document.getElementById('dem-mins').value, 10) || 15);
       const desc = document.getElementById('dem-desc').value.trim();
       const steps = document.getElementById('dem-steps').value.trim();
 
+      post.stars = selectedEditStars;
+      post.minutes = minutes;
       post.img = diyEditedImageData;
       post.zh.name = name;
-      post.zh.tag = tag;
       post.zh.desc = desc;
       post.zh.steps = steps;
       post.en.name = name;
-      post.en.tag = tag;
       post.en.desc = desc;
       post.en.steps = steps;
 
@@ -1806,7 +1956,7 @@
       } else {
         imgWrap.style.display = 'none';
       }
-      document.getElementById('dm-tag').innerText = info.tag;
+      document.getElementById('dm-tag').innerText = formatDifficultyBadge(post);
       document.getElementById('dm-author').innerText = `${t.diyAuthorPrefix}${info.author}`;
       document.getElementById('dm-pts').innerText = t.diyEarnedText(post.likes);
       document.getElementById('dm-desc').innerText = info.desc;
@@ -1839,7 +1989,7 @@
             ${thumbHtml}
             <div class="diy-info">
               <div>
-                <span class="tag">${rankBadge}${info.tag}</span>
+                <span class="tag">${rankBadge}${formatDifficultyBadge(p)}</span>
                 <span class="tag">${t.diyAuthorPrefix}${info.author}</span>
               </div>
               <h3>${info.name}</h3>
@@ -1925,7 +2075,6 @@
       alert(t.rejectAlert);
     }
 
-    // 5 題碳排檢測 ＋ 「衣櫃碳排有感化」結果
     async function calcCarbon(isLangRefresh = false) {
       if (!isLangRefresh && !requireLogin()) return;
       const t = dict[state.lang];
@@ -1946,9 +2095,8 @@
       const sunkCarbon = Math.round(totalCarbon * idleRatio);
       const waterLiters = Math.round(yearlyClothes * 2700 * (q3 === 1 ? 1.1 : 0.9));
 
-      // 有感生活等價換算
-      const driveKm = Math.round(totalCarbon / 0.21); // 約每公里小客車 0.21 kg CO2e
-      const treesNeeded = Math.max(1, (totalCarbon / 12).toFixed(1)); // 一棵樹年吸碳約 12 kg
+      const driveKm = Math.round(totalCarbon / 0.21);
+      const treesNeeded = Math.max(1, (totalCarbon / 12).toFixed(1));
       const bathsCount = Math.round(waterLiters / 150);
       const savedBySwap = Math.max(15, Math.round(totalCarbon * 0.32));
 
@@ -2300,8 +2448,10 @@
       document.getElementById('diy-share-title').innerText = t.diyShareTitle;
       document.getElementById('diy-lbl-name').innerText = t.diyLblName;
       document.getElementById('diy-in-name').placeholder = t.diyPhName;
-      document.getElementById('diy-lbl-tag').innerText = t.diyLblTag;
-      document.getElementById('diy-in-tag').placeholder = t.diyPhTag;
+      document.getElementById('diy-lbl-diff').innerText = t.diyLblDiff;
+      document.getElementById('diy-lbl-time').innerText = t.diyLblTime;
+      document.getElementById('diy-time-pre').innerText = t.diyTimePre;
+      document.getElementById('diy-time-unit').innerText = t.diyTimeUnit;
       document.getElementById('diy-lbl-photo').innerText = t.diyLblPhoto;
       document.getElementById('diy-lbl-desc').innerText = t.diyLblDesc;
       document.getElementById('diy-in-desc').placeholder = t.diyPhDesc;
@@ -2343,6 +2493,7 @@
 
       updateNotificationUI();
       renderIconPickers();
+      renderStarPickers();
       renderMarket();
       renderDiy();
       renderCloset();
